@@ -473,6 +473,7 @@ let openCarouselId = null;
 
 // ─── RENDER ───
 function render() {
+  try {
   const content = document.getElementById('main-content');
   
   // Update tabs
@@ -489,11 +490,12 @@ function render() {
   
   content.scrollTop = 0;
   if (currentView==='marcos') setTimeout(setupMarcosBtn,50);
-  // Debug: show CS state
   var dbg = document.getElementById('debug-overlay');
-  if (dbg) {
-    var keys = Object.keys(CS);
-    dbg.textContent = 'CS keys: ' + keys.length + ' | ' + keys.slice(-3).join(', ');
+  if (dbg) dbg.textContent = 'OK: ' + currentView + ' | CS:' + Object.keys(CS).length;
+  } catch(err) {
+    document.getElementById('main-content').innerHTML = '<div style="padding:20px;color:#E74C3C;font-family:monospace;font-size:12px;background:#1a0a0a;border-radius:8px;margin:16px"><strong>JS ERROR:</strong><br>' + err.message + '<br><br>' + (err.stack||'').substring(0,300) + '</div>';
+    var dbg = document.getElementById('debug-overlay');
+    if (dbg) dbg.textContent = 'ERROR: ' + err.message;
   }
 }
 
