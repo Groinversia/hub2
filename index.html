@@ -1197,7 +1197,10 @@ function renderReelFrames(d){
       <div class="frame-info">
         <div class="frame-info-title">${f.label}</div>
         <div class="frame-info-desc">${f.desc}</div>
-        ${imgUrl ? `<button onclick="downloadFrame('${imgUrl || ''}','marcos_${d.id}_f${i+1}.jpg')" style="margin-top:6px;width:100%;font-size:10px;font-weight:600;padding:4px 0;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">⬇ Descargar</button>` : ''}
+        <div style="display:flex;gap:4px;margin-top:6px">
+          ${imgUrl ? `<button onclick="downloadFrame('${imgUrl || ''}','marcos_${d.id}_f${i+1}.jpg')" style="flex:1;font-size:10px;font-weight:600;padding:4px 0;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">⬇</button>` : ''}
+          <button onclick="regenerateFrame('${d.id}',${i},this)" style="flex:1;font-size:10px;font-weight:600;padding:4px 0;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:4px;cursor:pointer" title="Regenerar este frame">↻</button>
+        </div>
       </div>
     </div>`;
   }).join('')}
@@ -1600,6 +1603,89 @@ function buildReelGrid(){
         </div>
       </div>
     </div>`).join('');
+}
+
+async function regenerateFrame(reelId, frameIdx, btn) {
+  const key = getOpenAIKey();
+  if (!key || !key.startsWith('sk-')) { alert('Introduce tu OpenAI API key.'); return; }
+  
+  const framePrompts = GEMINI_FRAME_PROMPTS[reelId];
+  if (!framePrompts) return;
+  
+  const origText = btn.textContent;
+  btn.textContent = '⟳';
+  btn.disabled = true;
+  
+  const fp = framePrompts[frameIdx];
+  const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is about to say: "${fp.dialogue || ""}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused light. Summer 2025. Authentic realistic talking-head, photorealistic, not AI looking.`;
+
+  try {
+    let res;
+    const refFrameUrl = hfUrl('827c77c8-44b6-4a37-b153-71086eefbf60');
+    if (refFrameUrl) {
+      try {
+        const refResp = await fetch(`https://corsproxy.io/?${encodeURIComponent(refFrameUrl)}`);
+        const refBlob = await refResp.blob();
+        const refFile = new File([refBlob], 'marcos_ref.png', {type:'image/png'});
+        const fd = new FormData();
+        fd.append('model', 'gpt-image-1');
+        fd.append('image[]', refFile);
+        fd.append('prompt', fullPrompt + ' IMPORTANT: Keep the exact same face, glasses, beard and facial features as the reference image.');
+        fd.append('n', '1');
+        fd.append('size', '1024x1536');
+        fd.append('quality', 'medium');
+        res = await fetch('https://api.openai.com/v1/images/edits', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${key}` },
+          body: fd
+        });
+      } catch(e) {
+        res = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model:'gpt-image-1', prompt:fullPrompt, n:1, size:'1024x1536', quality:'medium', output_format:'jpeg' })
+        });
+      }
+    } else {
+      res = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+        body: JSON.stringify({ model:'gpt-image-1', prompt:fullPrompt, n:1, size:'1024x1536', quality:'medium', output_format:'jpeg' })
+      });
+    }
+
+    const data = await res.json();
+    if (data.error) { alert('Error: ' + data.error.message); btn.textContent = origText; btn.disabled = false; return; }
+    
+    const b64 = data.data?.[0]?.b64_json;
+    if (b64) {
+      const newUrl = `data:image/jpeg;base64,${b64}`;
+      const jobId = `openai_${reelId}_f${frameIdx+1}_regen_${Date.now()}`;
+      
+      // Update stored data
+      if (!REEL_FRAME_JOBS[reelId]) REEL_FRAME_JOBS[reelId] = Array(6).fill(null);
+      REEL_FRAME_JOBS[reelId][frameIdx] = jobId;
+      HF_URL_MAP[jobId] = newUrl;
+      
+      // Update stored URLs
+      const storedUrls = JSON.parse(sessionStorage.getItem('frameUrls_' + reelId) || '[]');
+      storedUrls[frameIdx] = newUrl;
+      sessionStorage.setItem('frameUrls_' + reelId, JSON.stringify(storedUrls));
+      sessionStorage.setItem('frameJobs_' + reelId, JSON.stringify(REEL_FRAME_JOBS[reelId]));
+      
+      // Refresh frames tab
+      const reelData = REELS.find(r => r.id === reelId);
+      document.getElementById('m-body').innerHTML = renderReelFrames(reelData);
+    } else {
+      alert('No se generó imagen. Inténtalo de nuevo.');
+      btn.textContent = origText;
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Error: ' + e.message);
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
 }
 
 function downloadFrame(url, filename) {
