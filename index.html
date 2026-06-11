@@ -505,9 +505,8 @@ html,body{height:100%;font-family:'Inter Tight',sans-serif;background:var(--surf
   <div class="topbar-title">Groinversia — Content Hub</div>
   <span class="topbar-pill pill-gold">Crowdfunding Inmobiliario</span>
   <span class="topbar-pill pill-teal">Barcelona · Cataluña</span>
-  <div class="topbar-right" style="display:flex;align-items:center;gap:10px">
+  <div class="topbar-right">
     <span class="topbar-stat">42 proyectos devueltos · <strong>24M€</strong> · 3K+ inversores</span>
-
   </div>
 </div>
 
@@ -949,213 +948,220 @@ html,body{height:100%;font-family:'Inter Tight',sans-serif;background:var(--surf
 </div>
 
 <script>
-const REELS = [
-  {
-    id:'r01',
-    eyebrow:'REEL 01 · AWARENESS',
-    title:'¿Qué es el crowdfunding inmobiliario?',
-    hook:'Prestas dinero. Cobras intereses. Recuperas tu capital.',
-    stage:'awareness',
-    angle:'Oficina Groinversia',
-    outfit:'Blazer navy + camisa celeste abierta, sin corbata',
-    outfitShort:'Navy + celeste',
-    script:[
-      {seg:'0–3s',spoken:'¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?',action:'Ceja levantada, lean forward, urgencia',gesture:'Ceja↑\nBoca abre'},
-      {seg:'3–14s',spoken:'Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietaria de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento.',action:'Mano derecha explica, niega suavemente con dedo',gesture:'Niega\ndedo'},
-      {seg:'14–26s',spoken:'El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte.',action:'Conecta las partes con las manos',gesture:'Conecta\nmanos'},
-      {seg:'26–40s',spoken:'Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven.',action:'Cuenta con dedos, énfasis en cada punto',gesture:'3 dedos\nclaro'},
-      {seg:'40–55s',spoken:'No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento.',action:'Manos abiertas, calma, certeza',gesture:'Manos\ncalma'},
-      {seg:'55–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala a cámara, sonrisa',gesture:'Señala\ncierre'},
-    ],
-    frames:[
-      {emoji:'🤨',label:'HOOK',desc:'Lean forward, ceja levantada, urgente'},
-      {emoji:'☝️',label:'NO-PROPIETARIA',desc:'Niega con dedo, tono claro'},
-      {emoji:'🤝',label:'MECÁNICA',desc:'Conecta dos partes con manos'},
-      {emoji:'🤟',label:'VENTAJAS',desc:'3 dedos, énfasis en simplicidad'},
-      {emoji:'🤲',label:'CERTEZA',desc:'Manos abiertas, calma'},
-      {emoji:'👉',label:'CTA',desc:'Señala cámara, sonrisa cierre'},
-    ],
-    veo3:[
-      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman in the image leans slightly forward toward camera, raises one eyebrow with urgency, mouth beginning to open. Static camera, tripod, chest height, slightly below eye level, no movement. Same modern white office background with "Groinversia" logo on wall left, black linear pendant lights. Warm natural diffused light. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — NO-PROPIETARIA',text:`[Start image: F2]\nThe woman shakes her index finger slightly — correcting a misconception. Clear direct expression. Static camera, no movement. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — MECÁNICA',text:`[Start image: F3]\nThe woman gestures with both hands connecting two sides — explaining a relationship. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — VENTAJAS',text:`[Start image: F4]\nThe woman counts three points on fingers, leaning forward with conviction. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — CERTEZA',text:`[Start image: F5]\nThe woman holds both hands open, palms up, calm reassuring gesture. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points right index finger toward camera, warm confident smile. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
-    ]
-  },
-  {
-    id:'r02',
-    eyebrow:'REEL 02 · AWARENESS',
-    title:'No eres propietaria. Eres el banco.',
-    hook:'Hay una diferencia enorme entre comprar un piso e invertir en uno.',
-    stage:'awareness',
-    angle:'Exteriores Barcelona / Paseo Marítimo',
-    outfit:'Chaqueta técnica oscura + camiseta navy',
-    outfitShort:'Técnico oscuro',
-    script:[
-      {seg:'0–3s',spoken:'Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es.',action:'Paseo exterior, tono directo, desenfadado',gesture:'Camina\ndirecto'},
-      {seg:'3–16s',spoken:'Cuando compras un piso, eres propietaria. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal.',action:'Cuenta implicaciones con mano',gesture:'Cuenta\nproblemas'},
-      {seg:'16–30s',spoken:'En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini.',action:'Sonrisa cómplice, gesto de "pequeño banco"',gesture:'Sonrisa\nbanco'},
-      {seg:'30–44s',spoken:'A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada.',action:'Calma, manos limpias',gesture:'Manos\nlimpias'},
-      {seg:'44–57s',spoken:'No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno.',action:'Señala con seguridad',gesture:'Señala\nseguro'},
-      {seg:'57–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala, cierre natural',gesture:'Señala'},
-    ],
-    frames:[
-      {emoji:'🚶',label:'INTRO EXTERIOR',desc:'Exterior BCN, tono desenfadado'},
-      {emoji:'🏠',label:'PROPIETARIA',desc:'Cuenta implicaciones, problemática'},
-      {emoji:'😄',label:'EL BANCO',desc:'Sonrisa cómplice, analogía banco'},
-      {emoji:'🙌',label:'SIN GESTIÓN',desc:'Manos limpias, calma'},
-      {emoji:'🎯',label:'RETORNO FIJO',desc:'Señala con seguridad, certeza'},
-      {emoji:'👉',label:'CTA',desc:'Cierre natural, señala'},
-    ],
-    veo3:[
-      {label:'F1 — INTRO EXTERIOR',text:`[Start image: F1]\nThe woman walks or stands in an urban exterior setting (Barcelona promenade or street), direct eye contact with camera, casual professional tone. Outdoor natural light. Fixed camera, no camera movement. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — PROPIETARIA',text:`[Start image: F2]\nThe woman counts implications on fingers with a slightly concerned expression. Static camera, outdoor or neutral background. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — EL BANCO',text:`[Start image: F3]\nThe woman smiles with a knowing expression, gestures as if describing something small, complicit tone. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — SIN GESTIÓN',text:`[Start image: F4]\nThe woman holds both hands open, clean clear gesture, relaxed energy. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — RETORNO FIJO',text:`[Start image: F5]\nThe woman points with conviction, confident secure expression. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera with natural smile, closing energy. Static camera. 9:16, 24fps, 8 seconds.`},
-    ]
-  },
-  {
-    id:'r03',
-    eyebrow:'REEL 03 · CONSIDERACIÓN',
-    title:'Las 3 preguntas que debes hacer antes de invertir',
-    hook:'Si una plataforma no puede responder estas 3 preguntas, no inviertas.',
-    stage:'consideracion',
-    angle:'Sala de Reuniones',
-    outfit:'Camisa blanca + blazer gris antracita',
-    outfitShort:'Gris antracita',
-    script:[
-      {seg:'0–4s',spoken:'Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas.',action:'Expresión seria, honesta, protectora',gesture:'Serio\nprotector'},
-      {seg:'4–18s',spoken:'Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito.',action:'Un dedo, énfasis en "exactamente"',gesture:'1 dedo\nexacto'},
-      {seg:'18–32s',spoken:'Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No "cuando el mercado lo permita". Una fecha.',action:'Dos dedos, énfasis en fecha',gesture:'2 dedos\nfecha'},
-      {seg:'32–46s',spoken:'Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal.',action:'Tres dedos, tono honesto, no alarmista',gesture:'3 dedos\nhonesto'},
-      {seg:'46–57s',spoken:'En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas.',action:'Seguridad, manos abiertas',gesture:'Abre\nmanos'},
-      {seg:'57–60s',spoken:'Enlace en bio.',action:'Cierre breve, señala',gesture:'Señala'},
-    ],
-    frames:[
-      {emoji:'🤔',label:'HOOK',desc:'Seria, honesta, protectora'},
-      {emoji:'1️⃣',label:'PREGUNTA 1',desc:'Un dedo, énfasis en exactamente'},
-      {emoji:'2️⃣',label:'PREGUNTA 2',desc:'Dos dedos, énfasis en fecha'},
-      {emoji:'3️⃣',label:'PREGUNTA 3',desc:'Tres dedos, tono honesto'},
-      {emoji:'✅',label:'RESPUESTA',desc:'Manos abiertas, seguridad'},
-      {emoji:'👉',label:'CTA',desc:'Cierre breve, señala'},
-    ],
-    veo3:[
-      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman looks directly at camera with a serious protective expression, beginning to give important advice. Meeting room background, professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — PREGUNTA 1',text:`[Start image: F2]\nThe woman raises one finger with emphasis, serious focused expression. Same meeting room. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — PREGUNTA 2',text:`[Start image: F3]\nThe woman raises two fingers, measured authoritative tone. Same background. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — PREGUNTA 3',text:`[Start image: F4]\nThe woman raises three fingers, honest direct expression. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — RESPUESTA',text:`[Start image: F5]\nThe woman opens both hands, confident reassuring energy. Static camera, chest height. Same room. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera briefly with a firm closing smile. Static camera. 9:16, 24fps, 8 seconds.`},
-    ]
-  },
-  {
-    id:'r04',
-    eyebrow:'REEL 04 · CONVERSIÓN',
-    title:'VALENTINA40 — Está abierta la campaña',
-    hook:'5 casas de lujo en Castelldefels. 10% anual. Desde 500€.',
-    stage:'conversion',
-    angle:'Interior Premium / On-site',
-    outfit:'Polo premium crudo + pantalón chino beige',
-    outfitShort:'Polo crudo',
-    script:[
-      {seg:'0–3s',spoken:'Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora.',action:'Energía alta, sonrisa, cámara outdoor on-site',gesture:'Energía\napertura'},
-      {seg:'3–16s',spoken:'Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria.',action:'Describe con las manos, entusiasta pero medida',gesture:'Describe\nmanos'},
-      {seg:'16–28s',spoken:'El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses.',action:'Calma, datos concretos',gesture:'Datos\ncalma'},
-      {seg:'28–42s',spoken:'La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web.',action:'Sólido, directo, confianza',gesture:'Sólido\nconfianza'},
-      {seg:'42–55s',spoken:'El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación.',action:'Invita, señala hacia la web',gesture:'Invita\nseñala'},
-      {seg:'55–60s',spoken:'Enlace directo en bio. Te esperamos.',action:'Sonrisa cálida, cierre',gesture:'Cálido\ncierre'},
-    ],
-    frames:[
-      {emoji:'🚀',label:'APERTURA',desc:'Energía alta, exterior on-site'},
-      {emoji:'🏡',label:'EL PROYECTO',desc:'Describe con manos, entusiasta'},
-      {emoji:'📊',label:'DATOS',desc:'Datos concretos, calma'},
-      {emoji:'🔒',label:'GARANTÍA',desc:'Sólido, directo, confianza'},
-      {emoji:'🎯',label:'INVITACIÓN',desc:'Señala web, invita'},
-      {emoji:'😊',label:'CTA',desc:'Sonrisa cálida, cierre'},
-    ],
-    veo3:[
-      {label:'F1 — APERTURA',text:`[Start image: F1]\nThe woman stands outdoors at a construction or premium residential site, high energy welcoming expression, speaking with enthusiasm. Natural outdoor light, Mediterranean atmosphere. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — PROYECTO',text:`[Start image: F2]\nThe woman gestures with hands describing a space, enthusiastic but measured tone. Outdoor or premium interior background. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — DATOS',text:`[Start image: F3]\nThe woman presents data calmly with open gesture, factual precise tone. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — GARANTÍA',text:`[Start image: F4]\nThe woman speaks with solid confident energy, straightforward and trustworthy. Static camera, chest height. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — INVITACIÓN',text:`[Start image: F5]\nThe woman gestures toward camera inviting the viewer, warm welcoming expression. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman smiles warmly and closes naturally, pointing briefly. Static camera. 9:16, 24fps, 8 seconds.`},
-    ]
-  },
-  {
-    id:'r05',
-    eyebrow:'REEL 05 · AWARENESS',
-    title:'Así funciona Groinversia en 3 pasos',
-    hook:'En 5 minutos puedes estar financiando tu primera operación.',
-    stage:'awareness',
-    angle:'Laptop + Datos',
-    outfit:'Jersey cuello redondo gris, casual, sin blazer',
-    outfitShort:'Jersey gris',
-    script:[
-      {seg:'0–3s',spoken:'Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees.',action:'Sonrisa accesible, tono fácil',gesture:'Sonrisa\nfácil'},
-      {seg:'3–15s',spoken:'Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos.',action:'1 dedo, señala laptop',gesture:'1 dedo\nlaptop'},
-      {seg:'15–28s',spoken:'Segundo: explores los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides.',action:'2 dedos, explica con calma',gesture:'2 dedos\nficha'},
-      {seg:'28–42s',spoken:'Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro.',action:'3 dedos, cierra el proceso',gesture:'3 dedos\ndentro'},
-      {seg:'42–56s',spoken:'A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada.',action:'Manos limpias, calma total',gesture:'Manos\nlimpias'},
-      {seg:'56–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
-    ],
-    frames:[
-      {emoji:'😊',label:'HOOK',desc:'Sonrisa accesible, laptop visible'},
-      {emoji:'1️⃣',label:'PASO 1 — REGISTRO',desc:'Un dedo, señala pantalla'},
-      {emoji:'2️⃣',label:'PASO 2 — EXPLORAR',desc:'Dos dedos, explica ficha'},
-      {emoji:'3️⃣',label:'PASO 3 — INVERTIR',desc:'Tres dedos, cierra proceso'},
-      {emoji:'🙌',label:'ESPERAR',desc:'Manos limpias, calma total'},
-      {emoji:'👉',label:'CTA',desc:'Señala, cierre breve'},
-    ],
-    veo3:[
-      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman smiles accessibly at camera with a laptop visible on the desk behind her. Relaxed professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — PASO 1',text:`[Start image: F2]\nThe woman raises one finger pointing toward a laptop screen, explaining step one. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — PASO 2',text:`[Start image: F3]\nThe woman raises two fingers, explaining calmly, gesturing toward laptop. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — PASO 3',text:`[Start image: F4]\nThe woman raises three fingers closing the explanation, energetic. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — ESPERAR',text:`[Start image: F5]\nThe woman holds both hands open, calm clean gesture, relaxed expression. Static camera. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera briefly. Static camera, natural close. 9:16, 24fps, 8 seconds.`},
-    ]
-  },
-  {
-    id:'r06',
-    eyebrow:'REEL 06 · CONSIDERACIÓN',
-    title:'Por qué el 10% anual es posible y real',
-    hook:'Cuando te ofrecen un 10% anual lo primero es desconfiar. Es lo correcto.',
-    stage:'consideracion',
-    angle:'Oficina Groinversia',
-    outfit:'Blazer azul acero + camisa blanca abierta',
-    outfitShort:'Acero + blanco',
-    script:[
-      {seg:'0–4s',spoken:'Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente.',action:'Sonrisa cómplice, tono directo',gesture:'Sonrisa\ncómplice'},
-      {seg:'4–18s',spoken:'Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto.',action:'Mano explicando, calma',gesture:'Mano\nexplica'},
-      {seg:'18–32s',spoken:'El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses.',action:'Explica el mecanismo, lógico',gesture:'Mecanismo\nlógico'},
-      {seg:'32–45s',spoken:'El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo.',action:'Gesticula equilibrio con manos',gesture:'Equilibrio\njusto'},
-      {seg:'45–57s',spoken:'No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado.',action:'Firmeza, tono definitivo',gesture:'Firme\ndefinitivo'},
-      {seg:'57–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
-    ],
-    frames:[
-      {emoji:'😏',label:'HOOK CÓMPLICE',desc:'Sonrisa cómplice, entiende la desconfianza'},
-      {emoji:'🧠',label:'CONTEXTO',desc:'Mano explica, da contexto'},
-      {emoji:'⚙️',label:'MECANISMO',desc:'Explica por qué el promotor paga'},
-      {emoji:'⚖️',label:'INTERCAMBIO JUSTO',desc:'Equilibrio con manos'},
-      {emoji:'💪',label:'FIRMEZA',desc:'Tono definitivo, seguro'},
-      {emoji:'👉',label:'CTA',desc:'Señala, cierre'},
-    ],
-    veo3:[
-      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman smiles with a knowing complicit expression, as if about to reveal something. Office with Groinversia logo. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
-      {label:'F2 — CONTEXTO',text:`[Start image: F2]\nThe woman explains context calmly with right hand gesturing. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
-      {label:'F3 — MECANISMO',text:`[Start image: F3]\nThe woman explains a mechanism logically, pointing through the reasoning. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
-      {label:'F4 — EQUILIBRIO',text:`[Start image: F4]\nThe woman holds both hands balanced, explaining a fair exchange. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
-      {label:'F5 — FIRMEZA',text:`[Start image: F5]\nThe woman speaks with definitive confident authority, slight forward lean. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
-      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera with brief closing energy. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
-    ]
-  }
-];
+/* ─── NAV ─── */
+function showView(id){
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['brand','marcos','cal','carruseles','reels','trailer'][i]===id)
+  });
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+}
 
+/* ─── COPY ─── */
+function copyEl(id,btn){
+  const el=document.getElementById(id);
+  const txt=el.innerText.replace('copy','').trim();
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+function copyPB(btn){
+  const code=btn.closest('.prompt-block').querySelector('.prompt-code');
+  navigator.clipboard.writeText(code.innerText).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+
+/* ─── MODAL ─── */
+let activeModal=null;
+function openModal(id,type){
+  activeModal={id,type};
+  const data = type==='carrusel' ? CAROUSELS.find(c=>c.id===id) : REELS.find(r=>r.id===id);
+  document.getElementById('m-eyebrow').textContent=data.eyebrow||'';
+  document.getElementById('m-title').textContent=data.title;
+  document.getElementById('m-hook').textContent=data.hook?`"${data.hook}"`:data.subtitle||'';
+  const tabs = type==='carrusel'
+    ? [['slides','🃏 Slides'],['copy','✍️ Copys'],['prompt','⚡ Prompt IA']]
+    : [['script','📝 Guión'],['frames','🎞 Frames'],['veo3','⚡ Veo 3']];
+  document.getElementById('m-tabs').innerHTML = tabs.map((t,i)=>`<div class="m-tab ${i===0?'active':''}" onclick="switchMTab(this,'${t[0]}')">${t[1]}</div>`).join('');
+  renderMBody(data, type, tabs[0][0]);
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-bg')) document.getElementById('modal-bg').classList.remove('open');
+}
+function switchMTab(el,tab){
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const data = activeModal.type==='carrusel' ? CAROUSELS.find(c=>c.id===activeModal.id) : REELS.find(r=>r.id===activeModal.id);
+  renderMBody(data, activeModal.type, tab);
+}
+function renderMBody(data,type,tab){
+  const body=document.getElementById('m-body');
+  if(type==='carrusel'){
+    if(tab==='slides') body.innerHTML=renderCarouselSlides(data);
+    else if(tab==='copy') body.innerHTML=renderCarouselCopy(data);
+    else body.innerHTML=renderCarouselPrompt(data);
+  } else {
+    if(tab==='script') body.innerHTML=renderReelScript(data);
+    else if(tab==='frames') body.innerHTML=renderReelFrames(data);
+    else body.innerHTML=renderReelVeo3(data);
+  }
+}
+
+function renderCarouselSlides(d){
+  return `<div class="slide-preview">${d.slides.map((s,i)=>`
+    <div class="slide-card">
+      <div class="slide-num">0${i+1}</div>
+      <div class="slide-content">
+        <div class="slide-icon">${s.icon}</div>
+        <div class="slide-headline">${s.headline}</div>
+        <div class="slide-sub">${s.sub}</div>
+      </div>
+      <div class="slide-accent"></div>
+    </div>`).join('')}
+  </div>
+  <div style="font-size:11px;color:var(--text2);line-height:1.6;background:var(--surface);padding:12px 14px;border-radius:8px">
+    <strong>Formato:</strong> 1080×1350px (4:5) · Fondo: ${d.bg} · Tipografía: Inter Tight · Acento: oro #C8A84B
+  </div>`;
+}
+function renderCarouselCopy(d){
+  return d.slides.map((s,i)=>`
+    <div class="prompt-block">
+      <div class="prompt-lbl">
+        <div class="prompt-lbl-text">Slide ${i+1} — ${s.label}</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+      </div>
+      <div class="prompt-code">HEADLINE: ${s.headline}
+SUBTEXT: ${s.sub}
+${s.cta?'CTA: '+s.cta:''}</div>
+    </div>`).join('');
+}
+function renderCarouselPrompt(d){
+  return `<div class="prompt-block">
+    <div class="prompt-lbl"><div class="prompt-lbl-text">Prompt Claude / IA para generar el carrusel</div><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button></div>
+    <div class="prompt-code">${d.aiPrompt}</div>
+  </div>`;
+}
+function renderReelScript(d){
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
+    <strong>Marcos</strong> · ${d.angle} · ${d.outfit} · 9:16 · 60s · 24fps · Cámara fija trípode
+  </div>
+  ${d.script.map(s=>`<div class="script-row">
+    <div class="script-seg">${s.seg}</div>
+    <div><div class="script-spoken">${s.spoken}</div><div class="script-action">${s.action}</div></div>
+    <div class="script-gesture">${s.gesture}</div>
+  </div>`).join('')}`;
+}
+function renderReelFrames(d){
+  const OUTFITS = {
+    r01:"Camisa lino azul claro, sin chaqueta, verano casual",
+    r02:"Polo navy, smart casual exterior verano",
+    r03:"Camisa blanca + blazer gris antracita",
+    r04:"Polo crudo + chino beige, verano premium",
+    r05:"Jersey cuello redondo gris, casual sin blazer",
+    r06:"Blazer azul acero + camisa blanca abierta"
+  };
+  const FRAME_DATA = {
+    r01:[
+      {gesture:"leans forward, eyebrow raised, mouth opening — hook moment",dialogue:"¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?"},
+      {gesture:"shakes index finger correcting misconception, calm authority",dialogue:"Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietario de nada."},
+      {gesture:"both hands connecting two sides, explaining relationship",dialogue:"El promotor necesita financiación. Nosotros la ponemos entre varios inversores. Tú recibes tu parte."},
+      {gesture:"counts three points on fingers, leaning forward conviction",dialogue:"Sin notario. Sin hipoteca. Sin 50.000 euros de entrada."},
+      {gesture:"both hands open palms up, calm reassuring",dialogue:"No depende del mercado. Tienes un contrato: capital prestado, interés fijo, fecha de vencimiento."},
+      {gesture:"points right finger toward camera, confident warm smile",dialogue:"Groinversia. Enlace en bio."}
+    ],
+    r02:[
+      {gesture:"direct eye contact, casual professional, Barcelona exterior",dialogue:"Hay una diferencia enorme entre comprar un piso e invertir en uno."},
+      {gesture:"counts on fingers, slightly concerned expression",dialogue:"Cuando compras un piso dependes del mercado, inquilino, impuestos. Es tuyo para bien y para mal."},
+      {gesture:"knowing complicit smile, small gesture",dialogue:"En Groinversia no compras nada. Le prestas dinero a una promotora. Tú eres el acreedor."},
+      {gesture:"both hands open clean relaxed",dialogue:"A cambio, la promotora te paga intereses. Recuperas tu dinero más los intereses. Sin gestionar nada."},
+      {gesture:"points with conviction, confident",dialogue:"No subes si el mercado sube. Tu retorno está fijado desde el día uno."},
+      {gesture:"points camera natural smile closing",dialogue:"Groinversia. Enlace en bio."}
+    ],
+    r03:[
+      {gesture:"serious protective expression, important advice",dialogue:"Antes de meter dinero en cualquier plataforma, hazte estas tres preguntas."},
+      {gesture:"one finger raised, serious focused",dialogue:"Primera: ¿dónde está exactamente mi dinero? En una operación concreta, con contrato escrito."},
+      {gesture:"two fingers, authoritative measured",dialogue:"Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento."},
+      {gesture:"three fingers, honest direct expression",dialogue:"Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Quién responde?"},
+      {gesture:"opens both hands, confident reassuring",dialogue:"En Groinversia respondemos las tres. Con documentación, antes de que inviertas."},
+      {gesture:"points camera, firm closing smile",dialogue:"Enlace en bio."}
+    ],
+    r04:[
+      {gesture:"high energy welcoming, enthusiastic",dialogue:"Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho."},
+      {gesture:"gestures describing space, enthusiastic",dialogue:"VALENTINA40. Cinco casas de lujo en Castelldefels. 192m², jardín privado, piscina comunitaria."},
+      {gesture:"presents data calmly, open gesture",dialogue:"10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses."},
+      {gesture:"solid confident energy, trustworthy",dialogue:"Aval solidario del holding del grupo. Ficha completa publicada en la web."},
+      {gesture:"gestures toward camera inviting",dialogue:"Ticket mínimo 500 euros. Si llevas tiempo queriendo entrar en inmobiliario, esta es la operación."},
+      {gesture:"warm smile, points briefly closing",dialogue:"Enlace directo en bio. Te esperamos."}
+    ],
+    r05:[
+      {gesture:"accessible smile, laptop visible behind",dialogue:"Te explico cómo funciona Groinversia en exactamente tres pasos."},
+      {gesture:"one finger pointing laptop screen",dialogue:"Primero: regístrate en groinversia.com. En tres minutos tienes cuenta. 100% digital."},
+      {gesture:"two fingers, explaining calmly",dialogue:"Segundo: explora los proyectos. Lee la ficha: plazo, rentabilidad, garantías. Decides."},
+      {gesture:"three fingers closing explanation",dialogue:"Tercero: inviertes desde 500 euros. Recibes tus tokens. Ya estás dentro."},
+      {gesture:"both hands open calm",dialogue:"Groinversia gestiona el proyecto. Tú esperas y recibes capital más intereses."},
+      {gesture:"points camera briefly",dialogue:"Enlace en bio."}
+    ],
+    r06:[
+      {gesture:"knowing complicit smile, about to reveal",dialogue:"Cuando alguien te ofrece un 10% anual lo primero es desconfiar. Y yo lo entiendo."},
+      {gesture:"explains context calmly right hand",dialogue:"Pero hay diferencia entre rentabilidades altas sin explicación y con contexto."},
+      {gesture:"explains mechanism logically",dialogue:"El promotor necesita financiación rápida. Los bancos tardan. Esa agilidad son tus intereses."},
+      {gesture:"both hands balanced, fair exchange",dialogue:"El promotor te paga ese 10% porque le resulta rentable. Es un intercambio justo."},
+      {gesture:"definitive confident, slight forward lean",dialogue:"No es especulación. Es préstamo con garantía hipotecaria."},
+      {gesture:"points camera brief closing",dialogue:"Enlace en bio."}
+    ]
+  };
+
+  const outfit = OUTFITS[d.id] || d.outfit || '';
+  const frames = FRAME_DATA[d.id] || [];
+  const emojis = ['🤨','☝️','🤝','🤟','🤲','👉'];
+  const labels = ['HOOK','CONCEPTO','MECÁNICA','VENTAJAS','CERTEZA','CTA'];
+
+  const cards = frames.map((f,i) => {
+    const prompt = `Photorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${outfit}. ${f.gesture}. Saying: "${f.dialogue}". Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.`;
+    const pid = 'p_' + d.id + '_' + i;
+    window[pid] = prompt;
+    return \`<div style="background:#1A2D47;border:1px solid rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;margin-bottom:8px">
+      <div style="background:#0B0F19;padding:8px 12px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:16px">\${emojis[i]||'🎬'}</span>
+        <span style="font-size:11px;font-weight:700;color:#fff;flex:1">\${labels[i]||'F'+(i+1)}</span>
+        <span style="font-family:monospace;font-size:9px;color:#C8A84B">F\${i+1}</span>
+      </div>
+      <div style="padding:10px 12px">
+        <div style="font-size:11px;color:rgba(255,255,255,0.65);font-style:italic;margin-bottom:8px;padding:6px 10px;background:rgba(200,168,75,0.07);border-left:2px solid #C8A84B;border-radius:0 4px 4px 0">"${f.dialogue}"</div>
+        <div id="\${pid}" style="background:#080F1C;border-radius:5px;padding:8px;font-family:monospace;font-size:9px;color:#A8C4E0;line-height:1.6;max-height:80px;overflow-y:auto;margin-bottom:6px">\${prompt}</div>
+        <button onclick="var t=window['\${pid}'];navigator.clipboard.writeText(t).then(function(){var b=event.target;b.textContent='✓ Copiado';setTimeout(function(){b.textContent='📋 Copiar prompt'},1500)})" style="width:100%;font-size:10px;font-weight:600;padding:5px 0;background:#0B0F19;color:#C8A84B;border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">📋 Copiar prompt</button>
+      </div>
+    </div>\`;
+  }).join('');
+
+  return \`<div style="margin-bottom:14px;padding:10px 14px;background:#080F1C;border:1px solid rgba(200,168,75,0.2);border-radius:8px;font-size:11px;color:#A8C4E0;line-height:1.6">
+    <div style="color:#C8A84B;font-weight:700;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px">🔒 Character Lock — Marcos</div>
+    <div><strong style="color:#fff">Rasgos:</strong> Hombre ~40 años · Cabello castaño corto · Barba 3-5 días · Gafas metálicas finas cuadradas · Piel oliva mediterránea</div>
+    <div style="margin-top:3px"><strong style="color:#fff">Outfit:</strong> \${outfit}</div>
+    <div style="margin-top:3px"><strong style="color:#fff">Cámara:</strong> Altura pecho, ligeramente bajo los ojos · Sin trípode · Bokeh suave · Luz verano</div>
+  </div>
+  \${cards}
+  \`;
+}
+
+function renderReelVeo3(d){
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:#F0F8FF;border:1px solid #BFD8F0;border-radius:7px;font-size:11px;color:#1A4A6A;line-height:1.5">
+    <strong>Instrucciones:</strong> Sube cada frame generado como <em>Start Image</em> en Google AI Studio → Veo 3. Pega el prompt. Usa <strong>8s, 9:16</strong>. Incluye siempre: <code>static camera, no camera movement</code>
+  </div>
+  ${d.veo3.map((p,i)=>`<div class="prompt-block">
+    <div class="prompt-lbl">
+      <div class="prompt-lbl-text">${p.label}</div>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+    </div>
+    <div class="prompt-code">${p.text}</div>
+  </div>`).join('')}`;
+}
+
+/* ─── DATA: CAROUSELS ─── */
 const CAROUSELS = [
   {
     id:'c01',eyebrow:'CARROUSEL 01 · AWARENESS',
@@ -1285,297 +1291,215 @@ Slide 5: CTA fuerte con botón simulado "Regístrate gratis" y logo Groinversia.
   },
 ];
 
-/* ─── NAV ─── */
-function showView(id){
-  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
-    b.classList.toggle('active', ['brand','marcos','cal','carruseles','reels','trailer'][i]===id)
-  });
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+id).classList.add('active');
-}
-
-/* ─── COPY ─── */
-function copyEl(id,btn){
-  const el=document.getElementById(id);
-  const txt=el.innerText.replace('copy','').trim();
-  navigator.clipboard.writeText(txt).then(()=>{
-    btn.textContent='✓';btn.classList.add('ok');
-    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
-  });
-}
-function copyPB(btn){
-  const code=btn.closest('.prompt-block').querySelector('.prompt-code');
-  navigator.clipboard.writeText(code.innerText).then(()=>{
-    btn.textContent='✓';btn.classList.add('ok');
-    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
-  });
-}
-
-/* ─── MODAL ─── */
-let activeModal=null;
-function openModal(id,type){
-  activeModal={id,type};
-  const data = type==='carrusel' ? CAROUSELS.find(c=>c.id===id) : REELS.find(r=>r.id===id);
-  document.getElementById('m-eyebrow').textContent=data.eyebrow||'';
-  document.getElementById('m-title').textContent=data.title;
-  document.getElementById('m-hook').textContent=data.hook?`"${data.hook}"`:data.subtitle||'';
-  const tabs = type==='carrusel'
-    ? [['slides','🃏 Slides'],['copy','✍️ Copys'],['prompt','⚡ Prompt IA']]
-    : [['script','📝 Guión'],['frames','🎞 Frames'],['veo3','⚡ Veo 3']];
-  document.getElementById('m-tabs').innerHTML = tabs.map((t,i)=>`<div class="m-tab ${i===0?'active':''}" onclick="switchMTab(this,'${t[0]}')">${t[1]}</div>`).join('');
-  renderMBody(data, type, tabs[0][0]);
-  document.getElementById('modal-bg').classList.add('open');
-}
-function closeModal(e){
-  if(!e||e.target===document.getElementById('modal-bg')) document.getElementById('modal-bg').classList.remove('open');
-}
-function switchMTab(el,tab){
-  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  const data = activeModal.type==='carrusel' ? CAROUSELS.find(c=>c.id===activeModal.id) : REELS.find(r=>r.id===activeModal.id);
-  renderMBody(data, activeModal.type, tab);
-}
-function renderMBody(data,type,tab){
-  const body=document.getElementById('m-body');
-  if(type==='carrusel'){
-    if(tab==='slides') body.innerHTML=renderCarouselSlides(data);
-    else if(tab==='copy') body.innerHTML=renderCarouselCopy(data);
-    else body.innerHTML=renderCarouselPrompt(data);
-  } else {
-    if(tab==='script') body.innerHTML=renderReelScript(data);
-    else if(tab==='frames') body.innerHTML=renderReelFrames(data);
-    else body.innerHTML=renderReelVeo3(data);
+/* ─── DATA: REELS ─── */
+const REELS = [
+  {
+    id:'r01',
+    eyebrow:'REEL 01 · AWARENESS',
+    title:'¿Qué es el crowdfunding inmobiliario?',
+    hook:'Prestas dinero. Cobras intereses. Recuperas tu capital.',
+    stage:'awareness',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer navy + camisa celeste abierta, sin corbata',
+    outfitShort:'Navy + celeste',
+    script:[
+      {seg:'0–3s',spoken:'¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?',action:'Ceja levantada, lean forward, urgencia',gesture:'Ceja↑\nBoca abre'},
+      {seg:'3–14s',spoken:'Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietaria de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento.',action:'Mano derecha explica, niega suavemente con dedo',gesture:'Niega\ndedo'},
+      {seg:'14–26s',spoken:'El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte.',action:'Conecta las partes con las manos',gesture:'Conecta\nmanos'},
+      {seg:'26–40s',spoken:'Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven.',action:'Cuenta con dedos, énfasis en cada punto',gesture:'3 dedos\nclaro'},
+      {seg:'40–55s',spoken:'No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento.',action:'Manos abiertas, calma, certeza',gesture:'Manos\ncalma'},
+      {seg:'55–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala a cámara, sonrisa',gesture:'Señala\ncierre'},
+    ],
+    frames:[
+      {emoji:'🤨',label:'HOOK',desc:'Lean forward, ceja levantada, urgente'},
+      {emoji:'☝️',label:'NO-PROPIETARIA',desc:'Niega con dedo, tono claro'},
+      {emoji:'🤝',label:'MECÁNICA',desc:'Conecta dos partes con manos'},
+      {emoji:'🤟',label:'VENTAJAS',desc:'3 dedos, énfasis en simplicidad'},
+      {emoji:'🤲',label:'CERTEZA',desc:'Manos abiertas, calma'},
+      {emoji:'👉',label:'CTA',desc:'Señala cámara, sonrisa cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image in the image leans slightly forward toward camera, raises one eyebrow with urgency, mouth beginning to open. Static camera, tripod, chest height, slightly below eye level, no movement. Same modern white office background with "Groinversia" logo on wall left, black linear pendant lights. Warm natural diffused light. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — NO-PROPIETARIA',text:`[Start image: F2]\nThe man in the reference image shakes his index finger slightly — correcting a misconception. Clear direct expression. Static camera, no movement. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECÁNICA',text:`[Start image: F3]\nThe man in the reference image gestures with both hands connecting two sides — explaining a relationship. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — VENTAJAS',text:`[Start image: F4]\nThe man in the reference image counts three points on fingers, leaning forward with conviction. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — CERTEZA',text:`[Start image: F5]\nThe man in the reference image holds both hands open, palms up, calm reassuring gesture. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points right index finger toward camera, warm confident smile. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r02',
+    eyebrow:'REEL 02 · AWARENESS',
+    title:'No eres propietaria. Eres el banco.',
+    hook:'Hay una diferencia enorme entre comprar un piso e invertir en uno.',
+    stage:'awareness',
+    angle:'Exteriores Barcelona / Paseo Marítimo',
+    outfit:'Chaqueta técnica oscura + camiseta navy',
+    outfitShort:'Técnico oscuro',
+    script:[
+      {seg:'0–3s',spoken:'Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es.',action:'Paseo exterior, tono directo, desenfadado',gesture:'Camina\ndirecto'},
+      {seg:'3–16s',spoken:'Cuando compras un piso, eres propietaria. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal.',action:'Cuenta implicaciones con mano',gesture:'Cuenta\nproblemas'},
+      {seg:'16–30s',spoken:'En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini.',action:'Sonrisa cómplice, gesto de "pequeño banco"',gesture:'Sonrisa\nbanco'},
+      {seg:'30–44s',spoken:'A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada.',action:'Calma, manos limpias',gesture:'Manos\nlimpias'},
+      {seg:'44–57s',spoken:'No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno.',action:'Señala con seguridad',gesture:'Señala\nseguro'},
+      {seg:'57–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala, cierre natural',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🚶',label:'INTRO EXTERIOR',desc:'Exterior BCN, tono desenfadado'},
+      {emoji:'🏠',label:'PROPIETARIA',desc:'Cuenta implicaciones, problemática'},
+      {emoji:'😄',label:'EL BANCO',desc:'Sonrisa cómplice, analogía banco'},
+      {emoji:'🙌',label:'SIN GESTIÓN',desc:'Manos limpias, calma'},
+      {emoji:'🎯',label:'RETORNO FIJO',desc:'Señala con seguridad, certeza'},
+      {emoji:'👉',label:'CTA',desc:'Cierre natural, señala'},
+    ],
+    veo3:[
+      {label:'F1 — INTRO EXTERIOR',text:`[Start image: F1]\nThe man in the reference image walks or stands in an urban exterior setting (Barcelona promenade or street), direct eye contact with camera, casual professional tone. Outdoor natural light. Fixed camera, no camera movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROPIETARIA',text:`[Start image: F2]\nThe man in the reference image counts implications on fingers with a slightly concerned expression. Static camera, outdoor or neutral background. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — EL BANCO',text:`[Start image: F3]\nThe man in the reference image smiles with a knowing expression, gestures as if describing something small, complicit tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — SIN GESTIÓN',text:`[Start image: F4]\nThe man in the reference image holds both hands open, clean clear gesture, relaxed energy. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RETORNO FIJO',text:`[Start image: F5]\nThe man in the reference image points with conviction, confident secure expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera with natural smile, closing energy. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r03',
+    eyebrow:'REEL 03 · CONSIDERACIÓN',
+    title:'Las 3 preguntas que debes hacer antes de invertir',
+    hook:'Si una plataforma no puede responder estas 3 preguntas, no inviertas.',
+    stage:'consideracion',
+    angle:'Sala de Reuniones',
+    outfit:'Camisa blanca + blazer gris antracita',
+    outfitShort:'Gris antracita',
+    script:[
+      {seg:'0–4s',spoken:'Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas.',action:'Expresión seria, honesta, protectora',gesture:'Serio\nprotector'},
+      {seg:'4–18s',spoken:'Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito.',action:'Un dedo, énfasis en "exactamente"',gesture:'1 dedo\nexacto'},
+      {seg:'18–32s',spoken:'Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No "cuando el mercado lo permita". Una fecha.',action:'Dos dedos, énfasis en fecha',gesture:'2 dedos\nfecha'},
+      {seg:'32–46s',spoken:'Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal.',action:'Tres dedos, tono honesto, no alarmista',gesture:'3 dedos\nhonesto'},
+      {seg:'46–57s',spoken:'En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas.',action:'Seguridad, manos abiertas',gesture:'Abre\nmanos'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Cierre breve, señala',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🤔',label:'HOOK',desc:'Seria, honesta, protectora'},
+      {emoji:'1️⃣',label:'PREGUNTA 1',desc:'Un dedo, énfasis en exactamente'},
+      {emoji:'2️⃣',label:'PREGUNTA 2',desc:'Dos dedos, énfasis en fecha'},
+      {emoji:'3️⃣',label:'PREGUNTA 3',desc:'Tres dedos, tono honesto'},
+      {emoji:'✅',label:'RESPUESTA',desc:'Manos abiertas, seguridad'},
+      {emoji:'👉',label:'CTA',desc:'Cierre breve, señala'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image looks directly at camera with a serious protective expression, beginning to give important advice. Meeting room background, professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PREGUNTA 1',text:`[Start image: F2]\nThe man in the reference image raises one finger with emphasis, serious focused expression. Same meeting room. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PREGUNTA 2',text:`[Start image: F3]\nThe man in the reference image raises two fingers, measured authoritative tone. Same background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PREGUNTA 3',text:`[Start image: F4]\nThe man in the reference image raises three fingers, honest direct expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RESPUESTA',text:`[Start image: F5]\nThe man in the reference image opens both hands, confident reassuring energy. Static camera, chest height. Same room. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera briefly with a firm closing smile. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r04',
+    eyebrow:'REEL 04 · CONVERSIÓN',
+    title:'VALENTINA40 — Está abierta la campaña',
+    hook:'5 casas de lujo en Castelldefels. 10% anual. Desde 500€.',
+    stage:'conversion',
+    angle:'Interior Premium / On-site',
+    outfit:'Polo premium crudo + pantalón chino beige',
+    outfitShort:'Polo crudo',
+    script:[
+      {seg:'0–3s',spoken:'Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora.',action:'Energía alta, sonrisa, cámara outdoor on-site',gesture:'Energía\napertura'},
+      {seg:'3–16s',spoken:'Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria.',action:'Describe con las manos, entusiasta pero medida',gesture:'Describe\nmanos'},
+      {seg:'16–28s',spoken:'El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses.',action:'Calma, datos concretos',gesture:'Datos\ncalma'},
+      {seg:'28–42s',spoken:'La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web.',action:'Sólido, directo, confianza',gesture:'Sólido\nconfianza'},
+      {seg:'42–55s',spoken:'El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación.',action:'Invita, señala hacia la web',gesture:'Invita\nseñala'},
+      {seg:'55–60s',spoken:'Enlace directo en bio. Te esperamos.',action:'Sonrisa cálida, cierre',gesture:'Cálido\ncierre'},
+    ],
+    frames:[
+      {emoji:'🚀',label:'APERTURA',desc:'Energía alta, exterior on-site'},
+      {emoji:'🏡',label:'EL PROYECTO',desc:'Describe con manos, entusiasta'},
+      {emoji:'📊',label:'DATOS',desc:'Datos concretos, calma'},
+      {emoji:'🔒',label:'GARANTÍA',desc:'Sólido, directo, confianza'},
+      {emoji:'🎯',label:'INVITACIÓN',desc:'Señala web, invita'},
+      {emoji:'😊',label:'CTA',desc:'Sonrisa cálida, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — APERTURA',text:`[Start image: F1]\nThe man in the reference image stands outdoors at a construction or premium residential site, high energy welcoming expression, speaking with enthusiasm. Natural outdoor light, Mediterranean atmosphere. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROYECTO',text:`[Start image: F2]\nThe man in the reference image gestures with hands describing a space, enthusiastic but measured tone. Outdoor or premium interior background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — DATOS',text:`[Start image: F3]\nThe man in the reference image presents data calmly with open gesture, factual precise tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — GARANTÍA',text:`[Start image: F4]\nThe man in the reference image speaks with solid confident energy, straightforward and trustworthy. Static camera, chest height. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — INVITACIÓN',text:`[Start image: F5]\nThe man in the reference image gestures toward camera inviting the viewer, warm welcoming expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image smiles warmly and closes naturally, pointing briefly. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r05',
+    eyebrow:'REEL 05 · AWARENESS',
+    title:'Así funciona Groinversia en 3 pasos',
+    hook:'En 5 minutos puedes estar financiando tu primera operación.',
+    stage:'awareness',
+    angle:'Laptop + Datos',
+    outfit:'Jersey cuello redondo gris, casual, sin blazer',
+    outfitShort:'Jersey gris',
+    script:[
+      {seg:'0–3s',spoken:'Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees.',action:'Sonrisa accesible, tono fácil',gesture:'Sonrisa\nfácil'},
+      {seg:'3–15s',spoken:'Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos.',action:'1 dedo, señala laptop',gesture:'1 dedo\nlaptop'},
+      {seg:'15–28s',spoken:'Segundo: explores los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides.',action:'2 dedos, explica con calma',gesture:'2 dedos\nficha'},
+      {seg:'28–42s',spoken:'Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro.',action:'3 dedos, cierra el proceso',gesture:'3 dedos\ndentro'},
+      {seg:'42–56s',spoken:'A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada.',action:'Manos limpias, calma total',gesture:'Manos\nlimpias'},
+      {seg:'56–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😊',label:'HOOK',desc:'Sonrisa accesible, laptop visible'},
+      {emoji:'1️⃣',label:'PASO 1 — REGISTRO',desc:'Un dedo, señala pantalla'},
+      {emoji:'2️⃣',label:'PASO 2 — EXPLORAR',desc:'Dos dedos, explica ficha'},
+      {emoji:'3️⃣',label:'PASO 3 — INVERTIR',desc:'Tres dedos, cierra proceso'},
+      {emoji:'🙌',label:'ESPERAR',desc:'Manos limpias, calma total'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre breve'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image smiles accessibly at camera with a laptop visible on the desk behind her. Relaxed professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PASO 1',text:`[Start image: F2]\nThe man in the reference image raises one finger pointing toward a laptop screen, explaining step one. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PASO 2',text:`[Start image: F3]\nThe man in the reference image raises two fingers, explaining calmly, gesturing toward laptop. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PASO 3',text:`[Start image: F4]\nThe man in the reference image raises three fingers closing the explanation, energetic. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — ESPERAR',text:`[Start image: F5]\nThe man in the reference image holds both hands open, calm clean gesture, relaxed expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera briefly. Static camera, natural close. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r06',
+    eyebrow:'REEL 06 · CONSIDERACIÓN',
+    title:'Por qué el 10% anual es posible y real',
+    hook:'Cuando te ofrecen un 10% anual lo primero es desconfiar. Es lo correcto.',
+    stage:'consideracion',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer azul acero + camisa blanca abierta',
+    outfitShort:'Acero + blanco',
+    script:[
+      {seg:'0–4s',spoken:'Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente.',action:'Sonrisa cómplice, tono directo',gesture:'Sonrisa\ncómplice'},
+      {seg:'4–18s',spoken:'Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto.',action:'Mano explicando, calma',gesture:'Mano\nexplica'},
+      {seg:'18–32s',spoken:'El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses.',action:'Explica el mecanismo, lógico',gesture:'Mecanismo\nlógico'},
+      {seg:'32–45s',spoken:'El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo.',action:'Gesticula equilibrio con manos',gesture:'Equilibrio\njusto'},
+      {seg:'45–57s',spoken:'No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado.',action:'Firmeza, tono definitivo',gesture:'Firme\ndefinitivo'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😏',label:'HOOK CÓMPLICE',desc:'Sonrisa cómplice, entiende la desconfianza'},
+      {emoji:'🧠',label:'CONTEXTO',desc:'Mano explica, da contexto'},
+      {emoji:'⚙️',label:'MECANISMO',desc:'Explica por qué el promotor paga'},
+      {emoji:'⚖️',label:'INTERCAMBIO JUSTO',desc:'Equilibrio con manos'},
+      {emoji:'💪',label:'FIRMEZA',desc:'Tono definitivo, seguro'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image smiles with a knowing complicit expression, as if about to reveal something. Office with Groinversia logo. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — CONTEXTO',text:`[Start image: F2]\nThe man in the reference image explains context calmly with right hand gesturing. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECANISMO',text:`[Start image: F3]\nThe man in the reference image explains a mechanism logically, pointing through the reasoning. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — EQUILIBRIO',text:`[Start image: F4]\nThe man in the reference image holds both hands balanced, explaining a fair exchange. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — FIRMEZA',text:`[Start image: F5]\nThe man in the reference image speaks with definitive confident authority, slight forward lean. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera with brief closing energy. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
   }
-}
+];
 
-/* ─── HIGGSFIELD IMAGE LOADER ─── */
-const HF_CDN = 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/';
-const HF_URL_MAP = {};
-const HF_SUFFIX = '.png';
-// job_id → CDN URL pattern (Higgsfield result format)
-function hfUrl(jobId){
-  const MAP = {
-    '827c77c8-44b6-4a37-b153-71086eefbf60': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061538_827c77c8-44b6-4a37-b153-71086eefbf60.png',
-    '4d114665-fb0c-47a9-8745-90aee493effe': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061556_4d114665-fb0c-47a9-8745-90aee493effe.png',
-    'a7014ca4-315c-4d1e-ba64-161c9687f879': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061601_a7014ca4-315c-4d1e-ba64-161c9687f879.jpeg',
-    '7dfc34b7-76e8-4688-88ad-4b5829e1f564': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061605_7dfc34b7-76e8-4688-88ad-4b5829e1f564.jpeg',
-    '696d27f4-42b5-448b-b272-ee8c95e6eb20': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061609_696d27f4-42b5-448b-b272-ee8c95e6eb20.jpeg',
-    '9f007eb4-1137-4d53-b8af-239d756fc4b9': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061613_9f007eb4-1137-4d53-b8af-239d756fc4b9.jpeg',
-  };
-  return MAP[jobId] || HF_URL_MAP[jobId] || null;
-}
-
-// Frame job IDs per reel id
-const REEL_FRAME_JOBS = {
-  r01: [
-    '827c77c8-44b6-4a37-b153-71086eefbf60',
-    '4d114665-fb0c-47a9-8745-90aee493effe',
-    'a7014ca4-315c-4d1e-ba64-161c9687f879',
-    '7dfc34b7-76e8-4688-88ad-4b5829e1f564',
-    '696d27f4-42b5-448b-b272-ee8c95e6eb20',
-    '9f007eb4-1137-4d53-b8af-239d756fc4b9',
-  ]
-  // other reels: frames generated on demand
-};
-
-function renderCarouselSlides(d){
-  const BG = d.darkBg !== false ? '#0B0F19' : '#FFFFFF';
-  const TXT = d.darkBg !== false ? '#FFFFFF' : '#0B0F19';
-  const TXT2 = d.darkBg !== false ? 'rgba(255,255,255,0.55)' : '#3D4A6B';
-  const GOLD = '#C8A84B';
-
-  const svgSlides = d.slides.map((s,i) => {
-    const isPortada = i === 0;
-    const isCTA = i === d.slides.length - 1;
-    const bgColor = isPortada ? '#0B0F19' : (isCTA ? '#0B0F19' : BG);
-    const txtColor = (isPortada || isCTA) ? '#FFFFFF' : TXT;
-    const txt2Color = (isPortada || isCTA) ? 'rgba(255,255,255,0.55)' : TXT2;
-
-    return `<div style="display:inline-block;vertical-align:top;width:180px;flex-shrink:0;cursor:pointer" onclick="expandSlide(${i},'${d.id}')">
-      <div style="position:relative;width:180px;height:225px;background:${bgColor};border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.03)'" onmouseleave="this.style.transform='scale(1)'">
-        <div style="position:absolute;top:10px;left:12px;font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:700;color:${GOLD};letter-spacing:1.5px;text-transform:uppercase">${String(i+1).padStart(2,'0')}</div>
-        ${isPortada ? `<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;padding:0 16px;width:100%">
-          <div style="font-family:'Inter Tight',sans-serif;font-size:16px;font-weight:900;color:#fff;line-height:1.15;letter-spacing:-0.5px;margin-bottom:8px">${s.headline}</div>
-          <div style="width:28px;height:2px;background:${GOLD};margin:0 auto 8px"></div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:rgba(255,255,255,0.5);line-height:1.4">${s.sub}</div>
-        </div>` : `<div style="position:absolute;bottom:0;left:0;right:0;padding:14px 12px">
-          <div style="font-size:22px;margin-bottom:6px;opacity:0.7">${s.icon}</div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:800;color:${txtColor};line-height:1.2;letter-spacing:-0.3px;margin-bottom:5px">${s.headline}</div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:${txt2Color};line-height:1.4">${s.sub}</div>
-          ${s.cta ? `<div style="margin-top:8px;font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:700;color:${GOLD};letter-spacing:0.5px">${s.cta} →</div>` : ''}
-        </div>`}
-        <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:${GOLD}"></div>
-      </div>
-      <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:var(--text3);text-align:center;margin-top:5px">${s.label}</div>
-    </div>`;
-  });
-
-  return `
-  <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 4px 12px;scrollbar-width:thin">
-    ${svgSlides.join('')}
-  </div>
-  <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
-    <div style="font-size:10px;padding:4px 10px;background:var(--gold-pale);border:1px solid rgba(200,168,75,0.2);border-radius:5px;color:var(--gold);font-weight:600">1080×1350 px · 4:5</div>
-    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">Inter Tight · Bold 800 titulares</div>
-    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">Acento #C8A84B</div>
-    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">${d.slides.length} slides</div>
-    <button onclick="exportCarousel('${d.id}')" style="margin-left:auto;font-size:10px;font-weight:700;padding:4px 14px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:5px;cursor:pointer">⬇ Exportar copys</button>
-  </div>
-  <!-- EXPANDED SLIDE MODAL -->
-  <div id="slide-expand-${d.id}" style="display:none;margin-top:16px;background:var(--ink);border-radius:10px;padding:0;overflow:hidden;position:relative"></div>`;
-}
-
-function expandSlide(idx, carouselId){
-  const d = CAROUSELS.find(c=>c.id===carouselId);
-  const s = d.slides[idx];
-  const GOLD = '#C8A84B';
-  const el = document.getElementById(`slide-expand-${carouselId}`);
-  el.style.display = 'block';
-  const isPortada = idx === 0;
-  el.innerHTML = `
-    <div style="display:flex;gap:0">
-      <div style="width:300px;flex-shrink:0;aspect-ratio:4/5;background:#0B0F19;position:relative;display:flex;flex-direction:column;justify-content:${isPortada?'center':'flex-end'};padding:28px;overflow:hidden">
-        <div style="position:absolute;top:16px;left:18px;font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:700;color:${GOLD};letter-spacing:2px">${String(idx+1).padStart(2,'0')} / ${d.slides.length}</div>
-        <div style="position:absolute;top:16px;right:18px;font-size:11px;color:rgba(255,255,255,0.3);font-family:'Inter Tight',sans-serif">groinversia</div>
-        ${isPortada ? `<div style="text-align:center">
-          <div style="font-family:'Inter Tight',sans-serif;font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:12px">${s.headline}</div>
-          <div style="width:40px;height:2px;background:${GOLD};margin:0 auto 12px"></div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5">${s.sub}</div>
-        </div>` : `<div>
-          <div style="font-size:32px;margin-bottom:12px;opacity:0.8">${s.icon}</div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1.15;margin-bottom:10px">${s.headline}</div>
-          <div style="width:32px;height:2px;background:${GOLD};margin-bottom:10px"></div>
-          <div style="font-family:'Inter Tight',sans-serif;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">${s.sub}</div>
-          ${s.cta ? `<div style="margin-top:14px;font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:700;color:${GOLD}">${s.cta} →</div>` : ''}
-        </div>`}
-        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${GOLD}"></div>
-      </div>
-      <div style="flex:1;padding:24px;background:#fff">
-        <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px">Copy listo para publicar</div>
-        <div style="background:#080F1C;border-radius:7px;padding:14px;font-family:monospace;font-size:11px;color:#A8C4E0;line-height:1.7;margin-bottom:12px">HEADLINE: ${s.headline}
-SUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}</div>
-        <div style="display:flex;gap:8px">
-          <button onclick="navigator.clipboard.writeText('HEADLINE: ${s.headline.replace(/'/g,"\\'")}\\nSUBTEXT: ${s.sub.replace(/'/g,"\\'")}${s.cta?'\\nCTA: '+s.cta:''}');this.textContent='✓ Copiado';this.style.color='#5DD879';setTimeout(()=>{this.textContent='Copiar copy';this.style.color=''},2000)" style="font-size:11px;font-weight:700;padding:6px 16px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:5px;cursor:pointer">Copiar copy</button>
-          <button onclick="document.getElementById('slide-expand-${carouselId}').style.display='none'" style="font-size:11px;padding:6px 16px;background:var(--surface2);color:var(--text2);border:none;border-radius:5px;cursor:pointer">Cerrar</button>
-          ${idx > 0 ? `<button onclick="expandSlide(${idx-1},'${carouselId}')" style="font-size:11px;padding:6px 12px;background:var(--surface2);color:var(--text2);border:none;border-radius:5px;cursor:pointer">← Anterior</button>` : ''}
-          ${idx < d.slides.length-1 ? `<button onclick="expandSlide(${idx+1},'${carouselId}')" style="font-size:11px;padding:6px 12px;background:var(--ink);color:#fff;border:none;border-radius:5px;cursor:pointer">Siguiente →</button>` : ''}
-        </div>
-      </div>
-    </div>`;
-  el.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function exportCarousel(carouselId){
-  const d = CAROUSELS.find(c=>c.id===carouselId);
-  const txt = d.slides.map((s,i)=>`--- SLIDE ${i+1}: ${s.label} ---\nHEADLINE: ${s.headline}\nSUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}`).join('\n\n');
-  navigator.clipboard.writeText(txt).then(()=>alert('Todos los copys copiados al portapapeles'));
-}
-
-function renderCarouselCopy(d){
-  return d.slides.map((s,i)=>`
-    <div class="prompt-block">
-      <div class="prompt-lbl">
-        <div class="prompt-lbl-text">Slide ${i+1} — ${s.label}</div>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
-      </div>
-      <div class="prompt-code">HEADLINE: ${s.headline}
-SUBTEXT: ${s.sub}
-${s.cta?'CTA: '+s.cta:''}</div>
-    </div>`).join('');
-}
-function renderCarouselPrompt(d){
-  return `<div class="prompt-block">
-    <div class="prompt-lbl"><div class="prompt-lbl-text">Prompt IA para generar el carrusel</div><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button></div>
-    <div class="prompt-code">${d.aiPrompt}</div>
-  </div>`;
-}
-function renderReelScript(d){
-  return `<div style="margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
-    <strong>Marcos</strong> · ${d.angle} · ${d.outfit} · 9:16 · 60s · 24fps · Cámara fija trípode
-  </div>
-  ${d.script.map(s=>`<div class="script-row">
-    <div class="script-seg">${s.seg}</div>
-    <div><div class="script-spoken">${s.spoken}</div><div class="script-action">${s.action}</div></div>
-    <div class="script-gesture">${s.gesture}</div>
-  </div>`).join('')}`;
-}
-function buildFramePrompt(d, f, i) {
-  const fp = GEMINI_FRAME_PROMPTS[d.id]?.[i];
-  if (!fp) return '';
-  return `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair with natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera at chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused summer light, no harsh shadows. Authentic realistic talking-head, photorealistic, not AI looking.
-
-[Veo 3 — Start Image prompt]
-${d.veo3?.[i]?.text || ''}`;
-}
-
-function renderReelFrames(d){
-  const rows = d.frames.map((f,i)=>{
-    const fp = GEMINI_FRAME_PROMPTS[d.id]?.[i];
-    const imgPrompt = fp ? `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Photorealistic authentic talking-head, not AI looking.` : '';
-    const veoPrompt = d.veo3?.[i]?.text || '';
-    const safeId = d.id + '_' + i;
-    // Store prompts in window object to avoid HTML attribute escaping issues
-    window['_prompt_img_'+safeId] = imgPrompt;
-    window['_prompt_veo_'+safeId] = veoPrompt;
-    return `<div style="background:#1A2D47;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden">
-      <div style="background:#0B0F19;padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:18px">${f.emoji}</span>
-          <div>
-            <div style="font-size:11px;font-weight:700;color:#fff">${f.label}</div>
-            <div style="font-size:9px;color:rgba(255,255,255,0.4)">${f.desc}</div>
-          </div>
-        </div>
-        <span style="font-family:monospace;font-size:9px;color:#C8A84B">F${i+1}</span>
-      </div>
-      <div style="padding:10px 12px">
-        ${fp?.dialogue ? `<div style="font-size:11px;color:rgba(255,255,255,0.7);font-style:italic;margin-bottom:8px;padding:6px 10px;background:rgba(200,168,75,0.07);border-left:2px solid #C8A84B;border-radius:0 4px 4px 0">"${fp.dialogue}"</div>` : ''}
-        <div style="background:#080F1C;border-radius:6px;padding:8px;font-family:monospace;font-size:9px;color:#A8C4E0;line-height:1.6;max-height:100px;overflow-y:auto;margin-bottom:6px;word-break:break-word">${imgPrompt}</div>
-        <div style="display:flex;gap:4px">
-          <button data-pid="_prompt_img_${safeId}" onclick="copyWindowPrompt(this)" style="flex:1;font-size:10px;font-weight:600;padding:5px 0;background:#0B0F19;color:#C8A84B;border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">📋 Imagen</button>
-          <button data-pid="_prompt_veo_${safeId}" onclick="copyWindowPrompt(this)" style="flex:1;font-size:10px;font-weight:600;padding:5px 0;background:#0B0F19;color:#7BA7E0;border:1px solid rgba(123,167,224,0.3);border-radius:4px;cursor:pointer">🎬 Veo 3</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  return `
-  <div style="margin-bottom:16px;padding:12px 14px;background:#080F1C;border:1px solid rgba(200,168,75,0.2);border-radius:8px;font-size:11px;color:#A8C4E0;line-height:1.7">
-    <div style="color:#C8A84B;font-weight:700;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px">🔒 Character Lock — Marcos</div>
-    <div><strong style="color:#fff">Rasgos:</strong> Hombre ~40 años, español · Cabello castaño oscuro corto · Barba 3-5 días · Gafas metálicas finas cuadradas negro · Piel oliva</div>
-    <div style="margin-top:4px"><strong style="color:#fff">Outfit:</strong> ${d.outfit}</div>
-    <div style="margin-top:4px"><strong style="color:#fff">Cámara:</strong> Altura pecho, bajo los ojos · Sin trípode visible · Bokeh suave · Luz verano</div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${rows}</div>
-  <button onclick="copyAllFramePrompts('${d.id}')" style="margin-top:12px;width:100%;font-size:11px;font-weight:700;padding:8px 0;background:#C8A84B;color:#0B0F19;border:none;border-radius:6px;cursor:pointer">⬇ Copiar los 6 prompts de imagen</button>
-  `;
-}
-
-function copyWindowPrompt(btn) {
-  const key = btn.getAttribute('data-pid');
-  const text = window[key] || '';
-  navigator.clipboard.writeText(text).then(() => {
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copiado';
-    setTimeout(() => btn.textContent = orig, 1500);
-  });
-}
-
-
-function copyAllFramePrompts(reelId) {
-  const d = REELS.find(r => r.id === reelId);
-  if (!d) return;
-  const prompts = d.frames.map((f, i) => {
-    const fp = GEMINI_FRAME_PROMPTS[reelId]?.[i];
-    if (!fp) return '';
-    return `--- FRAME ${i+1}: ${f.label} ---
-Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Photorealistic authentic talking-head, not AI looking.`;
-  }).filter(Boolean).join('
-
-');
-  navigator.clipboard.writeText(prompts).then(() => alert('✓ 6 prompts copiados al portapapeles'));
-}
-
+/* ─── RENDER GRIDS ─── */
 function buildCarouselGrid(){
   const g=document.getElementById('carousel-grid');
   g.innerHTML=CAROUSELS.map(c=>`
@@ -1613,258 +1537,7 @@ function buildReelGrid(){
     </div>`).join('');
 }
 
-async function regenerateFrame(reelId, frameIdx, btn) {
-  const key = getOpenAIKey();
-  if (!key || !key.startsWith('sk-')) { alert('Introduce tu OpenAI API key.'); return; }
-  
-  const framePrompts = GEMINI_FRAME_PROMPTS[reelId];
-  if (!framePrompts) return;
-  
-  const origText = btn.textContent;
-  btn.textContent = '⟳';
-  btn.disabled = true;
-  
-  const fp = framePrompts[frameIdx];
-  const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is about to say: "${fp.dialogue || ""}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused light. Summer 2025. Authentic realistic talking-head, photorealistic, not AI looking.`;
-
-  try {
-    const res = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-      body: JSON.stringify({ model:'gpt-image-1', prompt:fullPrompt, n:1, size:'1024x1536', quality:'medium', output_format:'jpeg' })
-    });
-
-    const data = await res.json();
-    if (data.error) { alert('Error: ' + data.error.message); btn.textContent = origText; btn.disabled = false; return; }
-    
-    const b64 = data.data?.[0]?.b64_json;
-    if (b64) {
-      const newUrl = `data:image/jpeg;base64,${b64}`;
-      const jobId = `openai_${reelId}_f${frameIdx+1}_regen_${Date.now()}`;
-      
-      // Update stored data
-      if (!REEL_FRAME_JOBS[reelId]) REEL_FRAME_JOBS[reelId] = Array(6).fill(null);
-      REEL_FRAME_JOBS[reelId][frameIdx] = jobId;
-      HF_URL_MAP[jobId] = newUrl;
-      
-      // Update stored URLs
-      const storedUrls = JSON.parse(sessionStorage.getItem('frameUrls_' + reelId) || '[]');
-      storedUrls[frameIdx] = newUrl;
-      sessionStorage.setItem('frameUrls_' + reelId, JSON.stringify(storedUrls));
-      sessionStorage.setItem('frameJobs_' + reelId, JSON.stringify(REEL_FRAME_JOBS[reelId]));
-      
-      // Refresh frames tab
-      const reelData = REELS.find(r => r.id === reelId);
-      document.getElementById('m-body').innerHTML = renderReelFrames(reelData);
-    } else {
-      alert('No se generó imagen. Inténtalo de nuevo.');
-      btn.textContent = origText;
-      btn.disabled = false;
-    }
-  } catch(e) {
-    alert('Error: ' + e.message);
-    btn.textContent = origText;
-    btn.disabled = false;
-  }
-}
-
-function downloadFrame(url, filename) {
-  if (!url) return;
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
 buildCarouselGrid();
-buildReelGrid();
-
-/* ─── GENERATE FRAMES VIA ANTHROPIC API ─── */
-const FRAME_PROMPTS = {
-  r01: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> leans slightly forward toward camera, raises one eyebrow with urgency, mouth just beginning to open — hook moment. Camera tripod chest height slightly below eye level, no distortion, no selfie. Modern white office Groinversia logo on wall left, black linear pendant lights gold accent, soft bokeh. Warm natural light. 9:16 vertical. Photorealistic talking-head.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> shakes right index finger correcting a misconception, clear direct expression, calm authority. Camera tripod chest height below eye level. Same white office Groinversia logo. Warm natural light. 9:16 vertical. Photorealistic talking-head.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures with both hands connecting two sides explaining a relationship, engaged educational expression. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> counts three points on fingers right hand, leaning slightly forward with conviction, emphatic focused. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open palms up calm reassuring gesture, warm expression of certainty. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points right index finger directly toward camera, confident warm smile, authoritative closing energy. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head."
-  ],
-  r02: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> walks or stands in urban exterior Barcelona, direct eye contact camera, casual professional tone. No blazer, chaqueta técnica oscura. Outdoor natural Mediterranean light, fixed camera no movement. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> counts implications on fingers, slightly concerned expression explaining a problem. Urban exterior Barcelona. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles with knowing complicit expression gesturing as if describing something small. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open clean clear gesture relaxed. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points with conviction confident secure expression. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera natural smile closing energy. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic."
-  ],
-  r03: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> serious protective expression beginning to give important advice. Meeting room background camisa blanca blazer gris antracita. Camera tripod chest height no movement. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises one finger emphasis serious focused expression. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises two fingers measured authoritative tone. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises three fingers honest direct expression. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> opens both hands confident reassuring energy. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera firm closing smile. Meeting room. Camera tripod. 9:16 vertical. Photorealistic."
-  ],
-  r04: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> stands outdoors at premium residential construction site high energy welcoming. Polo crudo pantalón beige. Natural outdoor Mediterranean light. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures with hands describing a space enthusiastic measured. Outdoor Mediterranean. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> presents data calmly open gesture factual precise. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> speaks solid confident energy straightforward trustworthy. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures toward camera inviting the viewer warm welcoming. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles warmly closes naturally pointing briefly. Outdoor. Fixed camera. 9:16 vertical. Photorealistic."
-  ],
-  r05: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles accessibly at camera laptop visible desk behind. Jersey cuello redondo gris casual. Fixed camera chest height. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises one finger pointing toward laptop screen step one. Same setting. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises two fingers explaining calmly gesturing laptop. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises three fingers closing explanation energetic. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open calm clean relaxed. Fixed camera. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera briefly natural close. Fixed camera. 9:16 vertical. Photorealistic."
-  ],
-  r06: [
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles knowing complicit about to reveal something. Blazer azul acero camisa blanca. White office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> explains context calmly right hand gesturing. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> explains mechanism logically pointing through reasoning. Same office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands balanced explaining fair exchange. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> speaks definitive confident authority slight forward lean. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
-    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera brief closing energy. Same office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic."
-  ]
-};
-
-/* ─── GEMINI API KEY STORAGE (local only, never sent to chat) ─── */
-function saveGeminiKey(val) {
-  sessionStorage.setItem('openai_api_key', val);
-  const status = document.getElementById('gemini-key-status');
-  if (val.length > 10) {
-    status.textContent = '✓';
-    status.style.color = '#5DD879';
-  } else {
-    status.textContent = '○';
-    status.style.color = 'var(--text3)';
-  }
-}
-
-function getOpenAIKey() {
-  return sessionStorage.getItem('openai_api_key') || document.getElementById('gemini-key-input')?.value || '';
-}
-
-// Restore OpenAI key in input on load
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = sessionStorage.getItem('openai_api_key');
-  const inp = document.getElementById('gemini-key-input');
-  if (saved && inp) { inp.value = saved; saveGeminiKey(saved); }
-});
-
-// Frame prompts rewritten for Gemini — no Element ID, just visual description of Marcos
-
-
-
-
-
-const GEMINI_FRAME_PROMPTS = {
-  r01: [
-    {outfit:"light blue linen short sleeve shirt, no jacket, summer casual", gesture:"leans forward urgency, eyebrow raised, mouth opening hook moment", setting:"modern white office, Groinversia logo on wall left, black linear lights gold accent", dialogue:"¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?"},
-    {outfit:"light blue linen short sleeve shirt, no jacket", gesture:"shakes index finger correcting misconception, calm authority", setting:"modern white office, Groinversia logo", dialogue:"Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietario de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento."},
-    {outfit:"light blue linen short sleeve shirt", gesture:"both hands connecting two sides, explaining relationship", setting:"modern white office, Groinversia logo", dialogue:"El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte."},
-    {outfit:"light blue linen short sleeve shirt", gesture:"counts three points on fingers right hand, leaning forward conviction", setting:"modern white office, Groinversia logo", dialogue:"Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven."},
-    {outfit:"light blue linen short sleeve shirt", gesture:"both hands open palms up, calm reassuring", setting:"modern white office, Groinversia logo", dialogue:"No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento."},
-    {outfit:"light blue linen short sleeve shirt", gesture:"points right finger toward camera, confident warm smile", setting:"modern white office, Groinversia logo", dialogue:"Groinversia. Enlace en bio."},
-  ],
-  r02: [
-    {outfit:"navy polo shirt, summer smart casual", gesture:"direct eye contact camera, casual professional walking", setting:"Barcelona urban exterior, Mediterranean summer light", dialogue:"Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es."},
-    {outfit:"navy polo shirt", gesture:"counts on fingers, slightly concerned expression", setting:"Barcelona exterior, outdoor natural light", dialogue:"Cuando compras un piso, eres propietario. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal."},
-    {outfit:"navy polo shirt", gesture:"knowing complicit smile, small gesture with hand", setting:"Barcelona exterior", dialogue:"En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini."},
-    {outfit:"navy polo shirt", gesture:"both hands open clean relaxed", setting:"Barcelona exterior", dialogue:"A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada."},
-    {outfit:"navy polo shirt", gesture:"points with conviction, confident secure", setting:"Barcelona exterior", dialogue:"No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno."},
-    {outfit:"navy polo shirt", gesture:"points camera natural smile closing", setting:"Barcelona exterior", dialogue:"Groinversia. Enlace en bio."},
-  ],
-  r03: [
-    {outfit:"white shirt, dark grey blazer, smart", gesture:"serious protective expression, important advice", setting:"modern meeting room, professional", dialogue:"Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas."},
-    {outfit:"white shirt dark grey blazer", gesture:"one finger raised emphasis, serious focused", setting:"meeting room", dialogue:"Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito."},
-    {outfit:"white shirt dark grey blazer", gesture:"two fingers, authoritative measured", setting:"meeting room", dialogue:"Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No cuando el mercado lo permita. Una fecha."},
-    {outfit:"white shirt dark grey blazer", gesture:"three fingers, honest direct expression", setting:"meeting room", dialogue:"Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal."},
-    {outfit:"white shirt dark grey blazer", gesture:"opens both hands, confident reassuring", setting:"meeting room", dialogue:"En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas."},
-    {outfit:"white shirt dark grey blazer", gesture:"points camera, firm closing smile", setting:"meeting room", dialogue:"Enlace en bio."},
-  ],
-  r04: [
-    {outfit:"cream polo shirt, beige chinos, summer premium", gesture:"high energy welcoming, enthusiastic speaking", setting:"Mediterranean residential construction site exterior, summer light", dialogue:"Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora."},
-    {outfit:"cream polo shirt beige chinos", gesture:"gestures describing a space, enthusiastic", setting:"Mediterranean exterior", dialogue:"Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria."},
-    {outfit:"cream polo shirt", gesture:"presents data calmly, open gesture factual", setting:"Mediterranean exterior", dialogue:"El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses."},
-    {outfit:"cream polo shirt", gesture:"solid confident energy, trustworthy", setting:"Mediterranean exterior", dialogue:"La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web."},
-    {outfit:"cream polo shirt", gesture:"gestures toward camera inviting, warm welcoming", setting:"Mediterranean exterior", dialogue:"El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación."},
-    {outfit:"cream polo shirt", gesture:"warm smile, points briefly closing", setting:"Mediterranean exterior", dialogue:"Enlace directo en bio. Te esperamos."},
-  ],
-  r05: [
-    {outfit:"grey crew neck sweater, casual no blazer", gesture:"accessible smile, laptop visible desk behind", setting:"modern home office or desk setting", dialogue:"Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees."},
-    {outfit:"grey crew neck sweater", gesture:"one finger pointing laptop screen step one", setting:"desk with laptop", dialogue:"Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos."},
-    {outfit:"grey crew neck sweater", gesture:"two fingers, explaining calmly gesturing laptop", setting:"desk", dialogue:"Segundo: exploras los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides."},
-    {outfit:"grey crew neck sweater", gesture:"three fingers closing explanation energetic", setting:"desk", dialogue:"Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro."},
-    {outfit:"grey crew neck sweater", gesture:"both hands open calm clean", setting:"desk", dialogue:"A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada."},
-    {outfit:"grey crew neck sweater", gesture:"points camera briefly natural close", setting:"desk", dialogue:"Enlace en bio."},
-  ],
-  r06: [
-    {outfit:"steel blue blazer white shirt open collar, smart", gesture:"knowing complicit smile, about to reveal something", setting:"modern white office, Groinversia logo", dialogue:"Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente."},
-    {outfit:"steel blue blazer white shirt", gesture:"explains context calmly right hand gesturing", setting:"white office Groinversia logo", dialogue:"Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto."},
-    {outfit:"steel blue blazer white shirt", gesture:"explains mechanism logically pointing reasoning", setting:"white office Groinversia logo", dialogue:"El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses."},
-    {outfit:"steel blue blazer white shirt", gesture:"both hands balanced, explaining fair exchange", setting:"white office", dialogue:"El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo."},
-    {outfit:"steel blue blazer white shirt", gesture:"definitive confident authority slight forward lean", setting:"white office Groinversia logo", dialogue:"No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado."},
-    {outfit:"steel blue blazer white shirt", gesture:"points camera brief closing energy", setting:"white office Groinversia logo", dialogue:"Enlace en bio."},
-  ]
-};
-
-async function generateFrames(reelId, btn) {
-  const key = getOpenAIKey();
-  if (!key || !key.startsWith('sk-')) {
-    alert('Introduce tu OpenAI API key (sk-...) en el campo superior derecho del hub.');
-    return;
-  }
-  const framePrompts = GEMINI_FRAME_PROMPTS[reelId];
-  if (!framePrompts) return;
-
-  btn.disabled = true;
-  btn.style.opacity = '0.6';
-  const jobs = [], generatedUrls = [];
-
-  for (let i = 0; i < framePrompts.length; i++) {
-    btn.textContent = `⟳ Frame ${i+1}/6…`;
-    const fp = framePrompts[i];
-    const prompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height, slightly below eye level, no tripod visible, soft bokeh, warm summer light. Photorealistic, authentic talking-head.`;
-    try {
-      // Route through Cloudflare Worker (no CORS issues)
-      const workerUrl = 'https://openai-proxy.hola-00f.workers.dev';
-      const res = await fetch(workerUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key, prompt })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      if (data.b64) {
-        generatedUrls.push(`data:image/jpeg;base64,${data.b64}`);
-        jobs.push(`openai_${reelId}_f${i+1}_${Date.now()}`);
-      } else throw new Error('No image');
-    } catch(e) {
-      console.error('Frame', i+1, e.message);
-      generatedUrls.push(null);
-      jobs.push(null);
-    }
-  }
-
-  const ok = generatedUrls.filter(Boolean).length;
-  if (ok > 0) {
-    REEL_FRAME_JOBS[reelId] = jobs;
-    generatedUrls.forEach((url,i) => { if(url&&jobs[i]) HF_URL_MAP[jobs[i]]=url; });
-    sessionStorage.setItem('frameJobs_'+reelId, JSON.stringify(jobs));
-    sessionStorage.setItem('frameUrls_'+reelId, JSON.stringify(generatedUrls));
-    document.getElementById('m-body').innerHTML = renderReelFrames(REELS.find(r=>r.id===reelId));
-  } else {
-    btn.disabled = false; btn.textContent = '⚡ Generar con DALL·E 3'; btn.style.opacity = '1';
-    alert('Error al generar. Revisa la consola.');
-  }
-}
-
 buildReelGrid();
 </script>
 </body>
