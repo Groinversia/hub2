@@ -487,6 +487,7 @@ function render() {
   else if (currentView === 'trailer') content.innerHTML = renderTrailer();
   
   content.scrollTop = 0;
+  if (currentView==='marcos') setTimeout(setupMarcosBtn,50);
 }
 
 function renderBrand() {
@@ -527,7 +528,7 @@ function renderMarcos() {
     <div class="card">
       <div class="card-title">Prompt Maestro</div>
       <div style="background:#060a12;border-radius:6px;padding:10px;font-family:monospace;font-size:10px;color:#7aadcc;line-height:1.6;margin-bottom:8px">${MARCOS.masterPrompt}</div>
-      <button class="btn-dark" onclick="copyText(this, MARCOS.masterPrompt)">📋 Copiar prompt maestro</button>
+      <button class="btn-dark" data-k="${sc(MARCOS.masterPrompt)}">📋 Copiar prompt maestro</button>
     </div>
     <div class="card">
       <div class="card-title">6 Ángulos de Marcos</div>
@@ -621,11 +622,15 @@ function renderReelTab(r) {
             </div>
             <div class="dialogue">"${f.dialogue}"</div>
             <div class="prompt-box">${prompt}</div>
-            <button class="copy-btn" data-copy="${storeCopy(prompt)}" onclick="copyFromData(this)">📋 Copiar prompt de imagen</button>
+            <button class="copy-btn" data-k="${storeCopy(prompt)}">📋 Copiar prompt de imagen</button>
           </div>
         `;
       }).join('')}
-      <button class="btn-gold" onclick="copyAllFramePrompts('${r.id}')">⬇ Copiar los 6 prompts</button>
+      ${(()=>{
+        const allText = r.frames.map((f,i)=>`FRAME F${i+1} — ${f.label}\nPrompt imagen:\nPhotorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${r.outfit}. ${f.gesture}. Saying: "${f.dialogue}". Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.`).join('\n\n');
+        CS['_all_'+r.id] = allText;
+        return `<button class="btn-gold" data-k="_all_${r.id}">⬇ Copiar los 6 prompts</button>`;
+      })()}
     `;
   } else {
     return `
@@ -640,7 +645,7 @@ function renderReelTab(r) {
             <span class="frame-num">F${i+1}</span>
           </div>
           <div class="prompt-box">${p}</div>
-          <button class="copy-btn veo" data-copy="${storeCopy(p)}" onclick="copyFromData(this)">🎬 Copiar prompt Veo 3</button>
+          <button class="copy-btn veo" data-k="${storeCopy(p)}">🎬 Copiar prompt Veo 3</button>
         </div>
       `).join('')}
     `;
@@ -679,10 +684,10 @@ function renderCarousels() {
                 <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">${s.headline}</div>
                 <div style="font-size:11px;color:rgba(255,255,255,0.55)">${s.sub}</div>
                 ${s.cta ? `<div style="font-size:10px;font-weight:700;color:#C8A84B;margin-top:4px">${s.cta} →</div>` : ''}
-                <button class="copy-btn" style="margin-top:6px" data-copy="${slideKey}" onclick="copyFromData(this)">📋 Copiar copy</button>
+                <button class="copy-btn" style="margin-top:6px" data-k="${slideKey}">📋 Copiar copy</button>
               </div>`;
             }).join('')}
-            <button class="btn-gold" onclick="copyAllSlides('${c.id}')">⬇ Copiar todos los copys</button>
+            <button class="btn-gold" data-k="${(()=>{const t=c.slides.map((s,i)=>`SLIDE ${i+1}\nHEADLINE: ${s.headline}\nSUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}`).join('\n\n');return sc(t);}())}">⬇ Copiar todos los copys</button>
           </div>
         ` : ''}
       </div>
@@ -711,7 +716,7 @@ function renderTrailer() {
         <div style="margin-bottom:12px">
           <div style="font-size:10px;font-weight:700;color:#C8A84B;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">${p.label}</div>
           <div class="prompt-box">${p.prompt}</div>
-          <button class="copy-btn" data-copy="${storeCopy(p.prompt)}" onclick="copyFromData(this)">📋 Copiar</button>
+          <button class="copy-btn" data-k="${storeCopy(p.prompt)}">📋 Copiar</button>
         </div>
       `).join('')}
     </div>
@@ -790,48 +795,47 @@ function toggleCarousel(id) {
   render();
 }
 
-// Store texts by key for safe retrieval
-const COPY_STORE = {};
-let copyStoreIdx = 0;
+// ─── COPY SYSTEM (event delegation, no onclick strings) ───
+const CS = {}; // copy store
+let CSI = 0;   // index
 
-function storeCopy(text) {
-  const key = 'c' + (++copyStoreIdx);
-  COPY_STORE[key] = text;
-  return key;
+function sc(text) { // storeCopy
+  const k = 'k'+(++CSI);
+  CS[k] = text;
+  return k;
 }
 
-function copyFromData(btn) {
-  const key = btn.getAttribute('data-copy');
-  const text = COPY_STORE[key] || '';
-  doСopy(btn, text);
-}
-
-function copyText(btn, text) {
-  doСopy(btn, text);
-}
-
-function doСopy(btn, text) {
-  const orig = btn.textContent;
-  const done = () => { btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = orig, 1800); };
-  
+function doCopy(text, btn) {
+  const orig = btn ? btn.textContent : '';
+  const ok = () => { if(btn){btn.textContent='✓';setTimeout(()=>btn.textContent=orig,1800);} };
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
-  } else {
-    fallbackCopy(text, done);
-  }
+    navigator.clipboard.writeText(text).then(ok).catch(()=>fbCopy(text,ok));
+  } else { fbCopy(text, ok); }
 }
 
-function fallbackCopy(text, done) {
+function fbCopy(text, done) {
   const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.setAttribute('readonly', '');
-  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+  ta.value = text; ta.readOnly = true;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
   document.body.appendChild(ta);
-  ta.focus();
-  ta.setSelectionRange(0, 99999);
-  try { document.execCommand('copy'); done(); } catch(e) { alert('Copia manualmente el texto'); }
+  ta.focus(); ta.select(); ta.setSelectionRange(0,99999);
+  try { document.execCommand('copy'); if(done)done(); } catch(e){}
   document.body.removeChild(ta);
 }
+
+// Single event listener handles ALL copy buttons
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-k]');
+  if (!btn) return;
+  e.preventDefault();
+  const text = CS[btn.getAttribute('data-k')] || '';
+  doCopy(text, btn);
+});
+
+// Legacy functions kept for compatibility
+function storeCopy(t){ return sc(t); }
+function copyFromData(btn){ const k=btn.getAttribute('data-copy')||btn.getAttribute('data-k'); doCopy(CS[k]||'',btn); }
+function copyText(btn,text){ doCopy(text,btn); }
 
 function copyAllFramePrompts(reelId) {
   const r = REELS.find(r => r.id === reelId);
@@ -845,6 +849,12 @@ function copyAllSlides(carouselId) {
   if (!c) return;
   const text = c.slides.map((s,i) => `SLIDE ${i+1} — ${s.label}\nHEADLINE: ${s.headline}\nSUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}`).join('\n\n');
   copyText(event.target, text);
+}
+
+// ─── MARCOS MASTER BUTTON ───
+function setupMarcosBtn() {
+  const btn = document.getElementById('marcos-master-btn');
+  if (btn) { const k = sc(MARCOS.masterPrompt); btn.setAttribute('data-k', k); }
 }
 
 // ─── INIT ───
