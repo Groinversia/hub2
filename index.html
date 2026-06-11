@@ -527,7 +527,7 @@ function renderMarcos() {
     <div class="card">
       <div class="card-title">Prompt Maestro</div>
       <div style="background:#060a12;border-radius:6px;padding:10px;font-family:monospace;font-size:10px;color:#7aadcc;line-height:1.6;margin-bottom:8px">${MARCOS.masterPrompt}</div>
-      <button class="btn-dark" onclick="copyText(this, ${JSON.stringify(MARCOS.masterPrompt)})">📋 Copiar prompt maestro</button>
+      <button class="btn-dark" onclick="copyText(this, MARCOS.masterPrompt)">📋 Copiar prompt maestro</button>
     </div>
     <div class="card">
       <div class="card-title">6 Ángulos de Marcos</div>
@@ -621,11 +621,11 @@ function renderReelTab(r) {
             </div>
             <div class="dialogue">"${f.dialogue}"</div>
             <div class="prompt-box">${prompt}</div>
-            <button class="copy-btn" onclick="copyText(this, ${JSON.stringify(prompt)})">📋 Copiar prompt de imagen</button>
+            <button class="copy-btn" data-copy="${storeCopy(prompt)}" onclick="copyFromData(this)">📋 Copiar prompt de imagen</button>
           </div>
         `;
       }).join('')}
-      <button class="btn-gold" onclick="copyAllFramePrompts(${JSON.stringify(r.id)})">⬇ Copiar los 6 prompts</button>
+      <button class="btn-gold" onclick="copyAllFramePrompts('${r.id}')">⬇ Copiar los 6 prompts</button>
     `;
   } else {
     return `
@@ -640,7 +640,7 @@ function renderReelTab(r) {
             <span class="frame-num">F${i+1}</span>
           </div>
           <div class="prompt-box">${p}</div>
-          <button class="copy-btn veo" onclick="copyText(this, ${JSON.stringify(p)})">🎬 Copiar prompt Veo 3</button>
+          <button class="copy-btn veo" data-copy="${storeCopy(p)}" onclick="copyFromData(this)">🎬 Copiar prompt Veo 3</button>
         </div>
       `).join('')}
     `;
@@ -671,15 +671,17 @@ function renderCarousels() {
                 </div>
               `).join('')}
             </div>
-            ${c.slides.map((s,i) => `
+            ${c.slides.map((s,i) => {
+              const slideKey = storeCopy('HEADLINE: '+s.headline+'\nSUBTEXT: '+s.sub+(s.cta?'\nCTA: '+s.cta:''));
+              return `
               <div style="padding:10px;background:#0d1420;border-radius:6px;margin-bottom:6px">
                 <div style="font-size:9px;font-weight:700;color:#C8A84B;letter-spacing:1px;margin-bottom:5px">SLIDE ${i+1} — ${s.label}</div>
                 <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">${s.headline}</div>
                 <div style="font-size:11px;color:rgba(255,255,255,0.55)">${s.sub}</div>
                 ${s.cta ? `<div style="font-size:10px;font-weight:700;color:#C8A84B;margin-top:4px">${s.cta} →</div>` : ''}
-                <button class="copy-btn" style="margin-top:6px" onclick="copyText(this, ${JSON.stringify('HEADLINE: '+s.headline+'\nSUBTEXT: '+s.sub+(s.cta?'\nCTA: '+s.cta:''))})">📋 Copiar copy</button>
-              </div>
-            `).join('')}
+                <button class="copy-btn" style="margin-top:6px" data-copy="${slideKey}" onclick="copyFromData(this)">📋 Copiar copy</button>
+              </div>`;
+            }).join('')}
             <button class="btn-gold" onclick="copyAllSlides('${c.id}')">⬇ Copiar todos los copys</button>
           </div>
         ` : ''}
@@ -709,7 +711,7 @@ function renderTrailer() {
         <div style="margin-bottom:12px">
           <div style="font-size:10px;font-weight:700;color:#C8A84B;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">${p.label}</div>
           <div class="prompt-box">${p.prompt}</div>
-          <button class="copy-btn" onclick="copyText(this, ${JSON.stringify(p.prompt)})">📋 Copiar</button>
+          <button class="copy-btn" data-copy="${storeCopy(p.prompt)}" onclick="copyFromData(this)">📋 Copiar</button>
         </div>
       `).join('')}
     </div>
@@ -788,26 +790,47 @@ function toggleCarousel(id) {
   render();
 }
 
+// Store texts by key for safe retrieval
+const COPY_STORE = {};
+let copyStoreIdx = 0;
+
+function storeCopy(text) {
+  const key = 'c' + (++copyStoreIdx);
+  COPY_STORE[key] = text;
+  return key;
+}
+
+function copyFromData(btn) {
+  const key = btn.getAttribute('data-copy');
+  const text = COPY_STORE[key] || '';
+  doСopy(btn, text);
+}
+
 function copyText(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copiado';
-    setTimeout(() => btn.textContent = orig, 1500);
-  }).catch(() => {
-    // Fallback for older iOS
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copiado';
-    setTimeout(() => btn.textContent = orig, 1500);
-  });
+  doСopy(btn, text);
+}
+
+function doСopy(btn, text) {
+  const orig = btn.textContent;
+  const done = () => { btn.textContent = '✓ Copiado'; setTimeout(() => btn.textContent = orig, 1800); };
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.setSelectionRange(0, 99999);
+  try { document.execCommand('copy'); done(); } catch(e) { alert('Copia manualmente el texto'); }
+  document.body.removeChild(ta);
 }
 
 function copyAllFramePrompts(reelId) {
