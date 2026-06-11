@@ -1807,110 +1807,49 @@ async function generateFrames(reelId, btn) {
     alert('Introduce tu OpenAI API key (sk-...) en el campo superior derecho del hub.');
     return;
   }
-
   const framePrompts = GEMINI_FRAME_PROMPTS[reelId];
-  if (!framePrompts) { alert('No hay prompts para este reel.'); return; }
+  if (!framePrompts) return;
 
   btn.disabled = true;
   btn.style.opacity = '0.6';
-
-  const jobs = [];
-  const generatedUrls = [];
+  const jobs = [], generatedUrls = [];
 
   for (let i = 0; i < framePrompts.length; i++) {
     btn.textContent = `⟳ Frame ${i+1}/6…`;
     const fp = framePrompts[i];
-    
-    const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is about to say or is saying: "${fp.dialogue || ""}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused light, no harsh shadows. Summer 2025. Authentic realistic talking-head, photorealistic, not AI looking, natural not staged.`;
-
+    const prompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height, slightly below eye level, no tripod visible, soft bokeh, warm summer light. Photorealistic, authentic talking-head.`;
     try {
-      const body = {
-        model: 'gpt-image-1',
-        prompt: fullPrompt,
-        n: 1,
-        size: '1024x1536',
-        quality: 'medium',
-        output_format: 'jpeg'
-      };
-
-      const res = await fetch('https://api.openai.com/v1/images/generations', {
+      // Route through Cloudflare Worker (no CORS issues)
+      const workerUrl = 'https://openai-proxy.groinversia.workers.dev';
+      const res = await fetch(workerUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`
-        },
-        body: JSON.stringify(body)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, prompt })
       });
-
       const data = await res.json();
-
-      if (data.error) {
-        console.error('OpenAI error frame', i+1, JSON.stringify(data.error));
-        btn.textContent = `⚠ F${i+1}: ${data.error.message?.substring(0,50)}`;
-        generatedUrls.push(null);
-        jobs.push(null);
-        continue;
-      }
-
-      const b64 = data.data?.[0]?.b64_json;
-      if (b64) {
-        const dataUrl = `data:image/jpeg;base64,${b64}`;
-        generatedUrls.push(dataUrl);
-        jobs.push(`openai_${reelId}_f${i+1}`);
-      } else {
-        console.error('No image in response:', JSON.stringify(data).substring(0,300));
-        generatedUrls.push(null);
-        jobs.push(null);
-      }
-
+      if (data.error) throw new Error(data.error);
+      if (data.b64) {
+        generatedUrls.push(`data:image/jpeg;base64,${data.b64}`);
+        jobs.push(`openai_${reelId}_f${i+1}_${Date.now()}`);
+      } else throw new Error('No image');
     } catch(e) {
-      console.error('Frame', i+1, e);
+      console.error('Frame', i+1, e.message);
       generatedUrls.push(null);
       jobs.push(null);
     }
   }
 
-  const successCount = generatedUrls.filter(Boolean).length;
-  
-  if (successCount > 0) {
+  const ok = generatedUrls.filter(Boolean).length;
+  if (ok > 0) {
     REEL_FRAME_JOBS[reelId] = jobs;
-    generatedUrls.forEach((url, i) => { if(url && jobs[i]) HF_URL_MAP[jobs[i]] = url; });
-    sessionStorage.setItem('frameJobs_' + reelId, JSON.stringify(jobs));
-    sessionStorage.setItem('frameUrls_' + reelId, JSON.stringify(generatedUrls));
-    const data = REELS.find(r => r.id === reelId);
-    document.getElementById('m-body').innerHTML = renderReelFrames(data);
-    if (successCount < 6) alert(`${successCount}/6 frames generados. Los que fallaron muestran el emoji.`);
+    generatedUrls.forEach((url,i) => { if(url&&jobs[i]) HF_URL_MAP[jobs[i]]=url; });
+    sessionStorage.setItem('frameJobs_'+reelId, JSON.stringify(jobs));
+    sessionStorage.setItem('frameUrls_'+reelId, JSON.stringify(generatedUrls));
+    document.getElementById('m-body').innerHTML = renderReelFrames(REELS.find(r=>r.id===reelId));
   } else {
-    btn.disabled = false;
-    btn.textContent = '⚡ Generar con DALL·E 3';
-    btn.style.opacity = '1';
-    alert('Error al generar. Verifica que tu OpenAI API key (sk-...) sea correcta y tenga saldo.');
+    btn.disabled = false; btn.textContent = '⚡ Generar con DALL·E 3'; btn.style.opacity = '1';
+    alert('Error al generar. Revisa la consola.');
   }
 }
-// Restore persisted jobs on load
-['r01','r02','r03','r04','r05','r06'].forEach(id => {
-  const savedJobs = sessionStorage.getItem('frameJobs_' + id);
-  if (savedJobs) { try { REEL_FRAME_JOBS[id] = JSON.parse(savedJobs); } catch(e) {} }
-  const savedUrls = sessionStorage.getItem('frameUrls_' + id);
-  if (savedUrls) {
-    try {
-      const urls = JSON.parse(savedUrls);
-      const jobs = REEL_FRAME_JOBS[id] || [];
-      urls.forEach((url, i) => { if(url && jobs[i]) HF_URL_MAP[jobs[i]] = url; });
-    } catch(e) {}
-  }
-});
-// r01 already has hardcoded jobs from this session
-if (!REEL_FRAME_JOBS['r01'] || REEL_FRAME_JOBS['r01'].length < 6) {
-  REEL_FRAME_JOBS['r01'] = [
-    '827c77c8-44b6-4a37-b153-71086eefbf60',
-    '4d114665-fb0c-47a9-8745-90aee493effe',
-    'a7014ca4-315c-4d1e-ba64-161c9687f879',
-    '7dfc34b7-76e8-4688-88ad-4b5829e1f564',
-    '696d27f4-42b5-448b-b272-ee8c95e6eb20',
-    '9f007eb4-1137-4d53-b8af-239d756fc4b9',
-  ];
-}
-</script>
-</body>
-</html>
+
+
