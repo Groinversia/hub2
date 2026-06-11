@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hub Copy Test</title>
+<style>
+body{background:#0B0F19;color:#fff;font-family:sans-serif;padding:20px}
+button{background:#C8A84B;color:#000;border:none;padding:12px 16px;border-radius:6px;font-size:14px;font-weight:700;width:100%;margin:6px 0;cursor:pointer}
+#out{background:#060a12;padding:12px;border-radius:8px;margin-top:12px;font-size:12px;color:#7aadcc;min-height:60px}
+</style>
+</head>
+<body>
+<div id="container"></div>
+<div id="out">Log...</div>
+<script>
+var CS = {};
+var CSI = 0;
+function sc(text) { var k='k'+(++CSI); CS[k]=text; return k; }
+function storeCopy(t){ return sc(t); }
+
+function log(msg) {
+  document.getElementById('out').innerHTML += '<div>'+msg+'</div>';
+}
+
+// Event delegation
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-k]');
+  if (!btn) return;
+  var k = btn.getAttribute('data-k');
+  var text = CS[k] || 'KEY NOT FOUND: '+k;
+  log('Click! key='+k+' text='+text.substring(0,50));
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = '✓ Copiado';
+    setTimeout(function(){ btn.textContent = '📋 Copiar'; }, 1500);
+    log('✓ Clipboard OK');
+  }).catch(function(e){ log('✗ Clipboard error: '+e); });
+});
+
+// Simulate render
+function render() {
+  var prompts = ['Primer prompt de prueba', 'Segundo prompt', 'Tercer prompt'];
+  var html = prompts.map(function(p, i) {
+    return '<div style="margin:8px 0;padding:12px;background:#1A2535;border-radius:8px">' +
+      '<div style="font-size:11px;color:#aaa;margin-bottom:8px">'+p+'</div>' +
+      '<button data-k="'+storeCopy(p)+'">📋 Copiar prompt '+(i+1)+'</button>' +
+      '</div>';
+  }).join('');
+  document.getElementById('container').innerHTML = html;
+  log('render() complete. CS keys: '+Object.keys(CS).join(', '));
+}
+
+render();
+log('Script loaded. CS: '+JSON.stringify(CS));
+</script>
+</body>
+</html>
