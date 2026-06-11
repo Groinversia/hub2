@@ -507,14 +507,7 @@ html,body{height:100%;font-family:'Inter Tight',sans-serif;background:var(--surf
   <span class="topbar-pill pill-teal">Barcelona · Cataluña</span>
   <div class="topbar-right" style="display:flex;align-items:center;gap:10px">
     <span class="topbar-stat">42 proyectos devueltos · <strong>24M€</strong> · 3K+ inversores</span>
-    <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(200,168,75,0.2);border-radius:7px;padding:4px 10px">
-      <span style="font-size:10px;color:rgba(255,255,255,0.4);white-space:nowrap">OpenAI API</span>
-      <input id="gemini-key-input" type="password" placeholder="sk-... OpenAI API key"
-        style="background:none;border:none;outline:none;font-size:11px;color:var(--gold);width:200px;font-family:'Inter Tight',sans-serif"
-        oninput="saveGeminiKey(this.value)"
-      />
-      <span id="gemini-key-status" style="font-size:10px;color:var(--text3)">○</span>
-    </div>
+
   </div>
 </div>
 
@@ -1170,41 +1163,52 @@ function renderReelScript(d){
     <div class="script-gesture">${s.gesture}</div>
   </div>`).join('')}`;
 }
+function buildFramePrompt(d, f, i) {
+  const fp = GEMINI_FRAME_PROMPTS[d.id]?.[i];
+  if (!fp) return '';
+  return `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair with natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera at chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused summer light, no harsh shadows. Authentic realistic talking-head, photorealistic, not AI looking.
+
+[Veo 3 — Start Image prompt]
+${d.veo3?.[i]?.text || ''}`;
+}
+
 function renderReelFrames(d){
-  const jobs = REEL_FRAME_JOBS[d.id] || [];
-  const hasRealFrames = jobs.length === 6;
   return `
-  <div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <div style="font-size:11px;color:var(--text2)">Element: <code style="background:var(--surface);padding:2px 6px;border-radius:3px;font-size:10px;color:var(--gold)">450159d6…</code></div>
-    ${hasRealFrames
-      ? '<div style="font-size:10px;padding:3px 10px;background:#EDFAF6;color:#1A7A5F;border-radius:4px;font-weight:600;border:1px solid rgba(26,122,95,0.2)">✓ Frames generados</div>'
-      : `<div style="font-size:10px;padding:3px 10px;background:#FFF8E6;color:#8A6914;border-radius:4px;font-weight:600;border:1px solid rgba(200,168,75,0.2)">Sin frames aún</div>
-         <button id="gen-btn-${d.id}" onclick="generateFrames('${d.id}',this)" style="font-size:11px;font-weight:700;padding:5px 16px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.35);border-radius:6px;cursor:pointer">⚡ Generar frames de Marcos</button>`
-    }
+  <div style="margin-bottom:16px;padding:12px 14px;background:#080F1C;border:1px solid rgba(200,168,75,0.2);border-radius:8px;font-size:11px;color:#A8C4E0;line-height:1.7">
+    <div style="color:var(--gold);font-weight:700;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px">🔒 Character Lock — Marcos</div>
+    <div><strong style="color:#fff">Rasgos fijos:</strong> Hombre ~40 años, español mediterráneo · Cabello castaño oscuro corto con volumen natural · Barba 3-5 días uniforme · Gafas metálicas finas cuadradas-redondeadas negro · Piel oliva clara</div>
+    <div style="margin-top:4px"><strong style="color:#fff">Outfit ${d.outfitShort}:</strong> ${d.outfit}</div>
+    <div style="margin-top:4px"><strong style="color:#fff">Cámara:</strong> Altura pecho, ligeramente bajo los ojos · Sin trípode visible · Bokeh suave · Luz natural verano</div>
   </div>
-  <div class="frames-grid">${d.frames.map((f,i)=>{
-    const jobId = jobs[i];
-    const imgUrl = jobId ? hfUrl(jobId) : null;
-    return `<div class="frame-item">
-      <div class="frame-vis" style="${imgUrl?'background:transparent;padding:0':''}" >
-        <div class="frame-vis-num">F${i+1}</div>
-        ${imgUrl
-          ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div style="display:none;flex-direction:column;align-items:center;gap:6px;position:absolute;inset:0;background:var(--ink);justify-content:center"><div style="font-size:22px;opacity:0.5">${f.emoji}</div><div style="font-size:9px;color:rgba(255,255,255,0.4)">procesando…</div></div>`
-          : `<div class="frame-emoji">${f.emoji}</div><div class="frame-lbl">${f.label}</div>`
-        }
-        <div class="frame-vis-outfit" style="z-index:2">${d.outfitShort}</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+  ${d.frames.map((f,i)=>{
+    const fp = GEMINI_FRAME_PROMPTS[d.id]?.[i];
+    const prompt = fp ? `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Photorealistic authentic talking-head, not AI looking.` : '';
+    const veo3prompt = d.veo3?.[i]?.text || '';
+    return `<div style="background:var(--navy-card,#1A2D47);border:1px solid var(--border-card,rgba(255,255,255,0.06));border-radius:8px;overflow:hidden">
+      <div style="background:var(--ink);padding:10px 12px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:18px">${f.emoji}</span>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#fff">${f.label}</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.4)">${f.desc}</div>
+          </div>
+        </div>
+        <span style="font-family:monospace;font-size:9px;color:var(--gold)">F${i+1}</span>
       </div>
-      <div class="frame-info">
-        <div class="frame-info-title">${f.label}</div>
-        <div class="frame-info-desc">${f.desc}</div>
-        <div style="display:flex;gap:4px;margin-top:6px">
-          ${imgUrl ? `<button onclick="downloadFrame('${imgUrl || ''}','marcos_${d.id}_f${i+1}.jpg')" style="flex:1;font-size:10px;font-weight:600;padding:4px 0;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">⬇</button>` : ''}
-          <button onclick="regenerateFrame('${d.id}',${i},this)" style="flex:1;font-size:10px;font-weight:600;padding:4px 0;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:4px;cursor:pointer" title="Regenerar este frame">↻</button>
+      <div style="padding:10px 12px">
+        ${fp?.dialogue ? `<div style="font-size:11px;color:rgba(255,255,255,0.7);font-style:italic;margin-bottom:8px;padding:6px 10px;background:rgba(200,168,75,0.07);border-left:2px solid var(--gold);border-radius:0 4px 4px 0">"${fp.dialogue}"</div>` : ''}
+        <div style="background:#080F1C;border-radius:6px;padding:10px;font-family:monospace;font-size:9px;color:#A8C4E0;line-height:1.6;max-height:120px;overflow-y:auto;margin-bottom:6px">${prompt}</div>
+        <div style="display:flex;gap:4px">
+          <button onclick="(() => { navigator.clipboard.writeText(${JSON.stringify(prompt)}); this.textContent='✓'; setTimeout(()=>this.textContent='📋 Imagen',1500); }).call(this)" style="flex:1;font-size:10px;font-weight:600;padding:5px 0;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">📋 Imagen</button>
+          <button onclick="(() => { navigator.clipboard.writeText(${JSON.stringify(veo3prompt)}); this.textContent='✓'; setTimeout(()=>this.textContent='🎬 Veo 3',1500); }).call(this)" style="flex:1;font-size:10px;font-weight:600;padding:5px 0;background:var(--ink);color:#7BA7E0;border:1px solid rgba(123,167,224,0.3);border-radius:4px;cursor:pointer">🎬 Veo 3</button>
         </div>
       </div>
     </div>`;
   }).join('')}
-  </div>`;
+  </div>
+  <button onclick="copyAllFramePrompts('${d.id}')" style="margin-top:12px;width:100%;font-size:11px;font-weight:700;padding:8px 0;background:var(--gold);color:var(--ink);border:none;border-radius:6px;cursor:pointer">⬇ Copiar todos los prompts de imagen</button>
+  `;
 }
 function renderReelVeo3(d){
   const jobs = REEL_FRAME_JOBS[d.id] || [];
@@ -1568,6 +1572,21 @@ const REELS = [
 ];
 
 /* ─── RENDER GRIDS ─── */
+
+function copyAllFramePrompts(reelId) {
+  const d = REELS.find(r => r.id === reelId);
+  if (!d) return;
+  const prompts = d.frames.map((f, i) => {
+    const fp = GEMINI_FRAME_PROMPTS[reelId]?.[i];
+    if (!fp) return '';
+    return `--- FRAME ${i+1}: ${f.label} ---
+Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Photorealistic authentic talking-head, not AI looking.`;
+  }).filter(Boolean).join('
+
+');
+  navigator.clipboard.writeText(prompts).then(() => alert('✓ 6 prompts copiados al portapapeles'));
+}
+
 function buildCarouselGrid(){
   const g=document.getElementById('carousel-grid');
   g.innerHTML=CAROUSELS.map(c=>`
