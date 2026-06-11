@@ -620,20 +620,19 @@ function renderReelTab(r) {
         <div class="char-lock-row"><strong>Outfit:</strong> ${outfit}</div>
         <div class="char-lock-row"><strong>Cámara:</strong> Altura pecho · Sin trípode · Bokeh · Luz verano</div>
       </div>
-      ${r.frames.map((f, i) => {
-        const prompt = `Photorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${r.outfit}. ${f.gesture}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.`;
-        return `
-          <div class="frame-card">
-            <div class="frame-card-header">
-              <span style="font-size:18px">${f.emoji}</span>
-              <span class="frame-label">${f.label}</span>
-              <span class="frame-num">F${i+1}</span>
-            </div>
-            <div class="dialogue">"${f.dialogue}"</div>
-            <div class="prompt-box">${prompt}</div>
-            <button class="copy-btn" data-k="${storeCopy(prompt)}">📋 Copiar prompt de imagen</button>
-          </div>
-        `;
+      ${r.frames.map(function(f, i) {
+        var prompt = 'Photorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ' + r.outfit + '. ' + f.gesture + '. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.';
+        var k = sc(prompt);
+        return '<div class="frame-card">' +
+          '<div class="frame-card-header">' +
+            '<span style="font-size:18px">' + f.emoji + '</span>' +
+            '<span class="frame-label">' + f.label + '</span>' +
+            '<span class="frame-num">F' + (i+1) + '</span>' +
+          '</div>' +
+          '<div class="dialogue">\u201c' + f.dialogue + '\u201d</div>' +
+          '<div class="prompt-box">' + prompt + '</div>' +
+          '<button class="copy-btn" data-k="' + k + '">\uD83D\uDCCB Copiar prompt de imagen</button>' +
+        '</div>';
       }).join('')}
       ${(()=>{
         const allText = r.frames.map((f,i)=>`FRAME F${i+1} — ${f.label}\nPrompt imagen:\nPhotorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${r.outfit}. ${f.gesture}. Saying: "${f.dialogue}". Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.`).join('\n\n');
@@ -646,21 +645,19 @@ function renderReelTab(r) {
       <div style="margin-bottom:12px;padding:10px;background:#060a12;border:1px solid rgba(123,167,224,0.2);border-radius:8px;font-size:11px;color:#7aadcc;line-height:1.6">
         <strong style="color:#fff">Instrucciones Veo 3:</strong> Sube el frame generado como Subject Reference Image. Pega el prompt. Parámetros: <strong>8s · 9:16 · 24fps · static camera, no movement</strong>
       </div>
-      ${r.veo3.map((p, i) => {
-        const dialogue = r.frames[i]?.dialogue || '';
-        const fullVeo3 = p + (dialogue ? ' He says: "' + dialogue + '"' : '');
-        const vk = sc(fullVeo3);
-        return `
-        <div class="frame-card">
-          <div class="frame-card-header">
-            <span style="font-size:18px">${r.frames[i]?.emoji||'🎬'}</span>
-            <span class="frame-label">${r.frames[i]?.label||'F'+(i+1)}</span>
-            <span class="frame-num">F${i+1}</span>
-          </div>
-          <div class="prompt-box">${fullVeo3}</div>
-          <button class="copy-btn veo" data-k="${vk}">🎬 Copiar prompt Veo 3</button>
-        </div>
-      `;
+      ${r.veo3.map(function(p, i) {
+        var dialogue = r.frames[i] ? r.frames[i].dialogue : '';
+        var full = p + (dialogue ? ' He says: "' + dialogue + '"' : '');
+        var k = sc(full);
+        return '<div class="frame-card">' +
+          '<div class="frame-card-header">' +
+            '<span style="font-size:18px">' + (r.frames[i] ? r.frames[i].emoji : '🎬') + '</span>' +
+            '<span class="frame-label">' + (r.frames[i] ? r.frames[i].label : 'F'+(i+1)) + '</span>' +
+            '<span class="frame-num">F' + (i+1) + '</span>' +
+          '</div>' +
+          '<div class="prompt-box">' + full + '</div>' +
+          '<button class="copy-btn veo" data-k="' + k + '">🎬 Copiar prompt Veo 3</button>' +
+        '</div>';
       }).join('')}
     `;
   }
