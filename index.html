@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groinversia — Content Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0B0F19;
+  --ink2:#1A2035;
+  --ink3:#232C42;
+  --surface:#F5F4F0;
+  --surface2:#ECEAE4;
+  --gold:#C8A84B;
+  --gold-light:#E8D08A;
+  --gold-pale:rgba(200,168,75,0.1);
+  --teal:#2D7D6F;
+  --teal-pale:rgba(45,125,111,0.1);
+  --red:#C0392B;
+  --text:#0B0F19;
+  --text2:#3D4A6B;
+  --text3:#7A8BA8;
+  --border:rgba(11,15,25,0.08);
+  --radius:10px;
+}
+
+html,body{height:100%;font-family:'Inter Tight',sans-serif;background:var(--surface);color:var(--text);overflow:hidden}
+
+/* SHELL */
+.shell{display:flex;height:100vh}
+
+/* LEFT NAV */
+.nav{
+  width:64px;flex-shrink:0;
+  background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;
+  padding:20px 0;gap:4px;
+  border-right:1px solid rgba(255,255,255,0.04);
+}
+.nav-logo{
+  width:36px;height:36px;
+  background:var(--gold);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+  font-size:14px;font-weight:900;color:var(--ink);
+  letter-spacing:-0.5px;
+}
+.nav-btn{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.15s;
+  font-size:18px;color:var(--text3);
+  border:none;background:none;
+  position:relative;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.06);color:#fff}
+.nav-btn.active{background:rgba(200,168,75,0.15);color:var(--gold)}
+.nav-btn .tooltip{
+  position:absolute;left:56px;
+  background:var(--ink);color:#fff;
+  font-size:11px;font-weight:500;
+  padding:4px 10px;border-radius:5px;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity 0.15s;
+  z-index:100;
+}
+.nav-btn:hover .tooltip{opacity:1}
+.nav-sep{width:32px;height:1px;background:rgba(255,255,255,0.06);margin:8px 0}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOPBAR */
+.topbar{
+  height:56px;flex-shrink:0;
+  background:var(--ink);
+  display:flex;align-items:center;
+  padding:0 24px;gap:16px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.topbar-title{
+  font-size:13px;font-weight:700;
+  color:#fff;letter-spacing:-0.2px;
+}
+.topbar-pill{
+  font-size:10px;font-weight:600;letter-spacing:1.2px;
+  text-transform:uppercase;
+  padding:2px 10px;border-radius:20px;
+}
+.pill-gold{background:var(--gold-pale);color:var(--gold);border:1px solid rgba(200,168,75,0.3)}
+.pill-teal{background:var(--teal-pale);color:var(--teal);border:1px solid rgba(45,125,111,0.3)}
+.topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.topbar-stat{font-size:11px;color:rgba(255,255,255,0.4)}
+.topbar-stat strong{color:var(--gold-light);font-weight:700}
+
+/* CONTENT AREA */
+.content{flex:1;overflow:hidden;position:relative}
+.view{position:absolute;inset:0;overflow-y:auto;display:none;padding:24px}
+.view.active{display:block}
+
+/* ═══════════════════════════════════════
+   VIEW: BRAND IDENTITY
+═══════════════════════════════════════ */
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.brand-col{display:flex;flex-direction:column;gap:16px}
+.card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;
+}
+.card-title{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:14px;
+}
+.brand-stat-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.brand-stat{
+  background:var(--gold-pale);border:1px solid rgba(200,168,75,0.2);
+  border-radius:8px;padding:12px 16px;flex:1;min-width:100px;
+}
+.brand-stat .num{
+  font-size:22px;font-weight:800;color:var(--ink);
+  letter-spacing:-1px;line-height:1;margin-bottom:3px;
+}
+.brand-stat .lbl{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:0.8px}
+.brand-list{display:flex;flex-direction:column;gap:6px}
+.brand-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:12px;color:var(--text2);line-height:1.5;
+}
+.brand-item::before{content:'—';color:var(--gold);flex-shrink:0;font-weight:700}
+.tone-chip{
+  display:inline-block;
+  background:var(--surface2);
+  border-radius:4px;padding:3px 8px;
+  font-size:11px;font-weight:600;color:var(--text2);
+  margin:3px;
+}
+.comp-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.comp-card{
+  flex:1;min-width:120px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;
+}
+.comp-card .name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.comp-card .desc{font-size:10px;color:var(--text3);line-height:1.4}
+.comp-card .tag{font-size:10px;font-weight:600;color:var(--teal);margin-top:4px}
+.diff-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--teal-pale);border:1px solid rgba(45,125,111,0.2);
+  border-radius:6px;padding:5px 10px;
+  font-size:11px;font-weight:600;color:var(--teal);
+  margin:3px;
+}
+
+/* ═══════════════════════════════════════
+   VIEW: MARCOS (Person Identity)
+═══════════════════════════════════════ */
+.marcos-grid{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.marcos-profile{
+  background:var(--ink);border-radius:var(--radius);
+  padding:24px;color:#fff;
+  display:flex;flex-direction:column;gap:16px;
+}
+.marcos-avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold) 0%,#8B6914 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;font-weight:800;color:var(--ink);
+  letter-spacing:-1px;
+}
+.marcos-name{font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.marcos-role{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.8px;text-transform:uppercase}
+.marcos-bio{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6}
+.marcos-attr{display:flex;flex-direction:column;gap:8px}
+.marcos-attr-row{display:flex;justify-content:space-between;align-items:center}
+.marcos-attr-key{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.8px}
+.marcos-attr-val{font-size:11px;font-weight:600;color:var(--gold-light)}
+.marcos-angles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.angle-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:8px;padding:14px;
+}
+.angle-card .num{
+  font-size:9px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:6px;
+}
+.angle-card .title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.angle-card .desc{font-size:11px;color:var(--text2);line-height:1.5}
+.outfit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.outfit-chip{
+  padding:4px 10px;border-radius:20px;
+  font-size:10px;font-weight:600;
+  background:var(--surface2);color:var(--text2);
+  border:1px solid var(--border);
+}
+.prompt-box{
+  background:#080F1C;border-radius:8px;
+  padding:14px 16px;
+  font-family:monospace;font-size:11px;
+  color:#A8C4E0;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;
+  position:relative;
+}
+.copy-btn{
+  position:absolute;top:10px;right:10px;
+  font-family:'Inter Tight',sans-serif;
+  font-size:10px;font-weight:600;
+  background:rgba(200,168,75,0.1);
+  border:1px solid rgba(200,168,75,0.3);
+  color:var(--gold);padding:3px 10px;
+  border-radius:4px;cursor:pointer;transition:all 0.15s;
+}
+.copy-btn:hover{background:rgba(200,168,75,0.2)}
+.copy-btn.ok{color:#5DD879;border-color:rgba(93,216,121,0.3);background:rgba(93,216,121,0.08)}
+
+/* ═══════════════════════════════════════
+   VIEW: CALENDARIO
+═══════════════════════════════════════ */
+.cal-header{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.cal-legend{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
+.leg-dot{width:8px;height:8px;border-radius:50%}
+.cal-grid{display:grid;grid-template-columns:80px repeat(8,1fr);gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#fff}
+.cal-head{background:var(--ink);padding:10px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase}
+.cal-week-label{background:var(--surface2);padding:12px;font-size:11px;font-weight:700;color:var(--text3);text-align:center;border-bottom:1px solid var(--border)}
+.cal-cell{
+  padding:8px;border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  min-height:72px;
+  cursor:pointer;transition:background 0.12s;
+}
+.cal-cell:hover{background:var(--surface)}
+.cal-cell:last-child{border-right:none}
+.cal-item{
+  border-radius:5px;padding:4px 7px;
+  font-size:10px;font-weight:600;line-height:1.3;
+  margin-bottom:4px;cursor:pointer;
+}
+.cal-item.reel{background:#EBF3FF;color:#1A5FAB;border-left:2px solid #1A5FAB}
+.cal-item.carrusel{background:#FFF8E6;color:#8A6914;border-left:2px solid var(--gold)}
+.cal-item.trailer{background:#EDFAF6;color:#1A7A5F;border-left:2px solid var(--teal)}
+.cal-item.story{background:#F3EEFF;color:#5B2FBB;border-left:2px solid #7B52DB}
+
+/* ═══════════════════════════════════════
+   VIEW: CARROUSELES
+═══════════════════════════════════════ */
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.topic-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;
+  cursor:pointer;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.topic-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform 0.2s;
+}
+.topic-card:hover{border-color:rgba(200,168,75,0.4);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,0.07)}
+.topic-card:hover::after{transform:scaleX(1)}
+.topic-num{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.topic-title{font-size:14px;font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:6px;letter-spacing:-0.3px}
+.topic-subtitle{font-size:11px;color:var(--text2);line-height:1.4;margin-bottom:10px}
+.topic-meta{display:flex;gap:8px}
+.topic-tag{
+  font-size:9px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px;
+}
+
+/* ═══════════════════════════════════════
+   VIEW: REELS MARCOS
+═══════════════════════════════════════ */
+.reel-topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.reel-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  cursor:pointer;transition:all 0.2s;
+}
+.reel-card:hover{border-color:rgba(200,168,75,0.4);box-shadow:0 8px 32px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.reel-thumb{
+  height:140px;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.reel-thumb-bg{
+  position:absolute;inset:0;opacity:0.15;
+  background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(200,168,75,0.3) 10px,rgba(200,168,75,0.3) 11px);
+}
+.reel-play{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;position:relative;z-index:1;
+}
+.reel-outfit{
+  position:absolute;bottom:10px;right:10px;
+  background:rgba(0,0,0,0.6);border:1px solid rgba(200,168,75,0.3);
+  color:var(--gold-light);font-size:9px;font-weight:600;
+  padding:2px 8px;border-radius:4px;letter-spacing:0.5px;
+}
+.reel-body{padding:14px}
+.reel-stage{
+  font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.reel-title{font-size:13px;font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:4px;letter-spacing:-0.2px}
+.reel-hook{font-size:10px;color:var(--text2);line-height:1.4;font-style:italic;margin-bottom:10px}
+.reel-footer{display:flex;justify-content:space-between;align-items:center}
+.reel-frames{font-size:10px;color:var(--text3)}
+.reel-cta{
+  font-size:10px;font-weight:700;color:var(--gold);
+  background:var(--gold-pale);border:1px solid rgba(200,168,75,0.25);
+  padding:3px 10px;border-radius:6px;
+}
+
+/* MODAL */
+.modal-bg{
+  position:fixed;inset:0;
+  background:rgba(5,8,18,0.7);
+  backdrop-filter:blur(6px);
+  z-index:200;display:none;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:#fff;border-radius:14px;
+  width:100%;max-width:780px;
+  max-height:90vh;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 40px 100px rgba(0,0,0,0.3);
+}
+.modal-head{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:16px;
+}
+.modal-head-info{flex:1}
+.modal-eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.modal-title{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-0.4px;line-height:1.2}
+.modal-hook{font-size:11px;color:var(--text2);font-style:italic;margin-top:4px}
+.modal-close{
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--border);background:none;
+  color:var(--text3);font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.12s;
+}
+.modal-close:hover{background:var(--surface);color:var(--ink)}
+.modal-tabs{
+  display:flex;padding:0 24px;
+  border-bottom:1px solid var(--border);
+}
+.m-tab{
+  padding:12px 16px;font-size:12px;font-weight:600;
+  color:var(--text3);cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:all 0.12s;
+}
+.m-tab:hover{color:var(--text2)}
+.m-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.modal-body{flex:1;overflow-y:auto;padding:24px}
+
+/* SCRIPT TABLE */
+.script-row{
+  display:grid;grid-template-columns:60px 1fr 90px;
+  border-bottom:1px solid var(--border);padding:12px 0;gap:12px;
+}
+.script-seg{font-family:monospace;font-size:11px;color:var(--gold);font-weight:700;padding-top:2px}
+.script-spoken{font-size:13px;color:var(--ink);line-height:1.5;font-weight:500}
+.script-action{font-size:10px;color:var(--text2);margin-top:3px;font-style:italic}
+.script-gesture{font-size:10px;color:var(--text3);text-align:right;line-height:1.4;padding-top:2px}
+
+/* FRAMES GRID */
+.frames-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.frame-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+}
+.frame-vis{
+  aspect-ratio:9/16;max-height:180px;
+  background:var(--ink);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;
+  position:relative;
+}
+.frame-vis-num{
+  position:absolute;top:8px;left:8px;
+  font-family:monospace;font-size:9px;color:var(--gold);
+  background:rgba(200,168,75,0.15);border:1px solid rgba(200,168,75,0.2);
+  padding:1px 6px;border-radius:3px;
+}
+.frame-vis-outfit{
+  position:absolute;bottom:8px;right:8px;
+  font-size:8px;color:rgba(255,255,255,0.5);
+  background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:3px;
+}
+.frame-emoji{font-size:22px;opacity:0.7}
+.frame-lbl{font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px}
+.frame-info{padding:8px 10px}
+.frame-info-title{font-size:10px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.frame-info-desc{font-size:9px;color:var(--text3);line-height:1.4}
+
+/* PROMPTS */
+.prompt-block{margin-bottom:16px}
+.prompt-lbl{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:6px;
+}
+.prompt-lbl-text{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
+.prompt-code{
+  background:#080F1C;border-radius:7px;padding:14px;
+  font-family:monospace;font-size:11px;
+  color:#A8C4E0;line-height:1.7;
+  white-space:pre-wrap;word-break:break-word;
+}
+
+/* CAROUSEL MODAL */
+.slide-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}
+.slide-card{
+  aspect-ratio:4/5;background:var(--ink);
+  border-radius:8px;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:12px;position:relative;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.04);
+  transition:transform 0.15s;
+}
+.slide-card:hover{transform:scale(1.02)}
+.slide-num{font-size:8px;color:rgba(255,255,255,0.3);margin-bottom:auto}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.slide-headline{
+  font-family:'Inter Tight',sans-serif;
+  font-size:9px;font-weight:800;color:#fff;
+  line-height:1.2;margin-bottom:4px;letter-spacing:-0.2px;
+}
+.slide-sub{font-size:7px;color:rgba(255,255,255,0.5);line-height:1.3}
+.slide-accent{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--gold);
+}
+.slide-icon{font-size:20px;opacity:0.4;margin-bottom:8px}
+
+/* TRAILER VIEW */
+.trailer-card{
+  background:var(--ink);border-radius:var(--radius);
+  padding:28px;color:#fff;margin-bottom:16px;
+}
+.trailer-card .scene-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.scene-item{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:12px 14px;
+  background:rgba(255,255,255,0.04);
+  border-radius:8px;border-left:3px solid var(--gold);
+}
+.scene-tc{
+  font-family:monospace;font-size:11px;
+  color:var(--gold);width:50px;flex-shrink:0;padding-top:1px;
+}
+.scene-desc{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.5}
+.scene-cam{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;font-style:italic}
+
+/* ═══════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════ */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- LEFT NAV -->
+<nav class="nav">
+  <div class="nav-logo">G</div>
+  <button class="nav-btn active" onclick="showView('brand')" title="">
+    🏢<span class="tooltip">Marca & Competencia</span>
+  </button>
+  <button class="nav-btn" onclick="showView('marcos')" title="">
+    👤<span class="tooltip">Identidad Marcos</span>
+  </button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" onclick="showView('cal')" title="">
+    📅<span class="tooltip">Calendario Contenido</span>
+  </button>
+  <div class="nav-sep"></div>
+  <button class="nav-btn" onclick="showView('carruseles')" title="">
+    🃏<span class="tooltip">Carrouseles</span>
+  </button>
+  <button class="nav-btn" onclick="showView('reels')" title="">
+    🎬<span class="tooltip">Reels Marcos</span>
+  </button>
+  <button class="nav-btn" onclick="showView('trailer')" title="">
+    🎥<span class="tooltip">Trailer Valentina40</span>
+  </button>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+<div class="topbar">
+  <div class="topbar-title">Groinversia — Content Hub</div>
+  <span class="topbar-pill pill-gold">Crowdfunding Inmobiliario</span>
+  <span class="topbar-pill pill-teal">Barcelona · Cataluña</span>
+  <div class="topbar-right" style="display:flex;align-items:center;gap:10px">
+    <span class="topbar-stat">42 proyectos devueltos · <strong>24M€</strong> · 3K+ inversores</span>
+    <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(200,168,75,0.2);border-radius:7px;padding:4px 10px">
+      <span style="font-size:10px;color:rgba(255,255,255,0.4);white-space:nowrap">OpenAI API</span>
+      <input id="gemini-key-input" type="password" placeholder="sk-... OpenAI API key"
+        style="background:none;border:none;outline:none;font-size:11px;color:var(--gold);width:200px;font-family:'Inter Tight',sans-serif"
+        oninput="saveGeminiKey(this.value)"
+      />
+      <span id="gemini-key-status" style="font-size:10px;color:var(--text3)">○</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ═══ VIEW: BRAND ═══ -->
+<div class="view active" id="view-brand">
+  <div class="brand-grid">
+    <div class="brand-col">
+
+      <div class="card">
+        <div class="card-title">Groinversia — Datos Clave</div>
+        <div class="brand-stat-row">
+          <div class="brand-stat"><div class="num">42</div><div class="lbl">Proyectos devueltos</div></div>
+          <div class="brand-stat"><div class="num">24M€</div><div class="lbl">Capital devuelto</div></div>
+          <div class="brand-stat"><div class="num">3K+</div><div class="lbl">Inversores</div></div>
+          <div class="brand-stat"><div class="num">500€</div><div class="lbl">Ticket mínimo</div></div>
+        </div>
+        <div class="brand-list">
+          <div class="brand-item">Crowdfunding de <strong>deuda</strong> — el inversor presta capital y recibe capital + intereses al vencimiento. No es copropietario de ningún inmueble.</div>
+          <div class="brand-item">Proyecto activo: <strong>VALENTINA40</strong> — 5 casas de lujo en Castelldefels. Objetivo 2M€, 14 meses, 10% anual, estructura bullet, aval holding.</div>
+          <div class="brand-item">Grohábitat (promotor) + Groinversia (plataforma de financiación) — mismo grupo empresarial. Alineación total de intereses.</div>
+          <div class="brand-item">Tres vías: inversión directa (deuda/bono/capital), crowdfunding vía plataformas CNMV, oportunidades off-market para inversores cualificados.</div>
+          <div class="brand-item">Sede en zona metropolitana de Barcelona. Proyectos en Castelldefels, Esplugues, Sant Cugat, Sant Joan Despí, Viladecans.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Tono de Comunicación</div>
+        <div style="margin-bottom:10px">
+          <div class="tone-chip">Experto pero cercano</div>
+          <div class="tone-chip">Transparente</div>
+          <div class="tone-chip">Sin jerga financiera innecesaria</div>
+          <div class="tone-chip">Educativo</div>
+          <div class="tone-chip">Mediterráneo / Barcelona</div>
+          <div class="tone-chip">Premium sin ostentación</div>
+        </div>
+        <div class="brand-list">
+          <div class="brand-item">Siempre hablar de <strong>préstamo + intereses</strong>, nunca de "participación en la propiedad" o "copropietario"</div>
+          <div class="brand-item">Rentabilidades históricas: 10–12% anual tipo de interés fijo (VALENTINA40: 10%, TORREBLANCA: 22% total/24m, MONTSEC: 12.75%/12m)</div>
+          <div class="brand-item">Diferenciador: grupo promotor propio (grohábitat) = control total del proyecto = mayor transparencia y alineación</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Diferenciadores vs Competencia</div>
+        <div style="flex-wrap:wrap;display:flex;gap:6px;margin-bottom:12px">
+          <div class="diff-badge">✓ Promotor propio (grohábitat)</div>
+          <div class="diff-badge">✓ Deuda tokenizada</div>
+          <div class="diff-badge">✓ Track record 42 proyectos</div>
+          <div class="diff-badge">✓ Desde 500€</div>
+          <div class="diff-badge">✓ Aval holding</div>
+          <div class="diff-badge">✓ Vivienda premium Barcelona</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="brand-col">
+
+      <div class="card">
+        <div class="card-title">Análisis Competencia Instagram</div>
+        <div class="comp-row">
+          <div class="comp-card">
+            <div class="name">Civislend</div>
+            <div class="desc">Crowdlending regulado CNMV. 10–13% anual. Desde 250€. Contenido: educativo, datos, infografías. Tono corporativo.</div>
+            <div class="tag">↳ Más frío, menos storytelling</div>
+          </div>
+          <div class="comp-card">
+            <div class="name">Urbanitae</div>
+            <div class="desc">Líder del sector. 60% mercado español. Equity + deuda. 12% medio. Reel reales de proyectos, equipo visible, casos de éxito.</div>
+            <div class="tag">↳ Mayor producción, más recursos</div>
+          </div>
+          <div class="comp-card">
+            <div class="name">StockCrowd</div>
+            <div class="desc">Proyectos residenciales. Contenido mixto. Menos presencia visual, más texto. Tono más técnico.</div>
+            <div class="tag">↳ Menos cuidado visual</div>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="brand-list">
+            <div class="brand-item"><strong>Oportunidad real:</strong> Ningún competidor tiene un portavoz humano consistente con identidad clara. Marcos + Marcos = ventaja masiva.</div>
+            <div class="brand-item"><strong>Oportunidad real:</strong> Nadie hace contenido cinemático de los proyectos. El estilo notkurtgodel aplicado a lujo inmobiliario = diferenciación total.</div>
+            <div class="brand-item"><strong>Gap:</strong> La competencia apenas explica el modelo de deuda de forma humana y accesible. Aquí está el hook de contenido.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Estilo notkurtgodel — Aplicación a Groinversia</div>
+        <div class="brand-list">
+          <div class="brand-item"><strong>Planos lentos y contemplativos</strong> sobre materiales: hormigón, madera, agua en piscina, luz mediterránea sobre fachada.</div>
+          <div class="brand-item"><strong>Sin diálogo</strong> — música ambiental o silencio roto por sonidos diegéticos (viento, pájaros, agua).</div>
+          <div class="brand-item"><strong>Títulos tipográficos minimalistas</strong> en Inter Tight sobre negro: nombre del proyecto, ubicación, cifras clave.</div>
+          <div class="brand-item"><strong>Color grading</strong>: tonos fríos desaturados en exteriores, calidez dorada en interiores. No HDR.</div>
+          <div class="brand-item"><strong>Ratio 9:16</strong> para Reels: los detalles arquitectónicos en vertical tienen mucho más poder que en horizontal.</div>
+          <div class="brand-item"><strong>Duración</strong>: 45–90 segundos. Ritmo lento al principio, cut preciso al dato financiero clave al final.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW: MARCOS ═══ -->
+<div class="view" id="view-marcos">
+  <div class="marcos-grid">
+
+    <div class="marcos-profile">
+      <div>
+        <div class="marcos-avatar">M</div>
+        <div style="margin-top:12px">
+          <div class="marcos-name">Marcos</div>
+          <div class="marcos-role">Portavoz Oficial · Groinversia</div>
+        </div>
+      </div>
+      <div class="marcos-bio">Portavoz oficial de Groinversia. Hombre mediterráneo, ~40 años. Experto financiero-inmobiliario cercano. Gafas metálicas finas, barba de 3–5 días, blazer navy + camisa celeste abierta. Transmite autoridad sin distancia — el asesor que quisieras tener.</div>
+      <div class="marcos-attr">
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Edad aparente</span><span class="marcos-attr-val">38–44 años</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Complexión</span><span class="marcos-attr-val">Media-atlética, hombros anchos</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Cabello</span><span class="marcos-attr-val">Castaño oscuro, corto, volumen natural</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Barba</span><span class="marcos-attr-val">3–5 días, uniforme, castaño/gris</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Gafas</span><span class="marcos-attr-val">Metálicas finas, cuadrada-redondeada, negro</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Tono piel</span><span class="marcos-attr-val">Mediterráneo oliva claro</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Element ID</span><span class="marcos-attr-val" style="font-family:monospace;font-size:10px">450159d6-d451-4064-8d59-a093a5007f8c</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Modelo base</span><span class="marcos-attr-val">Nano Banana Pro</span></div>
+        <div class="marcos-attr-row"><span class="marcos-attr-key">Veo 3</span><span class="marcos-attr-val">Subject reference image</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <div class="card">
+        <div class="card-title">6 Ángulos — Identidad Visual Completa</div>
+        <div class="marcos-angles">
+          <div class="angle-card">
+            <div class="num">Ángulo 01</div>
+            <div class="title">Oficina Groinversia</div>
+            <div class="desc">Look Marcos: fondo con logo, luminarias negras, pared blanca. Talking head standard.</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Blazer navy</div>
+              <div class="outfit-chip">Camisa celeste abierta</div>
+            </div>
+          </div>
+          <div class="angle-card">
+            <div class="num">Ángulo 02</div>
+            <div class="title">On-site Castelldefels</div>
+            <div class="desc">Exterior en obra / terreno VALENTINA40. Fondo mediterráneo real. Luz natural dura.</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Chaqueta técnica oscura</div>
+              <div class="outfit-chip">Camiseta básica navy</div>
+            </div>
+          </div>
+          <div class="angle-card">
+            <div class="num">Ángulo 03</div>
+            <div class="title">Look Urbano Barcelona</div>
+            <div class="desc">Calle o paseo marítimo BCN. Casual-profesional. Para contenido de lifestyle inversor.</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Trench beige</div>
+              <div class="outfit-chip">Pantalón chino oscuro</div>
+            </div>
+          </div>
+          <div class="angle-card">
+            <div class="num">Ángulo 04</div>
+            <div class="title">Sala de Reuniones</div>
+            <div class="desc">Mesa de madera, pantalla de fondo, documentos. Para reels de due diligence y proceso.</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Camisa blanca</div>
+              <div class="outfit-chip">Blazer gris antracita</div>
+            </div>
+          </div>
+          <div class="angle-card">
+            <div class="num">Ángulo 05</div>
+            <div class="title">Interior Premium</div>
+            <div class="desc">Interior de una de las casas de VALENTINA40. Cocina equipada, salón luminoso, piscina.</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Polo premium crudo</div>
+              <div class="outfit-chip">Pantalón chino beige</div>
+            </div>
+          </div>
+          <div class="angle-card">
+            <div class="num">Ángulo 06</div>
+            <div class="title">Laptop + Datos</div>
+            <div class="desc">Plano medio con laptop, señalando pantalla. Para reels de "cómo funciona la plataforma".</div>
+            <div class="outfit-row">
+              <div class="outfit-chip">Jersey cuello redondo gris</div>
+              <div class="outfit-chip">Sin blazer, casual</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Prompt Maestro Marcos — Veo 3 / Higgsfield</div>
+        <div class="prompt-box" id="marcos-master-prompt"><<<450159d6-d451-4064-8d59-a093a5007f8c>>> speaking directly to camera. Confident Spanish male financial expert, early 40s, dark brown short hair with natural volume, 3-day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin. Navy blue slim-fit blazer, light blue open-collar dress shirt, no tie. Fixed camera on tripod, chest height, slightly below eye level — NOT handheld, NOT selfie, NO wide-angle distortion. Modern white office background, Groinversia logo in black letters on wall left, black linear pendant lights with subtle gold accent, dark walnut table, dark green chair, soft bokeh. Warm natural diffused light, no harsh shadows. 9:16 vertical, 24fps, static camera, no movement. Photorealistic, natural skin, authentic talking-head — not AI looking.<button class="copy-btn" onclick="copyEl('marcos-master-prompt',this)">copy</button></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Estado del personaje Marcos ✅ Listo</div>
+        <div class="brand-list">
+          <div class="brand-item"><strong>Element creado y activo</strong> — ID <code style="font-size:10px">450159d6-d451-4064-8d59-a093a5007f8c</code>. Referencia extraída de los vídeos reales de Groinversia.</div>
+          <div class="brand-item">En Higgsfield: usa <code style="font-size:10px">&lt;&lt;&lt;450159d6-d451-4064-8d59-a093a5007f8c&gt;&gt;&gt;</code> en el prompt con Nano Banana Pro, Seedream, Cinema Studio o Kling 3.0 (con start_image).</div>
+          <div class="brand-item">En Veo 3 (Google AI Studio): sube <strong>REFERENCE_FRAME_PERSONAJE.jpg</strong> como Subject Reference. La cara de Marcos queda bloqueada en cada clip.</div>
+          <div class="brand-item">Cambiar outfit en cada reel — cara, gafas, barba y set Groinversia son invariables. Solo cambia la ropa según el ángulo elegido.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW: CALENDARIO ═══ -->
+<div class="view" id="view-cal">
+  <div class="cal-header">
+    <div style="font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-0.3px">Calendario Editorial — 8 Semanas</div>
+    <div class="cal-legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#1A5FAB"></div>Reel Marcos</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Carrousel</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal)"></div>Trailer/Cinemático</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#7B52DB"></div>Story / Cuenta regresiva</div>
+    </div>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-head" style="background:var(--ink2)"></div>
+    <div class="cal-head">Lun</div>
+    <div class="cal-head">Mar</div>
+    <div class="cal-head">Mié</div>
+    <div class="cal-head">Jue</div>
+    <div class="cal-head">Vie</div>
+    <div class="cal-head">Sáb</div>
+    <div class="cal-head">Dom</div>
+
+    <!-- SEMANA 1 -->
+    <div class="cal-week-label">S1<br><span style="font-weight:400;font-size:9px">Awareness</span></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: ¿Qué es el crowdfunding inmobiliario?</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: 5 términos que debes conocer</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: No eres propietario. Eres el banco.</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: Poll "¿Conoces el crowdlending?"</div></div>
+
+    <!-- SEMANA 2 -->
+    <div class="cal-week-label">S2<br><span style="font-weight:400;font-size:9px">Awareness</span></div>
+    <div class="cal-cell"><div class="cal-item trailer">🎥 Trailer VALENTINA40</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: Torreblanca 70 — caso de éxito</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Cómo funciona en 3 pasos</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: "¿Cuánto rentaría tu 1ª inversión?"</div></div>
+
+    <!-- SEMANA 3 -->
+    <div class="cal-week-label">S3<br><span style="font-weight:400;font-size:9px">Consideración</span></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: ¿Qué garantiza tu inversión?</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: El proceso de due diligence</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Por qué el 10% anual es posible</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: Detrás de escena VALENTINA40</div></div>
+
+    <!-- SEMANA 4 -->
+    <div class="cal-week-label">S4<br><span style="font-weight:400;font-size:9px">Consideración</span></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: Groinversia vs banco — comparativa</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: 3 preguntas antes de invertir</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Token vs acción — la diferencia</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: Cuenta atrás precampaña</div></div>
+
+    <!-- SEMANA 5 -->
+    <div class="cal-week-label">S5<br><span style="font-weight:400;font-size:9px">Conversión</span></div>
+    <div class="cal-cell"><div class="cal-item trailer">🎥 Cinematic VALENTINA40 #2</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: VALENTINA40 — el proyecto en detalle</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-item reel" style="margin:8px">Reel: Tu primera inversión paso a paso</div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: "Abre campaña en 3 días"</div></div>
+
+    <!-- SEMANA 6 -->
+    <div class="cal-week-label">S6<br><span style="font-weight:400;font-size:9px">Conversión</span></div>
+    <div class="cal-cell"><div class="cal-item reel">🔴 Reel: VALENTINA40 — campaña abierta</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-item carrusel" style="margin:8px">Carrusel: 500€ son suficientes</div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Caso real — así funciona una operación</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: % financiado en tiempo real</div></div>
+
+    <!-- SEMANA 7 -->
+    <div class="cal-week-label">S7<br><span style="font-weight:400;font-size:9px">Urgencia</span></div>
+    <div class="cal-cell"><div class="cal-item carrusel">Carrusel: Blockchain en inmobiliario</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Quedan X plazas en VALENTINA40</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: El perfil del inversor Groinversia</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: Últimas horas cuenta atrás</div></div>
+
+    <!-- SEMANA 8 -->
+    <div class="cal-week-label">S8<br><span style="font-weight:400;font-size:9px">Fidelización</span></div>
+    <div class="cal-cell"><div class="cal-item reel">Reel: Gracias a 3K inversores</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-item carrusel" style="margin:8px">Carrusel: Próximo proyecto — teaser</div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item trailer">🎥 Recap proyectos devueltos 2025</div></div>
+    <div class="cal-cell"></div>
+    <div class="cal-cell"><div class="cal-item story">Story: "¿Qué tipo de contenido quieres ver?"</div></div>
+  </div>
+</div>
+
+<!-- ═══ VIEW: CARROUSELES ═══ -->
+<div class="view" id="view-carruseles">
+  <div style="margin-bottom:18px">
+    <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px;letter-spacing:-0.3px">Carrouseles — Genera guión + slides</div>
+    <div style="font-size:12px;color:var(--text2)">Haz clic en un tema para ver el guión completo, copys por slide y el diseño generado en Inter Tight</div>
+  </div>
+  <div class="topic-grid" id="carousel-grid"></div>
+</div>
+
+<!-- ═══ VIEW: REELS MARCOS ═══ -->
+<div class="view" id="view-reels">
+  <div style="margin-bottom:18px">
+    <div style="font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px;letter-spacing:-0.3px">Reels Marcos — Guión + Frames + Prompts Veo 3</div>
+    <div style="font-size:12px;color:var(--text2)">Cada reel incluye cambio de ropa, 6 frames y prompts listos para pegar en Veo 3</div>
+  </div>
+  <div class="reel-topic-grid" id="reel-grid"></div>
+</div>
+
+<!-- ═══ VIEW: TRAILER ═══ -->
+<div class="view" id="view-trailer">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div class="trailer-card">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px">Trailer Cinemático</div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px">VALENTINA40</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:16px">Castelldefels · 5 casas de lujo · 2M€ · 14 meses · 10% anual</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:6px">Estilo referencia: @notkurtgodel — planos contemplativos, sin diálogo, títulos tipográficos, música ambiental.</div>
+        <div class="scene-list">
+          <div class="scene-item">
+            <div class="scene-tc">00:00</div>
+            <div><div class="scene-desc">Negro total. Silencio. Aparece: "Castelldefels. 2025." en Inter Tight blanco.</div><div class="scene-cam">Cut a negro</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:03</div>
+            <div><div class="scene-desc">Plano aéreo lento sobre línea de costa. Amanecer mediterráneo. Mar en calma. Comienza música ambiental minimalista.</div><div class="scene-cam">Drone descending shot · 35mm equiv.</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:12</div>
+            <div><div class="scene-desc">Detalle arquitectónico: hormigón visto + madera natural. Luz lateral rasante. Lento reveal de fachada.</div><div class="scene-cam">Macro estático → slow pan</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:20</div>
+            <div><div class="scene-desc">Piscina comunitaria. Reflejo del cielo en el agua. Cámara a nivel del agua, ligeramente por encima.</div><div class="scene-cam">Low angle estático · bokeh largo</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:28</div>
+            <div><div class="scene-desc">Interior: cocina equipada, luz natural entrando por ventanal. Electrodomésticos Bosch. Silencio + sonido diegético suave.</div><div class="scene-cam">Dolly lento → foco en ventana</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:36</div>
+            <div><div class="scene-desc">Jardín privado. Brisa mueve vegetación. Sombra cruzando suelo. Cut a negro.</div><div class="scene-cam">Estático · luz natural dura</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:42</div>
+            <div><div class="scene-desc">Títulos en Inter Tight, aparición escalonada: "192–200 m²" / "4 hab · 3 baños" / "Aerotermia A+" / "Entrega 2027"</div><div class="scene-cam">Fondo negro · fade in secuencial</div></div>
+          </div>
+          <div class="scene-item">
+            <div class="scene-tc">00:52</div>
+            <div><div class="scene-desc">Plano final: fachada exterior al atardecer. Logo Groinversia bottom-right. Texto: "Desde 500€ · 10% anual · groinversia.com"</div><div class="scene-cam">Wide shot estático · fade to black</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <div class="card-title">Prompts Veo 3 — Escena por Escena</div>
+        <div class="prompt-block">
+          <div class="prompt-lbl"><div class="prompt-lbl-text">Escena 1 — Aéreo costero</div><button class="copy-btn" onclick="copyPB(this)">copy</button></div>
+          <div class="prompt-code">Slow cinematic aerial drone shot descending over Mediterranean coastline at dawn, Castelldefels beach area near Barcelona. Calm sea reflecting golden sunrise light. No people visible. Muted desaturated color grade, slight blue cast on water, warm gold on horizon. 9:16 vertical, 8 seconds, 24fps, no camera shake, silent — no voiceover, ambient sound only.</div>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-lbl"><div class="prompt-lbl-text">Escena 2 — Detalle arquitectónico</div><button class="copy-btn" onclick="copyPB(this)">copy</button></div>
+          <div class="prompt-code">Extreme close-up macro shot of raw concrete wall meeting natural oak wood panel. Lateral raking sunlight casting sharp shadows. Camera slowly pans left revealing texture detail. Contemporary luxury residential architecture. No people. Color: desaturated, warm neutrals, shadows with cool blue tones. 9:16 vertical, 8 seconds, 24fps, static tripod shot.</div>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-lbl"><div class="prompt-lbl-text">Escena 3 — Piscina</div><button class="copy-btn" onclick="copyPB(this)">copy</button></div>
+          <div class="prompt-code">Camera at water level of a luxury swimming pool, looking across the surface. Sky reflection in calm water. Gentle ripple from slight breeze. Late afternoon light. Long focal length, extreme bokeh on background. Contemporary Mediterranean luxury house barely visible behind. No people. Color grade: cold water tones, warm ambient sky. 9:16 vertical, 8 seconds, 24fps.</div>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-lbl"><div class="prompt-lbl-text">Escena 4 — Interior cocina</div><button class="copy-btn" onclick="copyPB(this)">copy</button></div>
+          <div class="prompt-code">Slow dolly push into luxury modern kitchen. High-end appliances (Bosch), white marble countertop, natural wood cabinets. Large window with Mediterranean daylight flooding in. Camera moves slowly toward window. No people. Warm interior light meets cool exterior light. Cinematic, muted. 9:16 vertical, 8 seconds, 24fps.</div>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-lbl"><div class="prompt-lbl-text">Escena 5 — Jardín / brisa</div><button class="copy-btn" onclick="copyPB(this)">copy</button></div>
+          <div class="prompt-code">Static wide shot of a private garden of a luxury home in Mediterranean climate. Gentle breeze moves olive tree branches and ornamental grasses. Long shadow crosses stone pavement. Golden hour light. No people. Silence except ambient nature sounds. Cut to black at end. 9:16 vertical, 8 seconds, 24fps, no camera movement.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Texto final — Títulos Inter Tight</div>
+        <div style="background:var(--ink);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-0.8px">VALENTINA40</div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase">Castelldefels, Barcelona</div>
+          <div style="width:40px;height:1px;background:var(--gold);margin:4px 0"></div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:13px;color:rgba(255,255,255,0.7)">5 casas unifamiliares de lujo<br>192–200 m² · Piscina comunitaria</div>
+          <div style="margin-top:8px;display:flex;gap:12px">
+            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--gold)">10%</div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px">Anual</div></div>
+            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#fff">14m</div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px">Plazo</div></div>
+            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#fff">500€</div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px">Mínimo</div></div>
+          </div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px;letter-spacing:1px">groinversia.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div class="modal-head-info">
+        <div class="modal-eyebrow" id="m-eyebrow"></div>
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-hook" id="m-hook"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-tabs" id="m-tabs"></div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+/* ─── NAV ─── */
+function showView(id){
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['brand','marcos','cal','carruseles','reels','trailer'][i]===id)
+  });
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+}
+
+/* ─── COPY ─── */
+function copyEl(id,btn){
+  const el=document.getElementById(id);
+  const txt=el.innerText.replace('copy','').trim();
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+function copyPB(btn){
+  const code=btn.closest('.prompt-block').querySelector('.prompt-code');
+  navigator.clipboard.writeText(code.innerText).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+
+/* ─── MODAL ─── */
+let activeModal=null;
+function openModal(id,type){
+  activeModal={id,type};
+  const data = type==='carrusel' ? CAROUSELS.find(c=>c.id===id) : REELS.find(r=>r.id===id);
+  document.getElementById('m-eyebrow').textContent=data.eyebrow||'';
+  document.getElementById('m-title').textContent=data.title;
+  document.getElementById('m-hook').textContent=data.hook?`"${data.hook}"`:data.subtitle||'';
+  const tabs = type==='carrusel'
+    ? [['slides','🃏 Slides'],['copy','✍️ Copys'],['prompt','⚡ Prompt IA']]
+    : [['script','📝 Guión'],['frames','🎞 Frames'],['veo3','⚡ Veo 3']];
+  document.getElementById('m-tabs').innerHTML = tabs.map((t,i)=>`<div class="m-tab ${i===0?'active':''}" onclick="switchMTab(this,'${t[0]}')">${t[1]}</div>`).join('');
+  renderMBody(data, type, tabs[0][0]);
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-bg')) document.getElementById('modal-bg').classList.remove('open');
+}
+function switchMTab(el,tab){
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const data = activeModal.type==='carrusel' ? CAROUSELS.find(c=>c.id===activeModal.id) : REELS.find(r=>r.id===activeModal.id);
+  renderMBody(data, activeModal.type, tab);
+}
+function renderMBody(data,type,tab){
+  const body=document.getElementById('m-body');
+  if(type==='carrusel'){
+    if(tab==='slides') body.innerHTML=renderCarouselSlides(data);
+    else if(tab==='copy') body.innerHTML=renderCarouselCopy(data);
+    else body.innerHTML=renderCarouselPrompt(data);
+  } else {
+    if(tab==='script') body.innerHTML=renderReelScript(data);
+    else if(tab==='frames') body.innerHTML=renderReelFrames(data);
+    else body.innerHTML=renderReelVeo3(data);
+  }
+}
+
+/* ─── HIGGSFIELD IMAGE LOADER ─── */
+const HF_CDN = 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/';
+const HF_URL_MAP = {};
+const HF_SUFFIX = '.png';
+// job_id → CDN URL pattern (Higgsfield result format)
+function hfUrl(jobId){
+  const MAP = {
+    '827c77c8-44b6-4a37-b153-71086eefbf60': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061538_827c77c8-44b6-4a37-b153-71086eefbf60.png',
+    '4d114665-fb0c-47a9-8745-90aee493effe': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061556_4d114665-fb0c-47a9-8745-90aee493effe.png',
+    'a7014ca4-315c-4d1e-ba64-161c9687f879': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061601_a7014ca4-315c-4d1e-ba64-161c9687f879.jpeg',
+    '7dfc34b7-76e8-4688-88ad-4b5829e1f564': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061605_7dfc34b7-76e8-4688-88ad-4b5829e1f564.jpeg',
+    '696d27f4-42b5-448b-b272-ee8c95e6eb20': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061609_696d27f4-42b5-448b-b272-ee8c95e6eb20.jpeg',
+    '9f007eb4-1137-4d53-b8af-239d756fc4b9': 'https://d8j0ntlcm91z4.cloudfront.net/user_3AO5YoH5OQSREe6Zpj7qsB7RyJX/hf_20260611_061613_9f007eb4-1137-4d53-b8af-239d756fc4b9.jpeg',
+  };
+  return MAP[jobId] || HF_URL_MAP[jobId] || null;
+}
+
+// Frame job IDs per reel id
+const REEL_FRAME_JOBS = {
+  r01: [
+    '827c77c8-44b6-4a37-b153-71086eefbf60',
+    '4d114665-fb0c-47a9-8745-90aee493effe',
+    'a7014ca4-315c-4d1e-ba64-161c9687f879',
+    '7dfc34b7-76e8-4688-88ad-4b5829e1f564',
+    '696d27f4-42b5-448b-b272-ee8c95e6eb20',
+    '9f007eb4-1137-4d53-b8af-239d756fc4b9',
+  ]
+  // other reels: frames generated on demand
+};
+
+function renderCarouselSlides(d){
+  const BG = d.darkBg !== false ? '#0B0F19' : '#FFFFFF';
+  const TXT = d.darkBg !== false ? '#FFFFFF' : '#0B0F19';
+  const TXT2 = d.darkBg !== false ? 'rgba(255,255,255,0.55)' : '#3D4A6B';
+  const GOLD = '#C8A84B';
+
+  const svgSlides = d.slides.map((s,i) => {
+    const isPortada = i === 0;
+    const isCTA = i === d.slides.length - 1;
+    const bgColor = isPortada ? '#0B0F19' : (isCTA ? '#0B0F19' : BG);
+    const txtColor = (isPortada || isCTA) ? '#FFFFFF' : TXT;
+    const txt2Color = (isPortada || isCTA) ? 'rgba(255,255,255,0.55)' : TXT2;
+
+    return `<div style="display:inline-block;vertical-align:top;width:180px;flex-shrink:0;cursor:pointer" onclick="expandSlide(${i},'${d.id}')">
+      <div style="position:relative;width:180px;height:225px;background:${bgColor};border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);transition:transform 0.15s" onmouseenter="this.style.transform='scale(1.03)'" onmouseleave="this.style.transform='scale(1)'">
+        <div style="position:absolute;top:10px;left:12px;font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:700;color:${GOLD};letter-spacing:1.5px;text-transform:uppercase">${String(i+1).padStart(2,'0')}</div>
+        ${isPortada ? `<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;padding:0 16px;width:100%">
+          <div style="font-family:'Inter Tight',sans-serif;font-size:16px;font-weight:900;color:#fff;line-height:1.15;letter-spacing:-0.5px;margin-bottom:8px">${s.headline}</div>
+          <div style="width:28px;height:2px;background:${GOLD};margin:0 auto 8px"></div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:rgba(255,255,255,0.5);line-height:1.4">${s.sub}</div>
+        </div>` : `<div style="position:absolute;bottom:0;left:0;right:0;padding:14px 12px">
+          <div style="font-size:22px;margin-bottom:6px;opacity:0.7">${s.icon}</div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:800;color:${txtColor};line-height:1.2;letter-spacing:-0.3px;margin-bottom:5px">${s.headline}</div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:${txt2Color};line-height:1.4">${s.sub}</div>
+          ${s.cta ? `<div style="margin-top:8px;font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:700;color:${GOLD};letter-spacing:0.5px">${s.cta} →</div>` : ''}
+        </div>`}
+        <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:${GOLD}"></div>
+      </div>
+      <div style="font-family:'Inter Tight',sans-serif;font-size:9px;color:var(--text3);text-align:center;margin-top:5px">${s.label}</div>
+    </div>`;
+  });
+
+  return `
+  <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 4px 12px;scrollbar-width:thin">
+    ${svgSlides.join('')}
+  </div>
+  <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+    <div style="font-size:10px;padding:4px 10px;background:var(--gold-pale);border:1px solid rgba(200,168,75,0.2);border-radius:5px;color:var(--gold);font-weight:600">1080×1350 px · 4:5</div>
+    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">Inter Tight · Bold 800 titulares</div>
+    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">Acento #C8A84B</div>
+    <div style="font-size:10px;padding:4px 10px;background:var(--surface2);border-radius:5px;color:var(--text2);font-weight:500">${d.slides.length} slides</div>
+    <button onclick="exportCarousel('${d.id}')" style="margin-left:auto;font-size:10px;font-weight:700;padding:4px 14px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:5px;cursor:pointer">⬇ Exportar copys</button>
+  </div>
+  <!-- EXPANDED SLIDE MODAL -->
+  <div id="slide-expand-${d.id}" style="display:none;margin-top:16px;background:var(--ink);border-radius:10px;padding:0;overflow:hidden;position:relative"></div>`;
+}
+
+function expandSlide(idx, carouselId){
+  const d = CAROUSELS.find(c=>c.id===carouselId);
+  const s = d.slides[idx];
+  const GOLD = '#C8A84B';
+  const el = document.getElementById(`slide-expand-${carouselId}`);
+  el.style.display = 'block';
+  const isPortada = idx === 0;
+  el.innerHTML = `
+    <div style="display:flex;gap:0">
+      <div style="width:300px;flex-shrink:0;aspect-ratio:4/5;background:#0B0F19;position:relative;display:flex;flex-direction:column;justify-content:${isPortada?'center':'flex-end'};padding:28px;overflow:hidden">
+        <div style="position:absolute;top:16px;left:18px;font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:700;color:${GOLD};letter-spacing:2px">${String(idx+1).padStart(2,'0')} / ${d.slides.length}</div>
+        <div style="position:absolute;top:16px;right:18px;font-size:11px;color:rgba(255,255,255,0.3);font-family:'Inter Tight',sans-serif">groinversia</div>
+        ${isPortada ? `<div style="text-align:center">
+          <div style="font-family:'Inter Tight',sans-serif;font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:12px">${s.headline}</div>
+          <div style="width:40px;height:2px;background:${GOLD};margin:0 auto 12px"></div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5">${s.sub}</div>
+        </div>` : `<div>
+          <div style="font-size:32px;margin-bottom:12px;opacity:0.8">${s.icon}</div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px;line-height:1.15;margin-bottom:10px">${s.headline}</div>
+          <div style="width:32px;height:2px;background:${GOLD};margin-bottom:10px"></div>
+          <div style="font-family:'Inter Tight',sans-serif;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6">${s.sub}</div>
+          ${s.cta ? `<div style="margin-top:14px;font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:700;color:${GOLD}">${s.cta} →</div>` : ''}
+        </div>`}
+        <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${GOLD}"></div>
+      </div>
+      <div style="flex:1;padding:24px;background:#fff">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px">Copy listo para publicar</div>
+        <div style="background:#080F1C;border-radius:7px;padding:14px;font-family:monospace;font-size:11px;color:#A8C4E0;line-height:1.7;margin-bottom:12px">HEADLINE: ${s.headline}
+SUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="navigator.clipboard.writeText('HEADLINE: ${s.headline.replace(/'/g,"\\'")}\\nSUBTEXT: ${s.sub.replace(/'/g,"\\'")}${s.cta?'\\nCTA: '+s.cta:''}');this.textContent='✓ Copiado';this.style.color='#5DD879';setTimeout(()=>{this.textContent='Copiar copy';this.style.color=''},2000)" style="font-size:11px;font-weight:700;padding:6px 16px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:5px;cursor:pointer">Copiar copy</button>
+          <button onclick="document.getElementById('slide-expand-${carouselId}').style.display='none'" style="font-size:11px;padding:6px 16px;background:var(--surface2);color:var(--text2);border:none;border-radius:5px;cursor:pointer">Cerrar</button>
+          ${idx > 0 ? `<button onclick="expandSlide(${idx-1},'${carouselId}')" style="font-size:11px;padding:6px 12px;background:var(--surface2);color:var(--text2);border:none;border-radius:5px;cursor:pointer">← Anterior</button>` : ''}
+          ${idx < d.slides.length-1 ? `<button onclick="expandSlide(${idx+1},'${carouselId}')" style="font-size:11px;padding:6px 12px;background:var(--ink);color:#fff;border:none;border-radius:5px;cursor:pointer">Siguiente →</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function exportCarousel(carouselId){
+  const d = CAROUSELS.find(c=>c.id===carouselId);
+  const txt = d.slides.map((s,i)=>`--- SLIDE ${i+1}: ${s.label} ---\nHEADLINE: ${s.headline}\nSUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}`).join('\n\n');
+  navigator.clipboard.writeText(txt).then(()=>alert('Todos los copys copiados al portapapeles'));
+}
+
+function renderCarouselCopy(d){
+  return d.slides.map((s,i)=>`
+    <div class="prompt-block">
+      <div class="prompt-lbl">
+        <div class="prompt-lbl-text">Slide ${i+1} — ${s.label}</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+      </div>
+      <div class="prompt-code">HEADLINE: ${s.headline}
+SUBTEXT: ${s.sub}
+${s.cta?'CTA: '+s.cta:''}</div>
+    </div>`).join('');
+}
+function renderCarouselPrompt(d){
+  return `<div class="prompt-block">
+    <div class="prompt-lbl"><div class="prompt-lbl-text">Prompt IA para generar el carrusel</div><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button></div>
+    <div class="prompt-code">${d.aiPrompt}</div>
+  </div>`;
+}
+function renderReelScript(d){
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
+    <strong>Marcos</strong> · ${d.angle} · ${d.outfit} · 9:16 · 60s · 24fps · Cámara fija trípode
+  </div>
+  ${d.script.map(s=>`<div class="script-row">
+    <div class="script-seg">${s.seg}</div>
+    <div><div class="script-spoken">${s.spoken}</div><div class="script-action">${s.action}</div></div>
+    <div class="script-gesture">${s.gesture}</div>
+  </div>`).join('')}`;
+}
+function renderReelFrames(d){
+  const jobs = REEL_FRAME_JOBS[d.id] || [];
+  const hasRealFrames = jobs.length === 6;
+  return `
+  <div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div style="font-size:11px;color:var(--text2)">Element: <code style="background:var(--surface);padding:2px 6px;border-radius:3px;font-size:10px;color:var(--gold)">450159d6…</code></div>
+    ${hasRealFrames
+      ? '<div style="font-size:10px;padding:3px 10px;background:#EDFAF6;color:#1A7A5F;border-radius:4px;font-weight:600;border:1px solid rgba(26,122,95,0.2)">✓ Frames generados</div>'
+      : `<div style="font-size:10px;padding:3px 10px;background:#FFF8E6;color:#8A6914;border-radius:4px;font-weight:600;border:1px solid rgba(200,168,75,0.2)">Sin frames aún</div>
+         <button id="gen-btn-${d.id}" onclick="generateFrames('${d.id}',this)" style="font-size:11px;font-weight:700;padding:5px 16px;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.35);border-radius:6px;cursor:pointer">⚡ Generar frames de Marcos</button>`
+    }
+  </div>
+  <div class="frames-grid">${d.frames.map((f,i)=>{
+    const jobId = jobs[i];
+    const imgUrl = jobId ? hfUrl(jobId) : null;
+    return `<div class="frame-item">
+      <div class="frame-vis" style="${imgUrl?'background:transparent;padding:0':''}" >
+        <div class="frame-vis-num">F${i+1}</div>
+        ${imgUrl
+          ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div style="display:none;flex-direction:column;align-items:center;gap:6px;position:absolute;inset:0;background:var(--ink);justify-content:center"><div style="font-size:22px;opacity:0.5">${f.emoji}</div><div style="font-size:9px;color:rgba(255,255,255,0.4)">procesando…</div></div>`
+          : `<div class="frame-emoji">${f.emoji}</div><div class="frame-lbl">${f.label}</div>`
+        }
+        <div class="frame-vis-outfit" style="z-index:2">${d.outfitShort}</div>
+      </div>
+      <div class="frame-info">
+        <div class="frame-info-title">${f.label}</div>
+        <div class="frame-info-desc">${f.desc}</div>
+        ${jobId ? `<div style="font-family:monospace;font-size:8px;color:var(--text3);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${jobId}">${jobId.substring(0,18)}…</div>` : ''}
+      </div>
+    </div>`;
+  }).join('')}
+  </div>`;
+}
+function renderReelVeo3(d){
+  const jobs = REEL_FRAME_JOBS[d.id] || [];
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:#F0F8FF;border:1px solid #BFD8F0;border-radius:7px;font-size:11px;color:#1A4A6A;line-height:1.5">
+    <strong>Instrucciones Veo 3:</strong> En Google AI Studio → Veo 3, sube cada frame como <em>Subject Reference Image</em>. Pega el prompt del frame correspondiente. Parámetros: <strong>8s · 9:16 · 24fps</strong>. Añade siempre: <code>static camera, no camera movement, no zoom</code>
+  </div>
+  ${d.veo3.map((p,i)=>{
+    const jobId = jobs[i];
+    const imgUrl = jobId ? hfUrl(jobId) : null;
+    return `<div class="prompt-block" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px">
+      <div style="display:flex;gap:0">
+        ${imgUrl ? `<div style="width:60px;flex-shrink:0;overflow:hidden"><img src="${imgUrl}" style="width:60px;height:75px;object-fit:cover;display:block" onerror="this.parentElement.style.display='none'" /></div>` : `<div style="width:60px;flex-shrink:0;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:20px">${d.frames[i]?.emoji||'🎬'}</div>`}
+        <div style="flex:1;padding:10px 12px">
+          <div class="prompt-lbl" style="margin-bottom:6px">
+            <div class="prompt-lbl-text">F${i+1} — ${p.label}</div>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+          </div>
+          <div class="prompt-code" style="font-size:10px;line-height:1.6">${p.text}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('')}`;
+}
+
+/* ─── DATA: CAROUSELS ─── */
+const CAROUSELS = [
+  {
+    id:'c01',eyebrow:'CARROUSEL 01 · AWARENESS',
+    title:'5 términos que debes conocer antes de invertir',
+    hook:'El lenguaje financiero no tiene que ser un obstáculo',
+    subtitle:'Educativo · 6 slides · Fondo oscuro',
+    bg:'Navy #0B0F19 · texto blanco', darkBg:true,
+    slides:[
+      {icon:'📖',label:'Portada',headline:'5 términos que debes conocer antes de invertir',sub:'Si el lenguaje financiero te frena, esto es para ti.',cta:''},
+      {icon:'🏦',label:'Crowdlending',headline:'Crowdlending',sub:'Prestas dinero a un proyecto. A cambio recibes intereses. Tú no eres propietario de nada.',cta:''},
+      {icon:'📄',label:'Deuda tokenizada',headline:'Deuda tokenizada',sub:'Tu préstamo está representado por tokens digitales en blockchain. Trazable, seguro, inmutable.',cta:''},
+      {icon:'⏱',label:'Estructura bullet',headline:'Estructura bullet',sub:'Capital + intereses se pagan juntos al vencimiento. Sin pagos parciales durante el plazo.',cta:''},
+      {icon:'🔐',label:'Aval de holding',headline:'Aval de holding',sub:'Una empresa matriz garantiza la deuda. Si la filial no paga, la matriz responde.',cta:''},
+      {icon:'🚀',label:'CTA',headline:'Ahora ya sabes hablar de inversión inmobiliaria.',sub:'Desde 500€. groinversia.com',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de Instagram de 6 slides para Groinversia sobre "5 términos financieros del crowdfunding inmobiliario". 
+Formato: 1080x1350px, fondo #0B0F19, tipografía Inter Tight, acento dorado #C8A84B.
+Cada slide debe tener: número de slide top-left en gris, término grande en blanco (Inter Tight Bold 700), definición breve en gris claro (Inter Regular 400, max 2 líneas), línea dorada decorativa bottom. 
+Slide 1: portada con título completo. Slides 2-5: un término por slide. Slide 6: CTA con logo Groinversia y "Desde 500€".
+Términos: Crowdlending, Deuda tokenizada, Estructura bullet, Aval de holding, Token de deuda.`
+  },
+  {
+    id:'c02',eyebrow:'CARROUSEL 02 · CONSIDERACIÓN',
+    title:'Groinversia vs banco: la comparativa real',
+    hook:'Tu banco te da un 2,5%. Aquí puedes obtener hasta el 10%.',
+    subtitle:'Comparativa · 5 slides · Fondo claro',
+    bg:'Blanco #FFFFFF · texto oscuro · gold accent', darkBg:false,
+    slides:[
+      {icon:'⚡',label:'Portada',headline:'Tu banco vs Groinversia',sub:'Los números que tu gestora no quiere que veas.',cta:''},
+      {icon:'📉',label:'Banco',headline:'Depósito bancario: 2,5% anual',sub:'Dinero bloqueado. Sin saber dónde está. Sin elegir proyectos. Sin transparencia.',cta:''},
+      {icon:'📈',label:'Groinversia',headline:'Groinversia: hasta 10% anual',sub:'Operación concreta. Plazo definido. Garantía hipotecaria. Tú decides dónde va tu dinero.',cta:''},
+      {icon:'⚖️',label:'Diferencia',headline:'La diferencia real',sub:'No es promesa. Es contrato. Condiciones pactadas desde el día 1. Sin letra pequeña.',cta:''},
+      {icon:'🎯',label:'CTA',headline:'¿Para quién es Groinversia?',sub:'Para quien quiere más control sobre su dinero. Desde 500€.',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel comparativo de 5 slides para Groinversia sobre "Banco vs Groinversia". 
+Formato: 1080x1350px, fondo blanco, tipografía Inter Tight, acento dorado #C8A84B, navy #0B0F19.
+Slide 1: portada impactante, titular grande "Tu banco vs Groinversia", fondo negro con acento dorado.
+Slide 2: datos del banco (2,5%, depósito genérico, sin control), iconos negativos en rojo suave.
+Slide 3: datos de Groinversia (10%, operación concreta, garantía, control), iconos positivos en dorado.
+Slide 4: tabla comparativa lado a lado. Slide 5: CTA con logo y "Desde 500€ groinversia.com".`
+  },
+  {
+    id:'c03',eyebrow:'CARROUSEL 03 · CONVERSIÓN',
+    title:'VALENTINA40 — El proyecto en detalle',
+    hook:'5 casas de lujo en Castelldefels. 2M€. 10% anual. 14 meses.',
+    subtitle:'Proyecto · 7 slides · Inmersivo',
+    bg:'Navy + imágenes del proyecto + gold', darkBg:true,
+    slides:[
+      {icon:'🏡',label:'Portada',headline:'VALENTINA40',sub:'Castelldefels, Barcelona. La oportunidad está abierta.',cta:''},
+      {icon:'📍',label:'Ubicación',headline:'Castelldefels',sub:'20 min de Barcelona. Litoral mediterráneo. Colegios internacionales. Playa y montaña.',cta:''},
+      {icon:'🏗',label:'El proyecto',headline:'5 casas de lujo',sub:'192–200 m² · 4 hab · 3-4 baños · Jardín privado · Piscina comunitaria · Aerotermia A+',cta:''},
+      {icon:'💰',label:'La inversión',headline:'Tu posición como inversor',sub:'Prestas capital a la promotora. Recibes el 10% anual. A vencimiento: capital + intereses.',cta:''},
+      {icon:'🔐',label:'Garantía',headline:'Aval solidario del holding',sub:'La sociedad matriz garantiza tu inversión. Control riguroso del grupo grohábitat.',cta:''},
+      {icon:'📊',label:'Números',headline:'Los números clave',sub:'Objetivo: 2.000.000€ · Plazo: 14 meses · Interés: 10% anual · Ticket mínimo: 500€',cta:''},
+      {icon:'🚀',label:'CTA',headline:'La campaña está abierta.',sub:'Invierte desde 500€ en groinversia.com',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de presentación de proyecto de 7 slides para Groinversia sobre el proyecto VALENTINA40.
+Formato: 1080x1350px, fondo navy #0B0F19, tipografía Inter Tight, acento dorado #C8A84B.
+Slide 1: portada hero "VALENTINA40" en grande, "Castelldefels · Barcelona" en letra pequeña gold.
+Slides 2-6: cada uno con icono elegante, titular en blanco, descripción en gris, línea dorada divisoria.
+Datos clave: 5 casas lujo · 192-200m² · 4hab · jardín + piscina · 10% anual · 14 meses · 2M€ · 500€ mínimo · aval holding.
+Slide 7: CTA "Campaña abierta" + logo Groinversia + URL.`
+  },
+  {
+    id:'c04',eyebrow:'CARROUSEL 04 · AWARENESS',
+    title:'Cómo funciona el proceso de due diligence',
+    hook:'Antes de publicar un proyecto en Groinversia, pasa por 6 filtros.',
+    subtitle:'Proceso · 7 slides · Trust-building',
+    bg:'Blanco · iconos lineales · minimalista', darkBg:false,
+    slides:[
+      {icon:'🔍',label:'Portada',headline:'¿Cómo filtramos los proyectos?',sub:'Antes de que lo veas en Groinversia, ha pasado por todo esto.',cta:''},
+      {icon:'1️⃣',label:'Paso 1',headline:'Solicitud del promotor',sub:'El promotor envía la documentación del proyecto: memoria, tasación, licencias, plan financiero.',cta:''},
+      {icon:'2️⃣',label:'Paso 2',headline:'Análisis de viabilidad',sub:'Equipo interno evalúa rentabilidad, riesgo, mercado local y perfil del promotor.',cta:''},
+      {icon:'3️⃣',label:'Paso 3',headline:'Tasación independiente',sub:'Tasador externo certifica el valor del activo. No es nuestra cifra, es la del mercado.',cta:''},
+      {icon:'4️⃣',label:'Paso 4',headline:'Estructura de garantías',sub:'Definimos el aval, la garantía hipotecaria o la estructura de colateral. Todo por escrito.',cta:''},
+      {icon:'5️⃣',label:'Paso 5',headline:'Revisión legal',sub:'Abogados externos validan la estructura de la operación conforme a normativa CNMV.',cta:''},
+      {icon:'✅',label:'Publicación',headline:'Solo entonces se publica.',sub:'Si el proyecto llega aquí, es porque ha pasado todos los filtros. Transparencia total.',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de proceso de 7 slides para Groinversia sobre due diligence de proyectos.
+Formato: 1080x1350px, fondo blanco, iconos lineales minimalistas, Inter Tight, acento #C8A84B.
+Slides 1: portada "¿Cómo filtramos los proyectos?" con línea dorada.
+Slides 2-6: un paso del proceso por slide, numerados del 1 al 5, cada uno con icono, título del paso y descripción breve.
+Slide 7: conclusión "Solo entonces se publica" con checkmark dorado.
+Estilo: limpio, corporativo pero accesible. Sin fondo de colores fuertes.`
+  },
+  {
+    id:'c05',eyebrow:'CARROUSEL 05 · FIDELIZACIÓN',
+    title:'Torreblanca 70 — Un caso de éxito devuelto',
+    hook:'149 inversores · 2.2M€ · 22% de rentabilidad total en 24 meses.',
+    subtitle:'Social proof · 6 slides · Trust-building',
+    bg:'Navy → gold gradient · premium', darkBg:true,
+    slides:[
+      {icon:'🏆',label:'Portada',headline:'TORREBLANCA 70',sub:'Sant Cugat del Vallès. Devuelto. 100% financiado.',cta:''},
+      {icon:'👥',label:'Inversores',headline:'149 inversores confiaron',sub:'Desde 500€. Diversidad de perfiles. Un objetivo común: hacer crecer su capital.',cta:''},
+      {icon:'💰',label:'Capital',headline:'2.200.000€ devueltos',sub:'Capital + intereses. A vencimiento. Como se pactó el primer día.',cta:''},
+      {icon:'📈',label:'Rentabilidad',headline:'22% de rentabilidad total',sub:'En 24 meses. Interés fijo. Sin sorpresas. Sin volatilidad.',cta:''},
+      {icon:'🔒',label:'Proceso',headline:'Así funciona siempre',sub:'Plazos claros. Condiciones pactadas. Devolución al vencimiento. Sin excepciones.',cta:''},
+      {icon:'🚀',label:'CTA',headline:'¿Cuál será tu próximo proyecto?',sub:'Groinversia. Desde 500€.',cta:'Ver proyectos abiertos → enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de caso de éxito de 6 slides para Groinversia sobre el proyecto TORREBLANCA 70.
+Formato: 1080x1350px, fondo navy #0B0F19, tipografía Inter Tight, números en dorado #C8A84B grandes y visibles.
+Slide 1: portada "TORREBLANCA 70" hero, "DEVUELTO" en badge dorado, "Sant Cugat del Vallès".
+Slides 2-5: una métrica clave por slide con número enorme en dorado y explicación en blanco/gris.
+Métricas: 149 inversores, 2.200.000€ devueltos, 22% rentabilidad total, 24 meses plazo.
+Slide 6: CTA "El siguiente proyecto está abierto" + logo Groinversia.`
+  },
+  {
+    id:'c06',eyebrow:'CARROUSEL 06 · CONVERSIÓN',
+    title:'500€ son suficientes para empezar',
+    hook:'La barrera de entrada ya no es el capital. Es la decisión.',
+    subtitle:'Empoderamiento · 5 slides · CTA fuerte',
+    bg:'Blanco + accent gold + tipografía grande', darkBg:false,
+    slides:[
+      {icon:'💡',label:'Portada',headline:'500€ son suficientes.',sub:'La barrera de entrada al inmobiliario acaba de desaparecer.',cta:''},
+      {icon:'❌',label:'Antes',headline:'Antes de la tokenización',sub:'Inmobiliario = 50.000€ de entrada. Hipoteca. Notario. Años de espera.',cta:''},
+      {icon:'✅',label:'Ahora',headline:'Ahora con Groinversia',sub:'500€. Digital. Sin intermediarios. Con condiciones pactadas. En un día.',cta:''},
+      {icon:'📊',label:'Diversifica',headline:'Diversifica desde 500€',sub:'500€ en VALENTINA40 + 500€ en el próximo proyecto = dos plazos, dos activos, un capital inicial mínimo.',cta:''},
+      {icon:'🎯',label:'CTA',headline:'Tu primera inversión empieza aquí.',sub:'groinversia.com · Enlace en bio',cta:'Regístrate gratis'},
+    ],
+    aiPrompt:`Genera un carrusel de conversión de 5 slides para Groinversia sobre la accesibilidad desde 500€.
+Formato: 1080x1350px, fondo blanco, tipografía Inter Tight bold en navy, números grandes, acento dorado.
+Slide 1: portada "500€ son suficientes." titular muy grande, subtítulo pequeño.
+Slide 2: contraste negativo — "Antes del crowdlending" con iconos negativos.
+Slide 3: contraste positivo — "Ahora con Groinversia" con iconos dorados.
+Slide 4: diversificación — gráfico simple mostrando 2 inversiones de 500€.
+Slide 5: CTA fuerte con botón simulado "Regístrate gratis" y logo Groinversia.`
+  },
+];
+
+/* ─── DATA: REELS ─── */
+const REELS = [
+  {
+    id:'r01',
+    eyebrow:'REEL 01 · AWARENESS',
+    title:'¿Qué es el crowdfunding inmobiliario?',
+    hook:'Prestas dinero. Cobras intereses. Recuperas tu capital.',
+    stage:'awareness',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer navy + camisa celeste abierta, sin corbata',
+    outfitShort:'Navy + celeste',
+    script:[
+      {seg:'0–3s',spoken:'¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?',action:'Ceja levantada, lean forward, urgencia',gesture:'Ceja↑\nBoca abre'},
+      {seg:'3–14s',spoken:'Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietaria de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento.',action:'Mano derecha explica, niega suavemente con dedo',gesture:'Niega\ndedo'},
+      {seg:'14–26s',spoken:'El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte.',action:'Conecta las partes con las manos',gesture:'Conecta\nmanos'},
+      {seg:'26–40s',spoken:'Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven.',action:'Cuenta con dedos, énfasis en cada punto',gesture:'3 dedos\nclaro'},
+      {seg:'40–55s',spoken:'No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento.',action:'Manos abiertas, calma, certeza',gesture:'Manos\ncalma'},
+      {seg:'55–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala a cámara, sonrisa',gesture:'Señala\ncierre'},
+    ],
+    frames:[
+      {emoji:'🤨',label:'HOOK',desc:'Lean forward, ceja levantada, urgente'},
+      {emoji:'☝️',label:'NO-PROPIETARIA',desc:'Niega con dedo, tono claro'},
+      {emoji:'🤝',label:'MECÁNICA',desc:'Conecta dos partes con manos'},
+      {emoji:'🤟',label:'VENTAJAS',desc:'3 dedos, énfasis en simplicidad'},
+      {emoji:'🤲',label:'CERTEZA',desc:'Manos abiertas, calma'},
+      {emoji:'👉',label:'CTA',desc:'Señala cámara, sonrisa cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image leans slightly forward toward camera, raises one eyebrow with urgency, mouth beginning to open. Static camera, tripod, chest height, slightly below eye level, no movement. Same modern white office background with "Groinversia" logo on wall left, black linear pendant lights. Warm natural diffused light. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — NO-PROPIETARIA',text:`[Start image: F2]\nThe man in the reference image shakes his index finger slightly — correcting a misconception. Clear direct expression. Static camera, no movement. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECÁNICA',text:`[Start image: F3]\nThe man in the reference image gestures with both hands connecting two sides — explaining a relationship. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — VENTAJAS',text:`[Start image: F4]\nThe man in the reference image counts three points on fingers, leaning forward with conviction. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — CERTEZA',text:`[Start image: F5]\nThe man in the reference image holds both hands open, palms up, calm reassuring gesture. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points his right index finger toward camera, warm confident smile. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r02',
+    eyebrow:'REEL 02 · AWARENESS',
+    title:'No eres propietaria. Eres el banco.',
+    hook:'Hay una diferencia enorme entre comprar un piso e invertir en uno.',
+    stage:'awareness',
+    angle:'Exteriores Barcelona / Paseo Marítimo',
+    outfit:'Chaqueta técnica oscura + camiseta navy',
+    outfitShort:'Técnico oscuro',
+    script:[
+      {seg:'0–3s',spoken:'Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es.',action:'Paseo exterior, tono directo, desenfadado',gesture:'Camina\ndirecto'},
+      {seg:'3–16s',spoken:'Cuando compras un piso, eres propietaria. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal.',action:'Cuenta implicaciones con mano',gesture:'Cuenta\nproblemas'},
+      {seg:'16–30s',spoken:'En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini.',action:'Sonrisa cómplice, gesto de "pequeño banco"',gesture:'Sonrisa\nbanco'},
+      {seg:'30–44s',spoken:'A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada.',action:'Calma, manos limpias',gesture:'Manos\nlimpias'},
+      {seg:'44–57s',spoken:'No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno.',action:'Señala con seguridad',gesture:'Señala\nseguro'},
+      {seg:'57–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala, cierre natural',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🚶',label:'INTRO EXTERIOR',desc:'Exterior BCN, tono desenfadado'},
+      {emoji:'🏠',label:'PROPIETARIA',desc:'Cuenta implicaciones, problemática'},
+      {emoji:'😄',label:'EL BANCO',desc:'Sonrisa cómplice, analogía banco'},
+      {emoji:'🙌',label:'SIN GESTIÓN',desc:'Manos limpias, calma'},
+      {emoji:'🎯',label:'RETORNO FIJO',desc:'Señala con seguridad, certeza'},
+      {emoji:'👉',label:'CTA',desc:'Cierre natural, señala'},
+    ],
+    veo3:[
+      {label:'F1 — INTRO EXTERIOR',text:`[Start image: F1]\nThe man in the reference image walks or stands in an urban exterior setting (Barcelona promenade or street), direct eye contact with camera, casual professional tone. Outdoor natural light. Fixed camera, no camera movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROPIETARIA',text:`[Start image: F2]\nThe man in the reference image counts implications on fingers with a slightly concerned expression. Static camera, outdoor or neutral background. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — EL BANCO',text:`[Start image: F3]\nThe man in the reference image smiles with a knowing expression, gestures as if describing something small, complicit tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — SIN GESTIÓN',text:`[Start image: F4]\nThe man in the reference image holds both hands open, clean clear gesture, relaxed energy. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RETORNO FIJO',text:`[Start image: F5]\nThe man in the reference image points with conviction, confident secure expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera with natural smile, closing energy. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r03',
+    eyebrow:'REEL 03 · CONSIDERACIÓN',
+    title:'Las 3 preguntas que debes hacer antes de invertir',
+    hook:'Si una plataforma no puede responder estas 3 preguntas, no inviertas.',
+    stage:'consideracion',
+    angle:'Sala de Reuniones',
+    outfit:'Camisa blanca + blazer gris antracita',
+    outfitShort:'Gris antracita',
+    script:[
+      {seg:'0–4s',spoken:'Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas.',action:'Expresión seria, honesta, protectora',gesture:'Serio\nprotector'},
+      {seg:'4–18s',spoken:'Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito.',action:'Un dedo, énfasis en "exactamente"',gesture:'1 dedo\nexacto'},
+      {seg:'18–32s',spoken:'Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No "cuando el mercado lo permita". Una fecha.',action:'Dos dedos, énfasis en fecha',gesture:'2 dedos\nfecha'},
+      {seg:'32–46s',spoken:'Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal.',action:'Tres dedos, tono honesto, no alarmista',gesture:'3 dedos\nhonesto'},
+      {seg:'46–57s',spoken:'En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas.',action:'Seguridad, manos abiertas',gesture:'Abre\nmanos'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Cierre breve, señala',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🤔',label:'HOOK',desc:'Seria, honesta, protectora'},
+      {emoji:'1️⃣',label:'PREGUNTA 1',desc:'Un dedo, énfasis en exactamente'},
+      {emoji:'2️⃣',label:'PREGUNTA 2',desc:'Dos dedos, énfasis en fecha'},
+      {emoji:'3️⃣',label:'PREGUNTA 3',desc:'Tres dedos, tono honesto'},
+      {emoji:'✅',label:'RESPUESTA',desc:'Manos abiertas, seguridad'},
+      {emoji:'👉',label:'CTA',desc:'Cierre breve, señala'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image looks directly at camera with a serious protective expression, beginning to give important advice. Meeting room background, professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PREGUNTA 1',text:`[Start image: F2]\nThe man in the reference image raises one finger with emphasis, serious focused expression. Same meeting room. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PREGUNTA 2',text:`[Start image: F3]\nThe man in the reference image raises two fingers, measured authoritative tone. Same background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PREGUNTA 3',text:`[Start image: F4]\nThe man in the reference image raises three fingers, honest direct expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RESPUESTA',text:`[Start image: F5]\nThe man in the reference image opens both hands, confident reassuring energy. Static camera, chest height. Same room. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera briefly with a firm closing smile. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r04',
+    eyebrow:'REEL 04 · CONVERSIÓN',
+    title:'VALENTINA40 — Está abierta la campaña',
+    hook:'5 casas de lujo en Castelldefels. 10% anual. Desde 500€.',
+    stage:'conversion',
+    angle:'Interior Premium / On-site',
+    outfit:'Polo premium crudo + pantalón chino beige',
+    outfitShort:'Polo crudo',
+    script:[
+      {seg:'0–3s',spoken:'Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora.',action:'Energía alta, sonrisa, cámara outdoor on-site',gesture:'Energía\napertura'},
+      {seg:'3–16s',spoken:'Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria.',action:'Describe con las manos, entusiasta pero medida',gesture:'Describe\nmanos'},
+      {seg:'16–28s',spoken:'El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses.',action:'Calma, datos concretos',gesture:'Datos\ncalma'},
+      {seg:'28–42s',spoken:'La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web.',action:'Sólido, directo, confianza',gesture:'Sólido\nconfianza'},
+      {seg:'42–55s',spoken:'El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación.',action:'Invita, señala hacia la web',gesture:'Invita\nseñala'},
+      {seg:'55–60s',spoken:'Enlace directo en bio. Te esperamos.',action:'Sonrisa cálida, cierre',gesture:'Cálido\ncierre'},
+    ],
+    frames:[
+      {emoji:'🚀',label:'APERTURA',desc:'Energía alta, exterior on-site'},
+      {emoji:'🏡',label:'EL PROYECTO',desc:'Describe con manos, entusiasta'},
+      {emoji:'📊',label:'DATOS',desc:'Datos concretos, calma'},
+      {emoji:'🔒',label:'GARANTÍA',desc:'Sólido, directo, confianza'},
+      {emoji:'🎯',label:'INVITACIÓN',desc:'Señala web, invita'},
+      {emoji:'😊',label:'CTA',desc:'Sonrisa cálida, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — APERTURA',text:`[Start image: F1]\nThe man in the reference image stands outdoors at a construction or premium residential site, high energy welcoming expression, speaking with enthusiasm. Natural outdoor light, Mediterranean atmosphere. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROYECTO',text:`[Start image: F2]\nThe man in the reference image gestures with hands describing a space, enthusiastic but measured tone. Outdoor or premium interior background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — DATOS',text:`[Start image: F3]\nThe man in the reference image presents data calmly with open gesture, factual precise tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — GARANTÍA',text:`[Start image: F4]\nThe man in the reference image speaks with solid confident energy, straightforward and trustworthy. Static camera, chest height. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — INVITACIÓN',text:`[Start image: F5]\nThe man in the reference image gestures toward camera inviting the viewer, warm welcoming expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image smiles warmly and closes naturally, pointing briefly. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r05',
+    eyebrow:'REEL 05 · AWARENESS',
+    title:'Así funciona Groinversia en 3 pasos',
+    hook:'En 5 minutos puedes estar financiando tu primera operación.',
+    stage:'awareness',
+    angle:'Laptop + Datos',
+    outfit:'Jersey cuello redondo gris, casual, sin blazer',
+    outfitShort:'Jersey gris',
+    script:[
+      {seg:'0–3s',spoken:'Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees.',action:'Sonrisa accesible, tono fácil',gesture:'Sonrisa\nfácil'},
+      {seg:'3–15s',spoken:'Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos.',action:'1 dedo, señala laptop',gesture:'1 dedo\nlaptop'},
+      {seg:'15–28s',spoken:'Segundo: explores los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides.',action:'2 dedos, explica con calma',gesture:'2 dedos\nficha'},
+      {seg:'28–42s',spoken:'Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro.',action:'3 dedos, cierra el proceso',gesture:'3 dedos\ndentro'},
+      {seg:'42–56s',spoken:'A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada.',action:'Manos limpias, calma total',gesture:'Manos\nlimpias'},
+      {seg:'56–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😊',label:'HOOK',desc:'Sonrisa accesible, laptop visible'},
+      {emoji:'1️⃣',label:'PASO 1 — REGISTRO',desc:'Un dedo, señala pantalla'},
+      {emoji:'2️⃣',label:'PASO 2 — EXPLORAR',desc:'Dos dedos, explica ficha'},
+      {emoji:'3️⃣',label:'PASO 3 — INVERTIR',desc:'Tres dedos, cierra proceso'},
+      {emoji:'🙌',label:'ESPERAR',desc:'Manos limpias, calma total'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre breve'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image smiles accessibly at camera with a laptop visible on the desk behind her. Relaxed professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PASO 1',text:`[Start image: F2]\nThe man in the reference image raises one finger pointing toward a laptop screen, explaining step one. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PASO 2',text:`[Start image: F3]\nThe man in the reference image raises two fingers, explaining calmly, gesturing toward laptop. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PASO 3',text:`[Start image: F4]\nThe man in the reference image raises three fingers closing the explanation, energetic. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — ESPERAR',text:`[Start image: F5]\nThe man in the reference image holds both hands open, calm clean gesture, relaxed expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera briefly. Static camera, natural close. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r06',
+    eyebrow:'REEL 06 · CONSIDERACIÓN',
+    title:'Por qué el 10% anual es posible y real',
+    hook:'Cuando te ofrecen un 10% anual lo primero es desconfiar. Es lo correcto.',
+    stage:'consideracion',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer azul acero + camisa blanca abierta',
+    outfitShort:'Acero + blanco',
+    script:[
+      {seg:'0–4s',spoken:'Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente.',action:'Sonrisa cómplice, tono directo',gesture:'Sonrisa\ncómplice'},
+      {seg:'4–18s',spoken:'Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto.',action:'Mano explicando, calma',gesture:'Mano\nexplica'},
+      {seg:'18–32s',spoken:'El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses.',action:'Explica el mecanismo, lógico',gesture:'Mecanismo\nlógico'},
+      {seg:'32–45s',spoken:'El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo.',action:'Gesticula equilibrio con manos',gesture:'Equilibrio\njusto'},
+      {seg:'45–57s',spoken:'No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado.',action:'Firmeza, tono definitivo',gesture:'Firme\ndefinitivo'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😏',label:'HOOK CÓMPLICE',desc:'Sonrisa cómplice, entiende la desconfianza'},
+      {emoji:'🧠',label:'CONTEXTO',desc:'Mano explica, da contexto'},
+      {emoji:'⚙️',label:'MECANISMO',desc:'Explica por qué el promotor paga'},
+      {emoji:'⚖️',label:'INTERCAMBIO JUSTO',desc:'Equilibrio con manos'},
+      {emoji:'💪',label:'FIRMEZA',desc:'Tono definitivo, seguro'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe man in the reference image smiles with a knowing complicit expression, as if about to reveal something. Office with Groinversia logo. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — CONTEXTO',text:`[Start image: F2]\nThe man in the reference image explains context calmly with right hand gesturing. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECANISMO',text:`[Start image: F3]\nThe man in the reference image explains a mechanism logically, pointing through the reasoning. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — EQUILIBRIO',text:`[Start image: F4]\nThe man in the reference image holds both hands balanced, explaining a fair exchange. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — FIRMEZA',text:`[Start image: F5]\nThe man in the reference image speaks with definitive confident authority, slight forward lean. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe man in the reference image points toward camera with brief closing energy. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
+  }
+];
+
+/* ─── RENDER GRIDS ─── */
+function buildCarouselGrid(){
+  const g=document.getElementById('carousel-grid');
+  g.innerHTML=CAROUSELS.map(c=>`
+    <div class="topic-card" onclick="openModal('${c.id}','carrusel')">
+      <div class="topic-num">${c.eyebrow}</div>
+      <div class="topic-title">${c.title}</div>
+      <div class="topic-subtitle">${c.hook}</div>
+      <div class="topic-meta">
+        <span class="topic-tag" style="background:var(--gold-pale);color:var(--gold)">${c.slides.length} slides</span>
+        <span class="topic-tag" style="background:var(--surface2);color:var(--text2)">Inter Tight</span>
+      </div>
+    </div>`).join('');
+}
+
+function buildReelGrid(){
+  const g=document.getElementById('reel-grid');
+  const stageColor={'awareness':'#EBF3FF','consideracion':'#FFF8E6','conversion':'#EDFAF6'};
+  const stageText={'awareness':'#1A5FAB','consideracion':'#8A6914','conversion':'#1A7A5F'};
+  g.innerHTML=REELS.map(r=>`
+    <div class="reel-card" onclick="openModal('${r.id}','reel')">
+      <div class="reel-thumb">
+        <div class="reel-thumb-bg"></div>
+        <div class="reel-play">▶</div>
+        <div class="reel-outfit">${r.outfitShort}</div>
+      </div>
+      <div class="reel-body">
+        <div class="reel-stage" style="color:${stageText[r.stage]}">${r.eyebrow}</div>
+        <div class="reel-title">${r.title}</div>
+        <div class="reel-hook">"${r.hook}"</div>
+        <div class="reel-footer">
+          <div class="reel-frames">📐 ${r.frames.length} frames · 60s</div>
+          <div class="reel-cta">Ver →</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+buildCarouselGrid();
+buildReelGrid();
+
+/* ─── GENERATE FRAMES VIA ANTHROPIC API ─── */
+const FRAME_PROMPTS = {
+  r01: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> leans slightly forward toward camera, raises one eyebrow with urgency, mouth just beginning to open — hook moment. Camera tripod chest height slightly below eye level, no distortion, no selfie. Modern white office Groinversia logo on wall left, black linear pendant lights gold accent, soft bokeh. Warm natural light. 9:16 vertical. Photorealistic talking-head.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> shakes right index finger correcting a misconception, clear direct expression, calm authority. Camera tripod chest height below eye level. Same white office Groinversia logo. Warm natural light. 9:16 vertical. Photorealistic talking-head.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures with both hands connecting two sides explaining a relationship, engaged educational expression. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> counts three points on fingers right hand, leaning slightly forward with conviction, emphatic focused. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open palms up calm reassuring gesture, warm expression of certainty. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points right index finger directly toward camera, confident warm smile, authoritative closing energy. Camera tripod chest height below eye level. Same white office Groinversia logo. 9:16 vertical. Photorealistic talking-head."
+  ],
+  r02: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> walks or stands in urban exterior Barcelona, direct eye contact camera, casual professional tone. No blazer, chaqueta técnica oscura. Outdoor natural Mediterranean light, fixed camera no movement. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> counts implications on fingers, slightly concerned expression explaining a problem. Urban exterior Barcelona. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles with knowing complicit expression gesturing as if describing something small. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open clean clear gesture relaxed. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points with conviction confident secure expression. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera natural smile closing energy. Urban exterior. Fixed camera. 9:16 vertical. Photorealistic."
+  ],
+  r03: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> serious protective expression beginning to give important advice. Meeting room background camisa blanca blazer gris antracita. Camera tripod chest height no movement. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises one finger emphasis serious focused expression. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises two fingers measured authoritative tone. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises three fingers honest direct expression. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> opens both hands confident reassuring energy. Meeting room. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera firm closing smile. Meeting room. Camera tripod. 9:16 vertical. Photorealistic."
+  ],
+  r04: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> stands outdoors at premium residential construction site high energy welcoming. Polo crudo pantalón beige. Natural outdoor Mediterranean light. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures with hands describing a space enthusiastic measured. Outdoor Mediterranean. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> presents data calmly open gesture factual precise. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> speaks solid confident energy straightforward trustworthy. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> gestures toward camera inviting the viewer warm welcoming. Outdoor. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles warmly closes naturally pointing briefly. Outdoor. Fixed camera. 9:16 vertical. Photorealistic."
+  ],
+  r05: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles accessibly at camera laptop visible desk behind. Jersey cuello redondo gris casual. Fixed camera chest height. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises one finger pointing toward laptop screen step one. Same setting. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises two fingers explaining calmly gesturing laptop. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> raises three fingers closing explanation energetic. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands open calm clean relaxed. Fixed camera. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera briefly natural close. Fixed camera. 9:16 vertical. Photorealistic."
+  ],
+  r06: [
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> smiles knowing complicit about to reveal something. Blazer azul acero camisa blanca. White office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> explains context calmly right hand gesturing. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> explains mechanism logically pointing through reasoning. Same office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> holds both hands balanced explaining fair exchange. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> speaks definitive confident authority slight forward lean. Same office. Camera tripod. 9:16 vertical. Photorealistic.",
+    "<<<450159d6-d451-4064-8d59-a093a5007f8c>>> points toward camera brief closing energy. Same office Groinversia logo. Camera tripod. 9:16 vertical. Photorealistic."
+  ]
+};
+
+/* ─── GEMINI API KEY STORAGE (local only, never sent to chat) ─── */
+function saveGeminiKey(val) {
+  sessionStorage.setItem('openai_api_key', val);
+  const status = document.getElementById('gemini-key-status');
+  if (val.length > 10) {
+    status.textContent = '✓';
+    status.style.color = '#5DD879';
+  } else {
+    status.textContent = '○';
+    status.style.color = 'var(--text3)';
+  }
+}
+
+function getOpenAIKey() {
+  return sessionStorage.getItem('openai_api_key') || document.getElementById('gemini-key-input')?.value || '';
+}
+
+// Restore OpenAI key in input on load
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('openai_api_key');
+  const inp = document.getElementById('gemini-key-input');
+  if (saved && inp) { inp.value = saved; saveGeminiKey(saved); }
+});
+
+// Frame prompts rewritten for Gemini — no Element ID, just visual description of Marcos
+const GEMINI_FRAME_PROMPTS = {
+  r01: [
+    {outfit:"light blue linen short sleeve shirt, no jacket, summer casual", gesture:"leans forward urgency, eyebrow raised, mouth opening hook moment", setting:"modern white office, Groinversia logo on wall left, black linear lights gold accent"},
+    {outfit:"light blue linen short sleeve shirt, no jacket", gesture:"shakes index finger correcting misconception, calm authority", setting:"modern white office, Groinversia logo"},
+    {outfit:"light blue linen short sleeve shirt", gesture:"both hands connecting two sides, explaining relationship", setting:"modern white office, Groinversia logo"},
+    {outfit:"light blue linen short sleeve shirt", gesture:"counts three points on fingers right hand, leaning forward conviction", setting:"modern white office, Groinversia logo"},
+    {outfit:"light blue linen short sleeve shirt", gesture:"both hands open palms up, calm reassuring", setting:"modern white office, Groinversia logo"},
+    {outfit:"light blue linen short sleeve shirt", gesture:"points right finger toward camera, confident warm smile", setting:"modern white office, Groinversia logo"},
+  ],
+  r02: [
+    {outfit:"navy polo shirt, summer smart casual", gesture:"direct eye contact camera, casual professional walking", setting:"Barcelona urban exterior, Mediterranean summer light"},
+    {outfit:"navy polo shirt", gesture:"counts on fingers, slightly concerned expression", setting:"Barcelona exterior, outdoor natural light"},
+    {outfit:"navy polo shirt", gesture:"knowing complicit smile, small gesture with hand", setting:"Barcelona exterior"},
+    {outfit:"navy polo shirt", gesture:"both hands open clean relaxed", setting:"Barcelona exterior"},
+    {outfit:"navy polo shirt", gesture:"points with conviction, confident secure", setting:"Barcelona exterior"},
+    {outfit:"navy polo shirt", gesture:"points camera natural smile closing", setting:"Barcelona exterior"},
+  ],
+  r03: [
+    {outfit:"white shirt, dark grey blazer, smart", gesture:"serious protective expression, important advice", setting:"modern meeting room, professional"},
+    {outfit:"white shirt dark grey blazer", gesture:"one finger raised emphasis, serious focused", setting:"meeting room"},
+    {outfit:"white shirt dark grey blazer", gesture:"two fingers, authoritative measured", setting:"meeting room"},
+    {outfit:"white shirt dark grey blazer", gesture:"three fingers, honest direct expression", setting:"meeting room"},
+    {outfit:"white shirt dark grey blazer", gesture:"opens both hands, confident reassuring", setting:"meeting room"},
+    {outfit:"white shirt dark grey blazer", gesture:"points camera, firm closing smile", setting:"meeting room"},
+  ],
+  r04: [
+    {outfit:"cream polo shirt, beige chinos, summer premium", gesture:"high energy welcoming, enthusiastic speaking", setting:"Mediterranean residential construction site exterior, summer light"},
+    {outfit:"cream polo shirt beige chinos", gesture:"gestures describing a space, enthusiastic", setting:"Mediterranean exterior"},
+    {outfit:"cream polo shirt", gesture:"presents data calmly, open gesture factual", setting:"Mediterranean exterior"},
+    {outfit:"cream polo shirt", gesture:"solid confident energy, trustworthy", setting:"Mediterranean exterior"},
+    {outfit:"cream polo shirt", gesture:"gestures toward camera inviting, warm welcoming", setting:"Mediterranean exterior"},
+    {outfit:"cream polo shirt", gesture:"warm smile, points briefly closing", setting:"Mediterranean exterior"},
+  ],
+  r05: [
+    {outfit:"grey crew neck sweater, casual no blazer", gesture:"accessible smile, laptop visible desk behind", setting:"modern home office or desk setting"},
+    {outfit:"grey crew neck sweater", gesture:"one finger pointing laptop screen step one", setting:"desk with laptop"},
+    {outfit:"grey crew neck sweater", gesture:"two fingers, explaining calmly gesturing laptop", setting:"desk"},
+    {outfit:"grey crew neck sweater", gesture:"three fingers closing explanation energetic", setting:"desk"},
+    {outfit:"grey crew neck sweater", gesture:"both hands open calm clean", setting:"desk"},
+    {outfit:"grey crew neck sweater", gesture:"points camera briefly natural close", setting:"desk"},
+  ],
+  r06: [
+    {outfit:"steel blue blazer white shirt open collar, smart", gesture:"knowing complicit smile, about to reveal something", setting:"modern white office, Groinversia logo"},
+    {outfit:"steel blue blazer white shirt", gesture:"explains context calmly right hand gesturing", setting:"white office Groinversia logo"},
+    {outfit:"steel blue blazer white shirt", gesture:"explains mechanism logically pointing reasoning", setting:"white office Groinversia logo"},
+    {outfit:"steel blue blazer white shirt", gesture:"both hands balanced, explaining fair exchange", setting:"white office"},
+    {outfit:"steel blue blazer white shirt", gesture:"definitive confident authority slight forward lean", setting:"white office Groinversia logo"},
+    {outfit:"steel blue blazer white shirt", gesture:"points camera brief closing energy", setting:"white office Groinversia logo"},
+  ]
+};
+
+async function generateFrames(reelId, btn) {
+  const key = getOpenAIKey();
+  if (!key || !key.startsWith('sk-')) {
+    alert('Introduce tu OpenAI API key (sk-...) en el campo superior derecho del hub.');
+    return;
+  }
+
+  const framePrompts = GEMINI_FRAME_PROMPTS[reelId];
+  if (!framePrompts) { alert('No hay prompts para este reel.'); return; }
+
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  const jobs = [];
+  const generatedUrls = [];
+
+  for (let i = 0; i < framePrompts.length; i++) {
+    btn.textContent = `⟳ Frame ${i+1}/6…`;
+    const fp = framePrompts[i];
+    
+    const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural texture. Wearing ${fp.outfit}. ${fp.gesture}. Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm natural diffused light. Summer 2025. Authentic talking-head style, photorealistic, not AI looking.`;
+
+    try {
+      const body = {
+        model: 'gpt-image-1',
+        prompt: fullPrompt,
+        n: 1,
+        size: '1024x1536',
+        quality: 'medium',
+        output_format: 'jpeg'
+      };
+
+      const res = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        console.error('OpenAI error frame', i+1, JSON.stringify(data.error));
+        btn.textContent = `⚠ F${i+1}: ${data.error.message?.substring(0,50)}`;
+        generatedUrls.push(null);
+        jobs.push(null);
+        continue;
+      }
+
+      const b64 = data.data?.[0]?.b64_json;
+      if (b64) {
+        const dataUrl = `data:image/jpeg;base64,${b64}`;
+        generatedUrls.push(dataUrl);
+        jobs.push(`openai_${reelId}_f${i+1}`);
+      } else {
+        console.error('No image in response:', JSON.stringify(data).substring(0,300));
+        generatedUrls.push(null);
+        jobs.push(null);
+      }
+
+    } catch(e) {
+      console.error('Frame', i+1, e);
+      generatedUrls.push(null);
+      jobs.push(null);
+    }
+  }
+
+  const successCount = generatedUrls.filter(Boolean).length;
+  
+  if (successCount > 0) {
+    REEL_FRAME_JOBS[reelId] = jobs;
+    generatedUrls.forEach((url, i) => { if(url && jobs[i]) HF_URL_MAP[jobs[i]] = url; });
+    sessionStorage.setItem('frameJobs_' + reelId, JSON.stringify(jobs));
+    sessionStorage.setItem('frameUrls_' + reelId, JSON.stringify(generatedUrls));
+    const data = REELS.find(r => r.id === reelId);
+    document.getElementById('m-body').innerHTML = renderReelFrames(data);
+    if (successCount < 6) alert(`${successCount}/6 frames generados. Los que fallaron muestran el emoji.`);
+  } else {
+    btn.disabled = false;
+    btn.textContent = '⚡ Generar con DALL·E 3';
+    btn.style.opacity = '1';
+    alert('Error al generar. Verifica que tu OpenAI API key (sk-...) sea correcta y tenga saldo.');
+  }
+}
+// Restore persisted jobs on load
+['r01','r02','r03','r04','r05','r06'].forEach(id => {
+  const savedJobs = sessionStorage.getItem('frameJobs_' + id);
+  if (savedJobs) { try { REEL_FRAME_JOBS[id] = JSON.parse(savedJobs); } catch(e) {} }
+  const savedUrls = sessionStorage.getItem('frameUrls_' + id);
+  if (savedUrls) {
+    try {
+      const urls = JSON.parse(savedUrls);
+      const jobs = REEL_FRAME_JOBS[id] || [];
+      urls.forEach((url, i) => { if(url && jobs[i]) HF_URL_MAP[jobs[i]] = url; });
+    } catch(e) {}
+  }
+});
+// r01 already has hardcoded jobs from this session
+if (!REEL_FRAME_JOBS['r01'] || REEL_FRAME_JOBS['r01'].length < 6) {
+  REEL_FRAME_JOBS['r01'] = [
+    '827c77c8-44b6-4a37-b153-71086eefbf60',
+    '4d114665-fb0c-47a9-8745-90aee493effe',
+    'a7014ca4-315c-4d1e-ba64-161c9687f879',
+    '7dfc34b7-76e8-4688-88ad-4b5829e1f564',
+    '696d27f4-42b5-448b-b272-ee8c95e6eb20',
+    '9f007eb4-1137-4d53-b8af-239d756fc4b9',
+  ];
+}
+</script>
+</body>
+</html>
