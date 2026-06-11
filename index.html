@@ -1197,7 +1197,7 @@ function renderReelFrames(d){
       <div class="frame-info">
         <div class="frame-info-title">${f.label}</div>
         <div class="frame-info-desc">${f.desc}</div>
-        ${jobId ? `<div style="font-family:monospace;font-size:8px;color:var(--text3);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${jobId}">${jobId.substring(0,18)}…</div>` : ''}
+        ${imgUrl ? `<button onclick="downloadFrame('${imgUrl || ''}','marcos_${d.id}_f${i+1}.jpg')" style="margin-top:6px;width:100%;font-size:10px;font-weight:600;padding:4px 0;background:var(--ink);color:var(--gold);border:1px solid rgba(200,168,75,0.3);border-radius:4px;cursor:pointer">⬇ Descargar</button>` : ''}
       </div>
     </div>`;
   }).join('')}
@@ -1602,6 +1602,16 @@ function buildReelGrid(){
     </div>`).join('');
 }
 
+function downloadFrame(url, filename) {
+  if (!url) return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 buildCarouselGrid();
 buildReelGrid();
 
@@ -1684,52 +1694,52 @@ window.addEventListener('DOMContentLoaded', () => {
 // Frame prompts rewritten for Gemini — no Element ID, just visual description of Marcos
 const GEMINI_FRAME_PROMPTS = {
   r01: [
-    {outfit:"light blue linen short sleeve shirt, no jacket, summer casual", gesture:"leans forward urgency, eyebrow raised, mouth opening hook moment", setting:"modern white office, Groinversia logo on wall left, black linear lights gold accent"},
-    {outfit:"light blue linen short sleeve shirt, no jacket", gesture:"shakes index finger correcting misconception, calm authority", setting:"modern white office, Groinversia logo"},
-    {outfit:"light blue linen short sleeve shirt", gesture:"both hands connecting two sides, explaining relationship", setting:"modern white office, Groinversia logo"},
-    {outfit:"light blue linen short sleeve shirt", gesture:"counts three points on fingers right hand, leaning forward conviction", setting:"modern white office, Groinversia logo"},
-    {outfit:"light blue linen short sleeve shirt", gesture:"both hands open palms up, calm reassuring", setting:"modern white office, Groinversia logo"},
-    {outfit:"light blue linen short sleeve shirt", gesture:"points right finger toward camera, confident warm smile", setting:"modern white office, Groinversia logo"},
+    {outfit:"light blue linen short sleeve shirt, no jacket, summer casual", gesture:"leans forward urgency, eyebrow raised, mouth opening hook moment", setting:"modern white office, Groinversia logo on wall left, black linear lights gold accent", dialogue:"¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?"},
+    {outfit:"light blue linen short sleeve shirt, no jacket", gesture:"shakes index finger correcting misconception, calm authority", setting:"modern white office, Groinversia logo", dialogue:"Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietario de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento."},
+    {outfit:"light blue linen short sleeve shirt", gesture:"both hands connecting two sides, explaining relationship", setting:"modern white office, Groinversia logo", dialogue:"El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte."},
+    {outfit:"light blue linen short sleeve shirt", gesture:"counts three points on fingers right hand, leaning forward conviction", setting:"modern white office, Groinversia logo", dialogue:"Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven."},
+    {outfit:"light blue linen short sleeve shirt", gesture:"both hands open palms up, calm reassuring", setting:"modern white office, Groinversia logo", dialogue:"No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento."},
+    {outfit:"light blue linen short sleeve shirt", gesture:"points right finger toward camera, confident warm smile", setting:"modern white office, Groinversia logo", dialogue:"Groinversia. Enlace en bio."},
   ],
   r02: [
-    {outfit:"navy polo shirt, summer smart casual", gesture:"direct eye contact camera, casual professional walking", setting:"Barcelona urban exterior, Mediterranean summer light"},
-    {outfit:"navy polo shirt", gesture:"counts on fingers, slightly concerned expression", setting:"Barcelona exterior, outdoor natural light"},
-    {outfit:"navy polo shirt", gesture:"knowing complicit smile, small gesture with hand", setting:"Barcelona exterior"},
-    {outfit:"navy polo shirt", gesture:"both hands open clean relaxed", setting:"Barcelona exterior"},
-    {outfit:"navy polo shirt", gesture:"points with conviction, confident secure", setting:"Barcelona exterior"},
-    {outfit:"navy polo shirt", gesture:"points camera natural smile closing", setting:"Barcelona exterior"},
+    {outfit:"navy polo shirt, summer smart casual", gesture:"direct eye contact camera, casual professional walking", setting:"Barcelona urban exterior, Mediterranean summer light", dialogue:"Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es."},
+    {outfit:"navy polo shirt", gesture:"counts on fingers, slightly concerned expression", setting:"Barcelona exterior, outdoor natural light", dialogue:"Cuando compras un piso, eres propietario. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal."},
+    {outfit:"navy polo shirt", gesture:"knowing complicit smile, small gesture with hand", setting:"Barcelona exterior", dialogue:"En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini."},
+    {outfit:"navy polo shirt", gesture:"both hands open clean relaxed", setting:"Barcelona exterior", dialogue:"A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada."},
+    {outfit:"navy polo shirt", gesture:"points with conviction, confident secure", setting:"Barcelona exterior", dialogue:"No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno."},
+    {outfit:"navy polo shirt", gesture:"points camera natural smile closing", setting:"Barcelona exterior", dialogue:"Groinversia. Enlace en bio."},
   ],
   r03: [
-    {outfit:"white shirt, dark grey blazer, smart", gesture:"serious protective expression, important advice", setting:"modern meeting room, professional"},
-    {outfit:"white shirt dark grey blazer", gesture:"one finger raised emphasis, serious focused", setting:"meeting room"},
-    {outfit:"white shirt dark grey blazer", gesture:"two fingers, authoritative measured", setting:"meeting room"},
-    {outfit:"white shirt dark grey blazer", gesture:"three fingers, honest direct expression", setting:"meeting room"},
-    {outfit:"white shirt dark grey blazer", gesture:"opens both hands, confident reassuring", setting:"meeting room"},
-    {outfit:"white shirt dark grey blazer", gesture:"points camera, firm closing smile", setting:"meeting room"},
+    {outfit:"white shirt, dark grey blazer, smart", gesture:"serious protective expression, important advice", setting:"modern meeting room, professional", dialogue:"Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas."},
+    {outfit:"white shirt dark grey blazer", gesture:"one finger raised emphasis, serious focused", setting:"meeting room", dialogue:"Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito."},
+    {outfit:"white shirt dark grey blazer", gesture:"two fingers, authoritative measured", setting:"meeting room", dialogue:"Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No cuando el mercado lo permita. Una fecha."},
+    {outfit:"white shirt dark grey blazer", gesture:"three fingers, honest direct expression", setting:"meeting room", dialogue:"Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal."},
+    {outfit:"white shirt dark grey blazer", gesture:"opens both hands, confident reassuring", setting:"meeting room", dialogue:"En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas."},
+    {outfit:"white shirt dark grey blazer", gesture:"points camera, firm closing smile", setting:"meeting room", dialogue:"Enlace en bio."},
   ],
   r04: [
-    {outfit:"cream polo shirt, beige chinos, summer premium", gesture:"high energy welcoming, enthusiastic speaking", setting:"Mediterranean residential construction site exterior, summer light"},
-    {outfit:"cream polo shirt beige chinos", gesture:"gestures describing a space, enthusiastic", setting:"Mediterranean exterior"},
-    {outfit:"cream polo shirt", gesture:"presents data calmly, open gesture factual", setting:"Mediterranean exterior"},
-    {outfit:"cream polo shirt", gesture:"solid confident energy, trustworthy", setting:"Mediterranean exterior"},
-    {outfit:"cream polo shirt", gesture:"gestures toward camera inviting, warm welcoming", setting:"Mediterranean exterior"},
-    {outfit:"cream polo shirt", gesture:"warm smile, points briefly closing", setting:"Mediterranean exterior"},
+    {outfit:"cream polo shirt, beige chinos, summer premium", gesture:"high energy welcoming, enthusiastic speaking", setting:"Mediterranean residential construction site exterior, summer light", dialogue:"Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora."},
+    {outfit:"cream polo shirt beige chinos", gesture:"gestures describing a space, enthusiastic", setting:"Mediterranean exterior", dialogue:"Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria."},
+    {outfit:"cream polo shirt", gesture:"presents data calmly, open gesture factual", setting:"Mediterranean exterior", dialogue:"El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses."},
+    {outfit:"cream polo shirt", gesture:"solid confident energy, trustworthy", setting:"Mediterranean exterior", dialogue:"La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web."},
+    {outfit:"cream polo shirt", gesture:"gestures toward camera inviting, warm welcoming", setting:"Mediterranean exterior", dialogue:"El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación."},
+    {outfit:"cream polo shirt", gesture:"warm smile, points briefly closing", setting:"Mediterranean exterior", dialogue:"Enlace directo en bio. Te esperamos."},
   ],
   r05: [
-    {outfit:"grey crew neck sweater, casual no blazer", gesture:"accessible smile, laptop visible desk behind", setting:"modern home office or desk setting"},
-    {outfit:"grey crew neck sweater", gesture:"one finger pointing laptop screen step one", setting:"desk with laptop"},
-    {outfit:"grey crew neck sweater", gesture:"two fingers, explaining calmly gesturing laptop", setting:"desk"},
-    {outfit:"grey crew neck sweater", gesture:"three fingers closing explanation energetic", setting:"desk"},
-    {outfit:"grey crew neck sweater", gesture:"both hands open calm clean", setting:"desk"},
-    {outfit:"grey crew neck sweater", gesture:"points camera briefly natural close", setting:"desk"},
+    {outfit:"grey crew neck sweater, casual no blazer", gesture:"accessible smile, laptop visible desk behind", setting:"modern home office or desk setting", dialogue:"Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees."},
+    {outfit:"grey crew neck sweater", gesture:"one finger pointing laptop screen step one", setting:"desk with laptop", dialogue:"Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos."},
+    {outfit:"grey crew neck sweater", gesture:"two fingers, explaining calmly gesturing laptop", setting:"desk", dialogue:"Segundo: exploras los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides."},
+    {outfit:"grey crew neck sweater", gesture:"three fingers closing explanation energetic", setting:"desk", dialogue:"Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro."},
+    {outfit:"grey crew neck sweater", gesture:"both hands open calm clean", setting:"desk", dialogue:"A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada."},
+    {outfit:"grey crew neck sweater", gesture:"points camera briefly natural close", setting:"desk", dialogue:"Enlace en bio."},
   ],
   r06: [
-    {outfit:"steel blue blazer white shirt open collar, smart", gesture:"knowing complicit smile, about to reveal something", setting:"modern white office, Groinversia logo"},
-    {outfit:"steel blue blazer white shirt", gesture:"explains context calmly right hand gesturing", setting:"white office Groinversia logo"},
-    {outfit:"steel blue blazer white shirt", gesture:"explains mechanism logically pointing reasoning", setting:"white office Groinversia logo"},
-    {outfit:"steel blue blazer white shirt", gesture:"both hands balanced, explaining fair exchange", setting:"white office"},
-    {outfit:"steel blue blazer white shirt", gesture:"definitive confident authority slight forward lean", setting:"white office Groinversia logo"},
-    {outfit:"steel blue blazer white shirt", gesture:"points camera brief closing energy", setting:"white office Groinversia logo"},
+    {outfit:"steel blue blazer white shirt open collar, smart", gesture:"knowing complicit smile, about to reveal something", setting:"modern white office, Groinversia logo", dialogue:"Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente."},
+    {outfit:"steel blue blazer white shirt", gesture:"explains context calmly right hand gesturing", setting:"white office Groinversia logo", dialogue:"Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto."},
+    {outfit:"steel blue blazer white shirt", gesture:"explains mechanism logically pointing reasoning", setting:"white office Groinversia logo", dialogue:"El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses."},
+    {outfit:"steel blue blazer white shirt", gesture:"both hands balanced, explaining fair exchange", setting:"white office", dialogue:"El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo."},
+    {outfit:"steel blue blazer white shirt", gesture:"definitive confident authority slight forward lean", setting:"white office Groinversia logo", dialogue:"No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado."},
+    {outfit:"steel blue blazer white shirt", gesture:"points camera brief closing energy", setting:"white office Groinversia logo", dialogue:"Enlace en bio."},
   ]
 };
 
@@ -1753,7 +1763,7 @@ async function generateFrames(reelId, btn) {
     btn.textContent = `⟳ Frame ${i+1}/6…`;
     const fp = framePrompts[i];
     
-    const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural texture. Wearing ${fp.outfit}. ${fp.gesture}. Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm natural diffused light. Summer 2025. Authentic talking-head style, photorealistic, not AI looking.`;
+    const fullPrompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume on top, 3-5 day well-groomed beard, thin dark metal square-round eyeglasses, olive Mediterranean skin, natural skin texture. Wearing ${fp.outfit}. Expression and body language: ${fp.gesture}. He is about to say or is saying: "${fp.dialogue || ""}". Background: ${fp.setting}. Camera chest height slightly below eye level, no tripod visible, shallow depth of field soft bokeh, warm natural diffused light, no harsh shadows. Summer 2025. Authentic realistic talking-head, photorealistic, not AI looking, natural not staged.`;
 
     try {
       const body = {
@@ -1765,14 +1775,44 @@ async function generateFrames(reelId, btn) {
         output_format: 'jpeg'
       };
 
-      const res = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`
-        },
-        body: JSON.stringify(body)
-      });
+      // Use FormData with reference image for face consistency
+      let res;
+      const refFrameUrl = hfUrl('827c77c8-44b6-4a37-b153-71086eefbf60');
+      if (refFrameUrl) {
+        try {
+          // Fetch reference image and send as edit
+          const refResp = await fetch(`https://corsproxy.io/?${encodeURIComponent(refFrameUrl)}`);
+          const refBlob = await refResp.blob();
+          const refFile = new File([refBlob], 'marcos_ref.png', {type:'image/png'});
+          
+          const fd = new FormData();
+          fd.append('model', 'gpt-image-1');
+          fd.append('image[]', refFile);
+          fd.append('prompt', fullPrompt + ' IMPORTANT: Keep the exact same face, glasses, beard and facial features as the person in the reference image.');
+          fd.append('n', '1');
+          fd.append('size', '1024x1536');
+          fd.append('quality', 'medium');
+          
+          res = await fetch('https://api.openai.com/v1/images/edits', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${key}` },
+            body: fd
+          });
+        } catch(refErr) {
+          console.warn('Reference load failed, using generations:', refErr);
+          res = await fetch('https://api.openai.com/v1/images/generations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+            body: JSON.stringify(body)
+          });
+        }
+      } else {
+        res = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify(body)
+        });
+      }
 
       const data = await res.json();
 
