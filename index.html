@@ -107,6 +107,7 @@ body { font-family: 'Inter Tight', sans-serif; background: #0B0F19; color: #F0F4
 </div>
 
 <div class="content" id="main-content"></div>
+<div id="debug-overlay" style="position:fixed;bottom:4px;left:4px;right:4px;background:rgba(0,0,0,0.8);color:#C8A84B;font-size:10px;padding:4px 8px;border-radius:4px;z-index:9999;font-family:monospace"></div>
 
 <script>
 // ─── DATA ───
@@ -488,6 +489,12 @@ function render() {
   
   content.scrollTop = 0;
   if (currentView==='marcos') setTimeout(setupMarcosBtn,50);
+  // Debug: show CS state
+  var dbg = document.getElementById('debug-overlay');
+  if (dbg) {
+    var keys = Object.keys(CS);
+    dbg.textContent = 'CS keys: ' + keys.length + ' | ' + keys.slice(-3).join(', ');
+  }
 }
 
 function renderBrand() {
@@ -828,7 +835,10 @@ document.addEventListener('click', function(e) {
   const btn = e.target.closest('[data-k]');
   if (!btn) return;
   e.preventDefault();
-  const text = CS[btn.getAttribute('data-k')] || '';
+  var k = btn.getAttribute('data-k');
+  var text = CS[k] || '';
+  var dbg = document.getElementById('debug-overlay');
+  if (dbg) dbg.textContent = 'Click: k=' + k + ' text=' + (text?text.substring(0,30):'EMPTY') + ' CS_size=' + Object.keys(CS).length;
   doCopy(text, btn);
 });
 
