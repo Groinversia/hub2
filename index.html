@@ -1820,7 +1820,7 @@ async function generateFrames(reelId, btn) {
     const prompt = `Photorealistic vertical portrait 9:16. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ${fp.outfit}. ${fp.gesture}. Saying: "${fp.dialogue||''}". Background: ${fp.setting}. Camera chest height, slightly below eye level, no tripod visible, soft bokeh, warm summer light. Photorealistic, authentic talking-head.`;
     try {
       // Route through Cloudflare Worker (no CORS issues)
-      const workerUrl = 'https://openai-proxy.groinversia.workers.dev';
+      const workerUrl = 'https://openai-proxy.hola-00f.workers.dev';
       const res = await fetch(workerUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
