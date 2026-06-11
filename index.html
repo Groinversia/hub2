@@ -621,7 +621,7 @@ function renderReelTab(r) {
         <div class="char-lock-row"><strong>Cámara:</strong> Altura pecho · Sin trípode · Bokeh · Luz verano</div>
       </div>
       ${r.frames.map(function(f, i) {
-        var prompt = 'Photorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ' + r.outfit + '. ' + f.gesture + '. Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.';
+        var prompt = 'Photorealistic vertical 9:16 portrait. Spanish man early 40s, dark brown short hair natural volume, 3-5 day beard, thin dark metal square-round glasses, olive Mediterranean skin. Wearing ' + r.outfit + '. ' + f.gesture + '. Saying: "' + f.dialogue + '". Camera chest height slightly below eye level, no tripod visible, soft bokeh, warm summer natural light. Authentic talking-head, photorealistic.';
         var k = sc(prompt);
         return '<div class="frame-card">' +
           '<div class="frame-card-header">' +
@@ -647,7 +647,7 @@ function renderReelTab(r) {
       </div>
       ${r.veo3.map(function(p, i) {
         var dialogue = r.frames[i] ? r.frames[i].dialogue : '';
-        var full = p + (dialogue ? ' He says: "' + dialogue + '"' : '');
+        var full = p;
         var k = sc(full);
         return '<div class="frame-card">' +
           '<div class="frame-card-header">' +
