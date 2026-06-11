@@ -261,8 +261,8 @@ const REELS = [
     ],
     frames:[
       {emoji:'🤔', label:'HOOK', dialogue:'Antes de invertir en cualquier plataforma de inversión alternativa, incluida la nuestra, hay tres preguntas que debes hacerte sí o sí. Y si no obtienes respuesta clara, no inviertas.', gesture:'serious protective expression, beginning to give important advice'},
-      {emoji:'1️⃣', label:'PREGUNTA 1', dialogue:'Primera pregunta: ¿dónde está exactamente mi dinero? No vale decir 'en el sector inmobiliario'. Tiene que ser una operación concreta, con un activo identificable, con un contrato firmado.', gesture:'raises one finger with emphasis, serious focused'},
-      {emoji:'2️⃣', label:'PREGUNTA 2', dialogue:'Segunda pregunta: ¿cuándo recupero mi dinero? Tiene que haber una fecha. No 'cuando el mercado lo permita', no 'a medio plazo'. Una fecha concreta de vencimiento.', gesture:'raises two fingers, measured authoritative tone'},
+      {emoji:'1️⃣', label:'PREGUNTA 1', dialogue:'Primera pregunta: ¿dónde está exactamente mi dinero? No vale decir ’en el sector inmobiliario’. Tiene que ser una operación concreta, con un activo identificable, con un contrato firmado.', gesture:'raises one finger with emphasis, serious focused'},
+      {emoji:'2️⃣', label:'PREGUNTA 2', dialogue:'Segunda pregunta: ¿cuándo recupero mi dinero? Tiene que haber una fecha. No ’cuando el mercado lo permita’, no ’a medio plazo’. Una fecha concreta de vencimiento.', gesture:'raises two fingers, measured authoritative tone'},
       {emoji:'3️⃣', label:'PREGUNTA 3', dialogue:'Tercera pregunta: ¿qué pasa si el promotor no paga? ¿Hay garantía hipotecaria sobre el activo? ¿Hay aval? ¿Quién responde? Si no hay una respuesta estructurada a esto, es una señal de alerta.', gesture:'raises three fingers, honest direct expression'},
       {emoji:'✅', label:'RESPUESTA', dialogue:'En Groinversia respondemos las tres antes de que inviertas. Tienes la ficha completa de cada operación: activo, promotor, garantías, plazo y rentabilidad objetivo.', gesture:'opens both hands, confident reassuring energy'},
       {emoji:'👉', label:'CTA', dialogue:'La información es tu mejor protección. Enlace en bio.', gesture:'points toward camera, firm closing smile'},
@@ -696,7 +696,7 @@ function renderCarousels() {
                 <button class="copy-btn" style="margin-top:6px" data-k="${slideKey}">📋 Copiar copy</button>
               </div>`;
             }).join('')}
-            <button class="btn-gold" data-k="${(()=>{const t=c.slides.map((s,i)=>`SLIDE ${i+1}\nHEADLINE: ${s.headline}\nSUBTEXT: ${s.sub}${s.cta?'\nCTA: '+s.cta:''}`).join('\n\n');return sc(t);}())}">⬇ Copiar todos los copys</button>
+            <button class="btn-gold" data-k="${sc(c.slides.map(function(s,i){return 'SLIDE '+(i+1)+'\nHEADLINE: '+s.headline+'\nSUBTEXT: '+s.sub+(s.cta?'\nCTA: '+s.cta:'');}).join('\n\n'))}">⬇ Copiar todos los copys</button>
           </div>
         ` : ''}
       </div>
