@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test</title>
+<style>
+body { background:#0B0F19; color:#fff; font-family:sans-serif; padding:20px; }
+button { background:#C8A84B; color:#000; border:none; padding:14px 20px; border-radius:8px; font-size:16px; font-weight:700; width:100%; margin:8px 0; cursor:pointer; }
+#log { background:#060a12; padding:12px; border-radius:8px; margin-top:16px; font-size:13px; color:#7aadcc; min-height:60px; }
+</style>
+</head>
+<body>
+<h2 style="color:#C8A84B;margin-bottom:16px">Test de botones</h2>
+
+<button id="btn1">Test 1 — onclick directo</button>
+<button id="btn2" data-text="Hola desde data-text">Test 2 — event delegation</button>
+<button id="btn3">Test 3 — clipboard</button>
+
+<div id="log">Esperando...</div>
+
+<script>
+var log = document.getElementById('log');
+
+function addLog(msg) {
+  log.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + msg + '</div>';
+}
+
+// Test 1: direct onclick
+document.getElementById('btn1').onclick = function() {
+  addLog('✓ Btn1 funcionó (onclick directo)');
+};
+
+// Test 2: event delegation
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-text]');
+  if (btn) {
+    addLog('✓ Btn2 funcionó — data-text: ' + btn.getAttribute('data-text'));
+  }
+});
+
+// Test 3: clipboard
+document.getElementById('btn3').addEventListener('click', function() {
+  addLog('Btn3 click detectado, intentando clipboard...');
+  var text = 'Texto de prueba ' + Date.now();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text)
+      .then(function() { addLog('✓ Clipboard OK: ' + text); })
+      .catch(function(e) { addLog('✗ Clipboard error: ' + e); });
+  } else {
+    addLog('✗ navigator.clipboard no disponible');
+    // fallback
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-9999px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); addLog('✓ execCommand copy OK'); }
+    catch(e) { addLog('✗ execCommand error: ' + e); }
+    document.body.removeChild(ta);
+  }
+});
+
+addLog('Script cargado OK');
+</script>
+</body>
+</html>
