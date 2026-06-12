@@ -104,9 +104,11 @@ body { font-family: 'Inter Tight', sans-serif; background: #0B0F19; color: #F0F4
   <div class="tab" data-view="reels">🎬 Reels</div>
   <div class="tab" data-view="carruseles">🃏 Carrouseles</div>
   <div class="tab" data-view="trailer">🎥 Trailer</div>
+  <div class="tab" data-view="blog">✍️ Blog</div>
 </div>
 
 <div class="content" id="main-content"></div>
+
 <div id="debug-overlay" style="position:fixed;bottom:4px;left:4px;right:4px;background:rgba(0,0,0,0.8);color:#C8A84B;font-size:10px;padding:4px 8px;border-radius:4px;z-index:9999;font-family:monospace"></div>
 
 <script>
@@ -487,6 +489,7 @@ function render() {
   else if (currentView === 'reels') content.innerHTML = renderReels();
   else if (currentView === 'carruseles') content.innerHTML = renderCarousels();
   else if (currentView === 'trailer') content.innerHTML = renderTrailer();
+  else if (currentView === 'blog') content.innerHTML = renderBlog();
   
   content.scrollTop = 0;
   if (currentView==='marcos') setTimeout(setupMarcosBtn,50);
@@ -852,6 +855,119 @@ function copyAllSlides(carouselId) {
 function setupMarcosBtn() {
   const btn = document.getElementById('marcos-master-btn');
   if (btn) { const k = sc(MARCOS.masterPrompt); btn.setAttribute('data-k', k); }
+}
+
+
+const BLOG = [
+  {
+    id: 'b01',
+    titulo: 'Invertir en tokens inmobiliarios: la guia completa para el inversor espanol',
+    slug: 'invertir-en-tokens-inmobiliarios',
+    categoria: 'Educacion financiera',
+    tiempo: '8 min lectura',
+    keywords: ['tokenizacion inmobiliaria', 'invertir en tokens', 'crowdfunding deuda', 'CNMV', 'blockchain inmobiliario'],
+    intro: 'La tokenizacion inmobiliaria ha pasado de ser una novedad tecnologica a convertirse en una via de inversion regulada y creciente en Espana. En 2025, el volumen total tokenizado alcanzo los 1.200 millones de euros segun PropTech Espana, con un crecimiento del 280% respecto a 2023. Este articulo explica que son los tokens inmobiliarios, como funcionan, que diferencia hay entre tokens de equity y tokens de deuda, y por que el modelo de Groinversia es el mas conservador y predecible.',
+    secciones: [
+      {
+        titulo: 'Que es un token inmobiliario',
+        contenido: 'Un token inmobiliario es una representacion digital de un derecho economico vinculado a un activo inmobiliario, emitido y registrado en una red blockchain. No es una criptomoneda: no fluctua con el mercado cripto. Es un instrumento financiero que puede representar propiedad fraccionada (equity) o un derecho de credito (deuda). La Ley del Mercado de Valores de 2023 otorgo validez juridica a los instrumentos financieros representados mediante blockchain en Espana, y la CNMV establecio en 2024 el marco regulatorio especifico bajo MiCA (Markets in Crypto-Assets), vigente desde diciembre de 2025.',
+        fuente: 'Ley Mercado de Valores 2023 / CNMV / Reglamento MiCA UE'
+      },
+      {
+        titulo: 'Diferencia entre tokens de equity y tokens de deuda',
+        contenido: 'Existen dos modelos completamente distintos que a menudo se confunden bajo el mismo termino. Los tokens de equity te hacen copropietario fraccionado del inmueble: participas de las rentas y de la revalorizacion, pero tambien de los riesgos de mercado. Los tokens de deuda (el modelo de Groinversia) funcionan de forma diferente: prestas capital al promotor a un tipo de interes fijo, y al vencimiento recuperas tu capital mas los intereses pactados. No eres propietario de nada. Tu rentabilidad no depende de si el mercado sube o baja. Segun Beltsys Labs (2026), el crowdlending inmobiliario ha ganado traccion en 2025-2026 precisamente por su perfil defensivo y predecible.',
+        fuente: 'Beltsys Labs - Crowdfunding inmobiliario guia completa (enero 2026)'
+      },
+      {
+        titulo: 'El marco regulatorio en Espana: que debes saber',
+        contenido: 'Invertir a traves de una plataforma no regulada es el principal riesgo del sector. En Espana, las plataformas de crowdfunding deben obtener la licencia PSFP (Proveedor de Servicios de Financiacion Participativa) de la CNMV. Solo hay 27 plataformas autorizadas registradas. Los inversores minoristas tienen un limite legal de 3.000 euros por proyecto y 10.000 euros por plataforma al ano. La regulacion MiCA, vigente desde diciembre de 2025, establece requisitos adicionales de transparencia, KYC y proteccion al inversor para las plataformas que operan con activos tokenizados en la UE.',
+        fuente: 'CNMV registro PSFP / Reglamento MiCA / Stratexlab 2026'
+      },
+      {
+        titulo: 'Rentabilidades reales del crowdlending inmobiliario en Espana',
+        contenido: 'Los datos del mercado espanol para 2025-2026 muestran rentabilidades en el modelo de deuda de entre el 7% y el 12% anual segun Datavenues (2026) y Urbanitae blog (2026). Civislend reporto una rentabilidad media del 11,9% en 2024. El factor diferenciador no es solo el porcentaje: es la existencia de garantia hipotecaria sobre el activo, que reduce el riesgo de perdida en caso de impago del promotor. En el primer trimestre de 2025, el crowdlending inmobiliario espanol financio mas de 70 millones de euros, el doble que el ano anterior, segun El Asesor Financiero.',
+        fuente: 'Datavenues (abril 2026) / Urbanitae blog (enero 2026) / El Asesor Financiero (enero 2026)'
+      },
+      {
+        titulo: 'Como funciona el modelo de Groinversia',
+        contenido: 'Groinversia opera bajo el modelo de crowdlending inmobiliario con tokens de deuda. El inversor presta capital a una operacion inmobiliaria concreta gestionada por grohábitat (promotor del mismo grupo). A cambio recibe un tipo de interes fijo, un plazo definido y una garantia estructurada. Al vencimiento: capital + intereses. Sin participacion en la propiedad, sin gestion de activos, sin exposicion al mercado inmobiliario. Tras 42 operaciones devueltas y 24 millones de euros retornados a inversores, el track record del grupo respalda la promesa.',
+        fuente: 'Datos propios Groinversia / groinversia.com'
+      },
+      {
+        titulo: 'Fiscalidad de los rendimientos por tokens de deuda en Espana',
+        contenido: 'Los intereses obtenidos a traves de tokens de deuda tributan en el IRPF como rendimientos del capital mobiliario, integrándose en la base imponible del ahorro. Estan sujetos a una retencion del 19% y tributan en tramos progresivos del 19% al 28% segun la cuantia total. Es importante conservar la documentacion de cada operacion (contratos, tokens emitidos, justificantes de pago) para la declaracion anual.',
+        fuente: 'Datavenues - Guia crowdfunding inmobiliario (abril 2026) / AEAT'
+      }
+    ],
+    cta: 'Groinversia opera bajo el modelo de deuda tokenizada regulado por la CNMV. Consulta los proyectos ya devueltos en groinversia.com',
+    fuentes: [
+      {texto: 'CNMV - Registro PSFP', url: 'https://www.cnmv.es'},
+      {texto: 'Reglamento MiCA - EUR-Lex', url: 'https://eur-lex.europa.eu'},
+      {texto: 'Urbanitae blog - Tendencias crowdfunding 2026', url: 'https://blog.urbanitae.com/2025/12/21/tendencias-del-crowdfunding-inmobiliario-en-espana-para-2026/'},
+      {texto: 'Datavenues - Guia crowdfunding inmobiliario', url: 'https://datavenues.com/blog/crowdfunding-inmobiliario/'},
+      {texto: 'El Asesor Financiero - Que es el crowdfunding inmobiliario', url: 'https://elasesorfinanciero.com/que-es-el-crowdfunding-inmobiliario-guia-con-riesgos-fiscalidad-y-ejemplos-en-espana/'},
+      {texto: 'Beltsys Labs - Guia completa crowdfunding inmobiliario 2026', url: 'https://beltsys.com/es/blog/crowdfunding-inmobiliario-guia-completa/'},
+      {texto: 'PropTech Espana - Informe tokenizacion 2025', url: 'https://jwilsondigitalstudio.com/2026/02/06/tokenizacion-inmobiliaria-en-espana-el-futuro-de-la-inversion-fraccionada-reental-equito/'}
+    ]
+  }
+];
+
+function renderBlog() {
+  return BLOG.map(function(art) {
+    var secHtml = art.secciones.map(function(s) {
+      return '<div class="card" style="margin-bottom:10px">' +
+        '<div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-0.2px">' + s.titulo + '</div>' +
+        '<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:8px">' + s.contenido + '</div>' +
+        '<div style="font-size:10px;color:#C8A84B;padding:4px 8px;background:rgba(200,168,75,0.08);border-radius:4px;display:inline-block">' +
+          'Fuente: ' + s.fuente +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    var fuentesHtml = art.fuentes.map(function(f) {
+      return '<div style="margin-bottom:4px"><a href="' + f.url + '" target="_blank" style="font-size:11px;color:#7BA7E0;text-decoration:none">' + f.texto + ' ↗</a></div>';
+    }).join('');
+
+    var kwHtml = art.keywords.map(function(k) {
+      return '<span style="background:rgba(200,168,75,0.1);color:#C8A84B;font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px;display:inline-block">' + k + '</span>';
+    }).join('');
+
+    var allText = art.titulo + '
+
+' + art.intro + '
+
+' +
+      art.secciones.map(function(s) { return s.titulo + '
+' + s.contenido + '
+Fuente: ' + s.fuente; }).join('
+
+') +
+      '
+
+FUENTES:
+' + art.fuentes.map(function(f){ return '- ' + f.texto + ': ' + f.url; }).join('
+');
+    var allKey = sc(allText);
+
+    return '<div class="card" style="margin-bottom:12px">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+        '<span style="font-size:9px;font-weight:700;color:#C8A84B;text-transform:uppercase;letter-spacing:1px;background:rgba(200,168,75,0.1);padding:2px 8px;border-radius:10px">' + art.categoria + '</span>' +
+        '<span style="font-size:9px;color:rgba(255,255,255,0.4)">' + art.tiempo + '</span>' +
+      '</div>' +
+      '<div style="font-size:17px;font-weight:900;color:#fff;letter-spacing:-0.4px;line-height:1.2;margin-bottom:10px">' + art.titulo + '</div>' +
+      '<div style="margin-bottom:12px">' + kwHtml + '</div>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #C8A84B">' + art.intro + '</div>' +
+      secHtml +
+      '<div class="card" style="background:#060a12;border:1px solid rgba(200,168,75,0.2);margin-bottom:10px">' +
+        '<div style="font-size:10px;font-weight:700;color:#C8A84B;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Fuentes y referencias</div>' +
+        fuentesHtml +
+      '</div>' +
+      '<div style="padding:12px;background:rgba(45,125,111,0.1);border:1px solid rgba(45,125,111,0.3);border-radius:6px;font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px">' +
+        '<strong style="color:#5DD879">CTA sugerido:</strong> ' + art.cta +
+      '</div>' +
+      '<button class="btn-gold" data-k="' + allKey + '">📋 Copiar articulo completo</button>' +
+    '</div>';
+  }).join('');
 }
 
 // ─── INIT ───
