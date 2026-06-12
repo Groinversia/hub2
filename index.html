@@ -1866,21 +1866,7 @@ function renderBlog() {
       return '<span style="background:rgba(200,168,75,0.1);color:#C8A84B;font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px;display:inline-block">' + k + '</span>';
     }).join('');
 
-    var allText = art.titulo + '
-
-' + art.intro + '
-
-' +
-      art.secciones.map(function(s) { return s.titulo + '
-' + s.contenido + '
-Fuente: ' + s.fuente; }).join('
-
-') +
-      '
-
-FUENTES:
-' + art.fuentes.map(function(f){ return '- ' + f.texto + ': ' + f.url; }).join('
-');
+    var allText = [art.titulo, art.intro].concat(art.secciones.map(function(s){return s.titulo+' '+s.contenido;})).concat(art.fuentes.map(function(f){return f.texto+': '+f.url;})).join(' | ');
     var allKey = sc(allText);
 
     return '<div class="card" style="margin-bottom:12px">' +
