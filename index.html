@@ -1773,7 +1773,7 @@ function copyPB(btn){
 }
 
 /* ─── MODAL ─── */
-let activeModal=null;
+
 function openModal(id,type){
   activeModal={id,type};
   const data = type==='carrusel' ? CAROUSELS.find(c=>c.id===id) : REELS.find(r=>r.id===id);
