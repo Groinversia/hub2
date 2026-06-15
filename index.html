@@ -1428,6 +1428,921 @@ const REELS = [
 ];
 
 /* ─── RENDER GRIDS ─── */
+
+function renderSemanaHTML() {
+  return '<div id="semana-container" style="padding:0"></div>';
+}
+
+function renderCalendarHTML() {
+  return '<div id="full-cal-container"></div>';
+}
+
+function buildWeekView(idx) {
+  var container = document.getElementById('semana-container');
+  if (!container) return;
+  var wk = CALENDAR[idx];
+  var typeColor = {reel:'#4A8FE7', carrusel:'rgba(255,255,255,0.5)', trailer:'#5DB879'};
+  var effortLabel = function(e) { return e.startsWith('[E]') ? 'Alta dedicación' : e.startsWith('[M]') ? 'Dedicación media' : 'Rápido'; };
+  var effortColor = function(e) { return e.startsWith('[E]') ? '#E74A4A' : e.startsWith('[M]') ? '#E7A14A' : '#5DB879'; };
+
+  var html = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">' +
+    '<button onclick="buildWeekView(' + (idx-1) + ')" ' + (idx===0?'disabled':'') + ' style="background:#1A2535;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-family:inherit;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;' + (idx===0?'opacity:0.3;cursor:default':'') + '">← Anterior</button>' +
+    '<div>' +
+      '<div style="font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.2px">' + wk.week + '</div>' +
+      '<div style="display:flex;align-items:center;gap:6px;margin-top:2px">' +
+        '<div style="width:7px;height:7px;border-radius:50%;background:' + wk.color + '"></div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.4)">' + wk.theme + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="margin-left:auto;display:flex;gap:8px;align-items:center">' +
+      '<span style="font-size:10px;color:rgba(255,255,255,0.3)">' + wk.items.length + ' publicaciones</span>' +
+      '<button onclick="buildWeekView(' + (idx+1) + ')" ' + (idx===CALENDAR.length-1?'disabled':'') + ' style="background:#1A2535;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-family:inherit;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;' + (idx===CALENDAR.length-1?'opacity:0.3;cursor:default':'') + '">Siguiente →</button>' +
+    '</div>' +
+  '</div>' +
+  '<div style="background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.14);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;gap:12px">' +
+    '<div style="font-size:18px;flex-shrink:0">🎯</div>' +
+    '<div>' +
+      '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.1em">Por qué este contenido ahora</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.65">' + wk.why + '</div>' +
+    '</div>' +
+  '</div>';
+
+  wk.items.forEach(function(item) {
+    var onclick = item.id ? "openModal('" + item.id + "','" + (item.type==='carrusel'?'carrusel':'reel') + "')" : (item.type==='trailer' ? "showView('trailer')" : '');
+    var tc = typeColor[item.type] || 'rgba(255,255,255,0.25)';
+    html += '<div onclick="' + onclick + '" style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px 20px;margin-bottom:10px;' + (onclick?'cursor:pointer;':'') + 'transition:all 0.15s"' +
+      (onclick?' onmouseenter="this.style.borderColor='rgba(255,255,255,0.2)';this.style.background='#212f45'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='#1A2535'"':'') + '>' +
+      '<div style="display:grid;grid-template-columns:80px 1fr 130px;gap:16px;align-items:start">' +
+        '<div>' +
+          '<div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px">' + item.day + '</div>' +
+          '<div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:' + tc + ';background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:4px;padding:3px 8px;display:inline-block">' + item.type.toUpperCase() + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:-0.3px;line-height:1.2">' + item.title + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:10px">' + item.sub + '</div>' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;padding:8px 12px;background:rgba(255,255,255,0.04);border-left:2px solid rgba(255,255,255,0.12);border-radius:0 5px 5px 0;margin-bottom:10px;line-height:1.5">' + item.hook + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.6">💡 ' + item.why + '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:9px;font-weight:700;color:' + effortColor(item.effort) + ';margin-bottom:3px">' + effortLabel(item.effort) + '</div>' +
+          '<div style="font-size:9px;color:rgba(255,255,255,0.3);line-height:1.5;margin-bottom:10px">' + item.effort.replace(/^\[.\] /,'') + '</div>' +
+          (onclick ? '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 14px;border-radius:6px;display:inline-block">Abrir →</div>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  html += '<div style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;margin-top:8px">' +
+    '<div style="font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px">Cuándo publicar</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">📅</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Lunes 9h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Educativo o datos. Máxima absorción inicio de semana.</div></div>' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">⚡</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Miércoles 12h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Producto o campaña. Pico de engagement en Instagram.</div></div>' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">🎬</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Viernes 18h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Reel emocional o aspiracional. El fin de semana empieza el viernes.</div></div>' +
+    '</div>' +
+  '</div>';
+
+  container.innerHTML = html;
+}
+
+function buildFullCalendar() {
+  var container = document.getElementById('full-cal-container');
+  if (!container) return;
+  var typeColor = {reel:'#4A8FE7', carrusel:'rgba(255,255,255,0.5)', trailer:'#5DB879'};
+  var effortColor = function(e) { return e.startsWith('[E]') ? '#E74A4A' : e.startsWith('[M]') ? '#E7A14A' : '#5DB879'; };
+
+  var html = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px">' +
+    CALENDAR.map(function(wk) {
+      return '<div style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ' + wk.color + ';border-radius:8px;padding:12px 14px">' +
+        '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:3px">' + wk.week + '</div>' +
+        '<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">' + wk.theme + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.3)">' + wk.items.length + ' piezas</div>' +
+      '</div>';
+    }).join('') + '</div>';
+
+  CALENDAR.forEach(function(wk) {
+    html += '<div style="margin-bottom:26px">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">' +
+        '<div style="width:10px;height:10px;border-radius:50%;background:' + wk.color + '"></div>' +
+        '<div style="font-size:13px;font-weight:700;color:#fff">' + wk.week + ' — ' + wk.theme + '</div>' +
+      '</div>' +
+      '<div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px;padding-left:20px;line-height:1.55;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px">' + wk.why + '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(' + wk.items.length + ',1fr);gap:10px">';
+
+    wk.items.forEach(function(item) {
+      var onclick = item.id ? "openModal('" + item.id + "','" + (item.type==='carrusel'?'carrusel':'reel') + "')" : (item.type==='trailer' ? "showView('trailer')" : '');
+      var tc = typeColor[item.type] || 'rgba(255,255,255,0.2)';
+      html += '<div onclick="' + onclick + '" style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;' + (onclick?'cursor:pointer;':'') + 'transition:all 0.15s"' +
+        (onclick?' onmouseenter="this.style.borderColor='rgba(255,255,255,0.2)';this.style.background='#212f45'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='#1A2535'"':'') + '>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4)">' + item.day + '</div>' +
+          '<div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:' + tc + ';padding:2px 7px;background:rgba(255,255,255,0.04);border-radius:3px">' + item.type.toUpperCase() + '</div>' +
+        '</div>' +
+        '<div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.3">' + item.title + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.35);margin-bottom:8px">' + item.sub + '</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.55);font-style:italic;line-height:1.5;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:5px;margin-bottom:8px">' + item.hook + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.3);line-height:1.4;margin-bottom:6px">💡 ' + item.why + '</div>' +
+        (onclick ? '<div style="margin-top:8px;font-size:10px;font-weight:600;color:rgba(255,255,255,0.5)">Abrir →</div>' : '') +
+      '</div>';
+    });
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function buildCarouselGrid(){
+  const g=document.getElementById('carousel-grid');
+  g.innerHTML=CAROUSELS.map(c=>`
+    <div class="topic-card" onclick="openModal('${c.id}','carrusel')">
+      <div class="topic-num">${c.eyebrow}</div>
+      <div class="topic-title">${c.title}</div>
+      <div class="topic-subtitle">${c.hook}</div>
+      <div class="topic-meta">
+        <span class="topic-tag" style="background:var(--gold-pale);color:var(--gold)">${c.slides.length} slides</span>
+        <span class="topic-tag" style="background:var(--surface2);color:var(--text2)">Inter Tight</span>
+      </div>
+    </div>`).join('');
+}
+
+function buildReelGrid(){
+  const g=document.getElementById('reel-grid');
+  const stageColor={'awareness':'#EBF3FF','consideracion':'#FFF8E6','conversion':'#EDFAF6'};
+  const stageText={'awareness':'#1A5FAB','consideracion':'#8A6914','conversion':'#1A7A5F'};
+  g.innerHTML=REELS.map(r=>`
+    <div class="reel-card" onclick="openModal('${r.id}','reel')">
+      <div class="reel-thumb">
+        <div class="reel-thumb-bg"></div>
+        <div class="reel-play">▶</div>
+        <div class="reel-outfit">${r.outfitShort}</div>
+      </div>
+      <div class="reel-body">
+        <div class="reel-stage" style="color:${stageText[r.stage]}">${r.eyebrow}</div>
+        <div class="reel-title">${r.title}</div>
+        <div class="reel-hook">"${r.hook}"</div>
+        <div class="reel-footer">
+          <div class="reel-frames">📐 ${r.frames.length} frames · 60s</div>
+          <div class="reel-cta">Ver →</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+
+// COPY SYSTEM
+var CS={}, CSI=0;
+function sc(text){var k='k'+(++CSI);CS[k]=text;return k;}
+function doCopy(text,btn){
+  var orig=btn?btn.textContent:'';
+  var ok=function(){if(btn){btn.textContent='✓';setTimeout(function(){btn.textContent=orig;},1800);}};
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok).catch(function(){fbCopy(text,ok);});}
+  else{fbCopy(text,ok);}
+}
+function fbCopy(text,done){
+  var ta=document.createElement('textarea');ta.value=text;ta.readOnly=true;
+  ta.style.cssText='position:fixed;top:-9999px';document.body.appendChild(ta);
+  ta.focus();ta.select();ta.setSelectionRange(0,99999);
+  try{document.execCommand('copy');if(done)done();}catch(e){}
+  document.body.removeChild(ta);
+}
+document.addEventListener('click',function(e){
+  var btn=e.target.closest('[data-k]');if(!btn)return;
+  e.preventDefault();doCopy(CS[btn.getAttribute('data-k')]||'',btn);
+});
+
+// BLOG DATA
+var BLOG=[{
+  id:'b01',
+  titulo:'Invertir en tokens inmobiliarios: la guia completa para el inversor espanol',
+  categoria:'Educacion financiera',tiempo:'8 min lectura',
+  keywords:['tokenizacion inmobiliaria','invertir en tokens','crowdfunding deuda','CNMV','blockchain inmobiliario'],
+  intro:'La tokenizacion inmobiliaria ha pasado de ser una novedad tecnologica a convertirse en una via de inversion regulada en Espana. En 2025 el volumen tokenizado alcanzo 1.200 millones de euros. Este articulo explica que son los tokens inmobiliarios, como funcionan y por que el modelo de deuda de Groinversia es el mas conservador y predecible.',
+  secciones:[
+    {titulo:'Que es un token inmobiliario',contenido:'Un token inmobiliario es una representacion digital de un derecho economico vinculado a un activo inmobiliario registrado en blockchain. La Ley del Mercado de Valores de 2023 otorgo validez juridica a estos instrumentos en Espana y la CNMV establicio el marco bajo MiCA vigente desde diciembre de 2025.',fuente:'Ley Mercado de Valores 2023 / CNMV / Reglamento MiCA UE'},
+    {titulo:'Tokens de equity vs tokens de deuda',contenido:'Los tokens de equity te hacen copropietario fraccionado: participas de rentas y revalorizacion pero tambien del riesgo de mercado. Los tokens de deuda (modelo Groinversia) son diferentes: prestas capital al promotor a tipo fijo y al vencimiento recuperas capital mas intereses sin exposicion al mercado.',fuente:'Beltsys Labs - Crowdfunding inmobiliario guia completa (enero 2026)'},
+    {titulo:'El marco regulatorio en Espana',contenido:'Las plataformas de crowdfunding deben tener licencia PSFP de la CNMV. Solo hay 27 plataformas autorizadas. Los inversores minoristas tienen limite de 3.000 euros por proyecto y 10.000 por plataforma al ano. MiCA establece requisitos adicionales de transparencia y KYC vigentes desde diciembre 2025.',fuente:'CNMV registro PSFP / Reglamento MiCA / Stratexlab 2026'},
+    {titulo:'Rentabilidades reales en Espana 2025-2026',contenido:'Los datos del mercado espanol muestran rentabilidades en el modelo de deuda de entre el 7% y el 12% anual segun Datavenues. Civislend reporto rentabilidad media del 11,9% en 2024. El factor clave diferenciador es la garantia hipotecaria sobre el activo.',fuente:'Datavenues abril 2026 / Urbanitae blog enero 2026 / El Asesor Financiero'},
+    {titulo:'Como funciona el modelo de Groinversia',contenido:'Groinversia opera bajo crowdlending con tokens de deuda. El inversor presta capital a una operacion concreta gestionada por grohabitat del mismo grupo. Recibe tipo de interes fijo, plazo definido y garantia estructurada. Al vencimiento: capital mas intereses. 42 operaciones devueltas y 24M euros retornados avalan el modelo.',fuente:'Datos propios Groinversia / groinversia.com'},
+    {titulo:'Fiscalidad de los rendimientos en Espana',contenido:'Los intereses de tokens de deuda tributan en el IRPF como rendimientos del capital mobiliario con retencion del 19% y tramos progresivos del 19% al 28%. Conserva la documentacion de cada operacion para la declaracion anual.',fuente:'Datavenues guia crowdfunding abril 2026 / AEAT'}
+  ],
+  cta:'Groinversia opera bajo modelo de deuda tokenizada regulado por la CNMV. Consulta los proyectos ya devueltos en groinversia.com',
+  fuentes:[
+    {texto:'CNMV - Registro PSFP',url:'https://www.cnmv.es'},
+    {texto:'Reglamento MiCA EUR-Lex',url:'https://eur-lex.europa.eu'},
+    {texto:'Datavenues - Guia crowdfunding inmobiliario',url:'https://datavenues.com/blog/crowdfunding-inmobiliario/'},
+    {texto:'Beltsys Labs - Guia 2026',url:'https://beltsys.com/es/blog/crowdfunding-inmobiliario-guia-completa/'},
+    {texto:'El Asesor Financiero',url:'https://elasesorfinanciero.com'}
+  ]
+}];
+
+function renderBlog(){
+  return BLOG.map(function(art){
+    var kwHtml=art.keywords.map(function(k){return '<span style="background:rgba(200,168,75,0.1);color:#C8A84B;font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px;display:inline-block">'+k+'</span>';}).join('');
+    var secHtml=art.secciones.map(function(s){
+      var sk=sc(s.titulo+': '+s.contenido+' Fuente: '+s.fuente);
+      return '<div style="background:#1A2535;border-radius:8px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.06)"><div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:8px">'+s.titulo+'</div><div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.7;margin-bottom:8px">'+s.contenido+'</div><div style="font-size:10px;color:#C8A84B;padding:3px 8px;background:rgba(200,168,75,0.08);border-radius:4px;display:inline-block;margin-bottom:6px">'+s.fuente+'</div><br><button style="margin-top:6px;padding:6px 12px;background:#0B0F19;color:#C8A84B;border:1px solid rgba(200,168,75,0.3);border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit" data-k="'+sk+'">Copiar</button></div>';
+    }).join('');
+    var fuentesHtml=art.fuentes.map(function(f){return '<div style="margin-bottom:4px"><a href="'+f.url+'" target="_blank" style="font-size:11px;color:#7BA7E0;text-decoration:none">'+f.texto+' ↗</a></div>';}).join('');
+    var allKey=sc([art.titulo,art.intro].concat(art.secciones.map(function(s){return s.titulo+' '+s.contenido;})).join(' '));
+    return '<div style="background:#1A2535;border-radius:10px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06)"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:9px;font-weight:700;color:#C8A84B;background:rgba(200,168,75,0.1);padding:2px 8px;border-radius:10px">'+art.categoria+'</span><span style="font-size:9px;color:rgba(255,255,255,0.4)">'+art.tiempo+'</span></div><div style="font-size:17px;font-weight:900;color:#fff;letter-spacing:-0.4px;line-height:1.2;margin-bottom:10px">'+art.titulo+'</div><div style="margin-bottom:12px">'+kwHtml+'</div><div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #C8A84B">'+art.intro+'</div>'+secHtml+'<div style="padding:10px;background:#060a12;border:1px solid rgba(200,168,75,0.2);border-radius:6px;margin-bottom:10px">'+fuentesHtml+'</div><div style="padding:10px;background:rgba(45,125,111,0.1);border:1px solid rgba(45,125,111,0.3);border-radius:6px;font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:10px"><strong style="color:#5DD879">CTA:</strong> '+art.cta+'</div><button style="width:100%;padding:10px;background:#C8A84B;color:#0B0F19;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" data-k="'+allKey+'">Copiar articulo completo</button></div>';
+  }).join('');
+}
+
+buildCarouselGrid();
+buildReelGrid();const CALENDAR = [
+  {
+    week: 'S1 · 15–19 Jun', theme: 'Awareness & Educación', color: '#4A8FE7',
+    why: 'El principal freno del inversor nuevo es no entender el modelo. Empezamos con educación pura: qué es el crowdlending, por qué no es lo mismo que comprar un piso, y qué hace diferente a Groinversia.',
+    items: [
+      { day:'Lun 15', type:'reel', id:'r01',
+        title:'¿Qué es el crowdfunding inmobiliario?',
+        sub:'Marcos · Oficina Groinversia · Camisa lino azul',
+        hook:'"Prestas dinero. Cobras intereses. Recuperas tu capital."',
+        why:'El reel más educativo del mes. Hook de impacto que rompe el mito del crowdfunding = comprar un piso.',
+        effort:'[M] Medio — 6 frames + Veo 3' },
+      { day:'Mié 17', type:'carrusel', id:'c01',
+        title:'5 términos que debes conocer antes de invertir',
+        sub:'Educativo · 6 slides · Castellano',
+        hook:'"Si el lenguaje financiero te frena, esto es para ti."',
+        why:'El glosario es el contenido con más guardados del sector. Inversores nuevos lo comparten con sus parejas.',
+        effort:'[R] Rápido — ChatGPT + screenshot' },
+      { day:'Vie 19', type:'reel', id:'r02',
+        title:'No eres propietario. Eres el banco.',
+        sub:'Marcos · Exterior Barcelona · Polo navy',
+        hook:'"Hay una diferencia enorme entre comprar un piso e invertir en uno."',
+        why:'El reel que se comparte entre amigos. Diferenciación clara del modelo frente a compra tradicional.',
+        effort:'[M] Medio — 6 frames + Veo 3' }
+    ]
+  },
+  {
+    week: 'S2 · 22–26 Jun', theme: 'Consideración & Confianza', color: '#5DB879',
+    why: 'Con la base educativa puesta, ahora trabajamos la confianza. El inversor que ya entiende el modelo necesita saber que Groinversia es fiable. Track record real, proceso transparente, respuestas honestas.',
+    items: [
+      { day:'Lun 22', type:'reel', id:'r05',
+        title:'Así funciona Groinversia en 3 pasos',
+        sub:'Marcos · Laptop · Jersey gris',
+        hook:'"En 5 minutos puedes estar financiando tu primera operación."',
+        why:'El reel de conversión más directa. Elimina la fricción de "no sé cómo empezar". Alta intención de clic a la web.',
+        effort:'[M] Medio — 6 frames + Veo 3' },
+      { day:'Mié 24', type:'carrusel', id:'c05',
+        title:'Torreblanca 70 — Caso de éxito devuelto',
+        sub:'Social proof · 6 slides · Castellano',
+        hook:'"149 inversores · 2.2M€ · 22% rentabilidad total."',
+        why:'El caso real devuelto es el contenido más potente para la consideración. Los números hablan solos.',
+        effort:'[R] Rápido — ChatGPT + screenshot' },
+      { day:'Vie 26', type:'reel', id:'r03',
+        title:'3 preguntas antes de invertir',
+        sub:'Marcos · Sala reuniones · Blazer gris',
+        hook:'"Si una plataforma no responde estas 3 preguntas, no inviertas."',
+        why:'Posiciona a Groinversia como la única plataforma que responde todo. Genera confianza por honestidad.',
+        effort:'[M] Medio — 6 frames + Veo 3' }
+    ]
+  },
+  {
+    week: 'S3 · 29 Jun–3 Jul', theme: 'Campaña VALENTINA40', color: '#E7A14A',
+    why: 'Con la confianza establecida, presentamos la campaña activa. VALENTINA40 es la estrella. Objetivo: que el inversor que nos sigue desde S1 dé el paso y se registre.',
+    items: [
+      { day:'Lun 29', type:'reel', id:'r04',
+        title:'VALENTINA40 — Campaña abierta',
+        sub:'Marcos · Castelldefels exterior · Polo crudo',
+        hook:'"5 casas de lujo en Castelldefels. 10% anual. Desde 500€."',
+        why:'El lanzamiento de campaña. Máxima energía. El reel que convierte seguidores en inversores registrados.',
+        effort:'[M] Medio — 6 frames + Veo 3' },
+      { day:'Mié 01', type:'carrusel', id:'c03',
+        title:'VALENTINA40 — El proyecto en detalle',
+        sub:'Proyecto · 7 slides · Castellano',
+        hook:'"Castelldefels, Barcelona. La oportunidad está abierta."',
+        why:'El carrusel de producto más completo. Todos los datos del proyecto para el inversor que quiere decidir.',
+        effort:'[R] Rápido — ChatGPT + screenshot' },
+      { day:'Vie 03', type:'reel', id:'r06',
+        title:'Por qué el 10% anual es posible',
+        sub:'Marcos · Oficina · Blazer azul acero',
+        hook:'"Cuando alguien te ofrece un 10% anual lo primero es desconfiar."',
+        why:'Responde la objeción más frecuente con honestidad total. El inversor que ve este reel ya está listo para invertir.',
+        effort:'[M] Medio — 6 frames + Veo 3' }
+    ]
+  },
+  {
+    week: 'S4 · 7–11 Jul', theme: 'Urgencia & Fidelización', color: '#E74A4A',
+    why: 'La campaña sigue abierta. Cerramos el mes con urgencia real (% financiado), educación avanzada y contenido que fideliza a los ya inversores para que vuelvan en la próxima operación.',
+    items: [
+      { day:'Lun 07', type:'carrusel', id:'c02',
+        title:'Groinversia vs banco: la comparativa real',
+        sub:'Comparativa · 5 slides · Castellano',
+        hook:'"Tu banco te da un 2,5%. Aquí puedes obtener hasta el 10%."',
+        why:'Contenido evergreen con altísimo guardado. El inversor que duda entre banco y Groinversia toma decisión aquí.',
+        effort:'[R] Rápido — ChatGPT + screenshot' },
+      { day:'Mié 09', type:'carrusel', id:'c04',
+        title:'Cómo filtramos los proyectos',
+        sub:'Transparencia · 7 slides · Castellano',
+        hook:'"Antes de publicar un proyecto, pasa por 6 filtros."',
+        why:'Refuerza la confianza en el momento de decisión final. El inversor que lleva semanas siguiéndonos lo necesita.',
+        effort:'[R] Rápido — ChatGPT + screenshot' },
+      { day:'Vie 11', type:'carrusel', id:'c06',
+        title:'500€ son suficientes para empezar',
+        sub:'Barrera de entrada · 5 slides · Castellano',
+        hook:'"La barrera de entrada ya no es el capital. Es la decisión."',
+        why:'Elimina el último freno: "no tengo suficiente dinero". Cierra el mes empujando al registro.',
+        effort:'[R] Rápido — ChatGPT + screenshot' }
+    ]
+  }
+]; ─── NAV ─── */
+function showView(id){
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['brand','marcos','cal','carruseles','reels','trailer','blog'][i]===id)
+  });
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id)?.classList.add('active'); if(id==='blog'){var el=document.getElementById('view-blog');if(el)el.innerHTML=renderBlog();}
+}
+
+/* ─── COPY ─── */
+function copyEl(id,btn){
+  const el=document.getElementById(id);
+  const txt=el.innerText.replace('copy','').trim();
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+function copyPB(btn){
+  const code=btn.closest('.prompt-block').querySelector('.prompt-code');
+  navigator.clipboard.writeText(code.innerText).then(()=>{
+    btn.textContent='✓';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('ok')},2000);
+  });
+}
+
+/* ─── MODAL ─── */
+let activeModal=null;
+function openModal(id,type){
+  activeModal={id,type};
+  const data = type==='carrusel' ? CAROUSELS.find(c=>c.id===id) : REELS.find(r=>r.id===id);
+  document.getElementById('m-eyebrow').textContent=data.eyebrow||'';
+  document.getElementById('m-title').textContent=data.title;
+  document.getElementById('m-hook').textContent=data.hook?`"${data.hook}"`:data.subtitle||'';
+  const tabs = type==='carrusel'
+    ? [['slides','🃏 Slides'],['copy','✍️ Copys'],['prompt','⚡ Prompt IA']]
+    : [['script','📝 Guión'],['frames','🎞 Frames'],['veo3','⚡ Veo 3']];
+  document.getElementById('m-tabs').innerHTML = tabs.map((t,i)=>`<div class="m-tab ${i===0?'active':''}" onclick="switchMTab(this,'${t[0]}')">${t[1]}</div>`).join('');
+  renderMBody(data, type, tabs[0][0]);
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-bg')) document.getElementById('modal-bg').classList.remove('open');
+}
+function switchMTab(el,tab){
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const data = activeModal.type==='carrusel' ? CAROUSELS.find(c=>c.id===activeModal.id) : REELS.find(r=>r.id===activeModal.id);
+  renderMBody(data, activeModal.type, tab);
+}
+function renderMBody(data,type,tab){
+  const body=document.getElementById('m-body');
+  if(type==='carrusel'){
+    if(tab==='slides') body.innerHTML=renderCarouselSlides(data);
+    else if(tab==='copy') body.innerHTML=renderCarouselCopy(data);
+    else body.innerHTML=renderCarouselPrompt(data);
+  } else {
+    if(tab==='script') body.innerHTML=renderReelScript(data);
+    else if(tab==='frames') body.innerHTML=renderReelFrames(data);
+    else body.innerHTML=renderReelVeo3(data);
+  }
+}
+
+function renderCarouselSlides(d){
+  return `<div class="slide-preview">${d.slides.map((s,i)=>`
+    <div class="slide-card">
+      <div class="slide-num">0${i+1}</div>
+      <div class="slide-content">
+        <div class="slide-icon">${s.icon}</div>
+        <div class="slide-headline">${s.headline}</div>
+        <div class="slide-sub">${s.sub}</div>
+      </div>
+      <div class="slide-accent"></div>
+    </div>`).join('')}
+  </div>
+  <div style="font-size:11px;color:var(--text2);line-height:1.6;background:var(--surface);padding:12px 14px;border-radius:8px">
+    <strong>Formato:</strong> 1080×1350px (4:5) · Fondo: ${d.bg} · Tipografía: Inter Tight · Acento: oro #C8A84B
+  </div>`;
+}
+function renderCarouselCopy(d){
+  return d.slides.map((s,i)=>`
+    <div class="prompt-block">
+      <div class="prompt-lbl">
+        <div class="prompt-lbl-text">Slide ${i+1} — ${s.label}</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+      </div>
+      <div class="prompt-code">HEADLINE: ${s.headline}
+SUBTEXT: ${s.sub}
+${s.cta?'CTA: '+s.cta:''}</div>
+    </div>`).join('');
+}
+function renderCarouselPrompt(d){
+  return `<div class="prompt-block">
+    <div class="prompt-lbl"><div class="prompt-lbl-text">Prompt Claude / IA para generar el carrusel</div><button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button></div>
+    <div class="prompt-code">${d.aiPrompt}</div>
+  </div>`;
+}
+function renderReelScript(d){
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:var(--surface);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
+    <strong>Marcos</strong> · ${d.angle} · ${d.outfit} · 9:16 · 60s · 24fps · Cámara fija trípode
+  </div>
+  ${d.script.map(s=>`<div class="script-row">
+    <div class="script-seg">${s.seg}</div>
+    <div><div class="script-spoken">${s.spoken}</div><div class="script-action">${s.action}</div></div>
+    <div class="script-gesture">${s.gesture}</div>
+  </div>`).join('')}`;
+}
+function renderReelFrames(d){
+  return `<div style="margin-bottom:12px;font-size:11px;color:var(--text2)">Element ID Marcos: <code style="background:var(--surface);padding:2px 6px;border-radius:3px;font-size:10px;color:var(--gold)">450159d6-d451-4064-8d59-a093a5007f8c</code> · Modelo: Nano Banana Pro · ${d.outfit}</div>
+  <div class="frames-grid">${d.frames.map((f,i)=>`
+    <div class="frame-item">
+      <div class="frame-vis">
+        <div class="frame-vis-num">F${i+1}</div>
+        <div class="frame-emoji">${f.emoji}</div>
+        <div class="frame-lbl">${f.label}</div>
+        <div class="frame-vis-outfit">${d.outfitShort}</div>
+      </div>
+      <div class="frame-info">
+        <div class="frame-info-title">${f.label}</div>
+        <div class="frame-info-desc">${f.desc}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+function renderReelVeo3(d){
+  return `<div style="margin-bottom:14px;padding:10px 14px;background:#F0F8FF;border:1px solid #BFD8F0;border-radius:7px;font-size:11px;color:#1A4A6A;line-height:1.5">
+    <strong>Instrucciones:</strong> Sube cada frame generado como <em>Start Image</em> en Google AI Studio → Veo 3. Pega el prompt. Usa <strong>8s, 9:16</strong>. Incluye siempre: <code>static camera, no camera movement</code>
+  </div>
+  ${d.veo3.map((p,i)=>`<div class="prompt-block">
+    <div class="prompt-lbl">
+      <div class="prompt-lbl-text">${p.label}</div>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.prompt-block').querySelector('.prompt-code').innerText);this.textContent='✓';this.classList.add('ok');setTimeout(()=>{this.textContent='copy';this.classList.remove('ok')},2000)">copy</button>
+    </div>
+    <div class="prompt-code">${p.text}</div>
+  </div>`).join('')}`;
+}
+
+/* ─── DATA: CAROUSELS ─── */
+const CAROUSELS = [
+  {
+    id:'c01',eyebrow:'CARROUSEL 01 · AWARENESS',
+    title:'5 términos que debes conocer antes de invertir',
+    hook:'El lenguaje financiero no tiene que ser un obstáculo',
+    subtitle:'Educativo · 6 slides · Fondo oscuro',
+    bg:'Navy #0B0F19 · texto blanco',
+    slides:[
+      {icon:'📖',label:'Portada',headline:'5 términos que debes conocer antes de invertir',sub:'Si el lenguaje financiero te frena, esto es para ti.',cta:''},
+      {icon:'🏦',label:'Crowdlending',headline:'Crowdlending',sub:'Prestas dinero a un proyecto. A cambio recibes intereses. Tú no eres propietario de nada.',cta:''},
+      {icon:'📄',label:'Deuda tokenizada',headline:'Deuda tokenizada',sub:'Tu préstamo está representado por tokens digitales en blockchain. Trazable, seguro, inmutable.',cta:''},
+      {icon:'⏱',label:'Estructura bullet',headline:'Estructura bullet',sub:'Capital + intereses se pagan juntos al vencimiento. Sin pagos parciales durante el plazo.',cta:''},
+      {icon:'🔐',label:'Aval de holding',headline:'Aval de holding',sub:'Una empresa matriz garantiza la deuda. Si la filial no paga, la matriz responde.',cta:''},
+      {icon:'🚀',label:'CTA',headline:'Ahora ya sabes hablar de inversión inmobiliaria.',sub:'Desde 500€. groinversia.com',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de Instagram de 6 slides para Groinversia sobre "5 términos financieros del crowdfunding inmobiliario". 
+Formato: 1080x1350px, fondo #0B0F19, tipografía Inter Tight, acento dorado #C8A84B.
+Cada slide debe tener: número de slide top-left en gris, término grande en blanco (Inter Tight Bold 700), definición breve en gris claro (Inter Regular 400, max 2 líneas), línea dorada decorativa bottom. 
+Slide 1: portada con título completo. Slides 2-5: un término por slide. Slide 6: CTA con logo Groinversia y "Desde 500€".
+Términos: Crowdlending, Deuda tokenizada, Estructura bullet, Aval de holding, Token de deuda.`
+  },
+  {
+    id:'c02',eyebrow:'CARROUSEL 02 · CONSIDERACIÓN',
+    title:'Groinversia vs banco: la comparativa real',
+    hook:'Tu banco te da un 2,5%. Aquí puedes obtener hasta el 10%.',
+    subtitle:'Comparativa · 5 slides · Fondo claro',
+    bg:'Blanco #FFFFFF · texto oscuro · gold accent',
+    slides:[
+      {icon:'⚡',label:'Portada',headline:'Tu banco vs Groinversia',sub:'Los números que tu gestora no quiere que veas.',cta:''},
+      {icon:'📉',label:'Banco',headline:'Depósito bancario: 2,5% anual',sub:'Dinero bloqueado. Sin saber dónde está. Sin elegir proyectos. Sin transparencia.',cta:''},
+      {icon:'📈',label:'Groinversia',headline:'Groinversia: hasta 10% anual',sub:'Operación concreta. Plazo definido. Garantía hipotecaria. Tú decides dónde va tu dinero.',cta:''},
+      {icon:'⚖️',label:'Diferencia',headline:'La diferencia real',sub:'No es promesa. Es contrato. Condiciones pactadas desde el día 1. Sin letra pequeña.',cta:''},
+      {icon:'🎯',label:'CTA',headline:'¿Para quién es Groinversia?',sub:'Para quien quiere más control sobre su dinero. Desde 500€.',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel comparativo de 5 slides para Groinversia sobre "Banco vs Groinversia". 
+Formato: 1080x1350px, fondo blanco, tipografía Inter Tight, acento dorado #C8A84B, navy #0B0F19.
+Slide 1: portada impactante, titular grande "Tu banco vs Groinversia", fondo negro con acento dorado.
+Slide 2: datos del banco (2,5%, depósito genérico, sin control), iconos negativos en rojo suave.
+Slide 3: datos de Groinversia (10%, operación concreta, garantía, control), iconos positivos en dorado.
+Slide 4: tabla comparativa lado a lado. Slide 5: CTA con logo y "Desde 500€ groinversia.com".`
+  },
+  {
+    id:'c03',eyebrow:'CARROUSEL 03 · CONVERSIÓN',
+    title:'VALENTINA40 — El proyecto en detalle',
+    hook:'5 casas de lujo en Castelldefels. 2M€. 10% anual. 14 meses.',
+    subtitle:'Proyecto · 7 slides · Inmersivo',
+    bg:'Navy + imágenes del proyecto + gold',
+    slides:[
+      {icon:'🏡',label:'Portada',headline:'VALENTINA40',sub:'Castelldefels, Barcelona. La oportunidad está abierta.',cta:''},
+      {icon:'📍',label:'Ubicación',headline:'Castelldefels',sub:'20 min de Barcelona. Litoral mediterráneo. Colegios internacionales. Playa y montaña.',cta:''},
+      {icon:'🏗',label:'El proyecto',headline:'5 casas de lujo',sub:'192–200 m² · 4 hab · 3-4 baños · Jardín privado · Piscina comunitaria · Aerotermia A+',cta:''},
+      {icon:'💰',label:'La inversión',headline:'Tu posición como inversor',sub:'Prestas capital a la promotora. Recibes el 10% anual. A vencimiento: capital + intereses.',cta:''},
+      {icon:'🔐',label:'Garantía',headline:'Aval solidario del holding',sub:'La sociedad matriz garantiza tu inversión. Control riguroso del grupo grohábitat.',cta:''},
+      {icon:'📊',label:'Números',headline:'Los números clave',sub:'Objetivo: 2.000.000€ · Plazo: 14 meses · Interés: 10% anual · Ticket mínimo: 500€',cta:''},
+      {icon:'🚀',label:'CTA',headline:'La campaña está abierta.',sub:'Invierte desde 500€ en groinversia.com',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de presentación de proyecto de 7 slides para Groinversia sobre el proyecto VALENTINA40.
+Formato: 1080x1350px, fondo navy #0B0F19, tipografía Inter Tight, acento dorado #C8A84B.
+Slide 1: portada hero "VALENTINA40" en grande, "Castelldefels · Barcelona" en letra pequeña gold.
+Slides 2-6: cada uno con icono elegante, titular en blanco, descripción en gris, línea dorada divisoria.
+Datos clave: 5 casas lujo · 192-200m² · 4hab · jardín + piscina · 10% anual · 14 meses · 2M€ · 500€ mínimo · aval holding.
+Slide 7: CTA "Campaña abierta" + logo Groinversia + URL.`
+  },
+  {
+    id:'c04',eyebrow:'CARROUSEL 04 · AWARENESS',
+    title:'Cómo funciona el proceso de due diligence',
+    hook:'Antes de publicar un proyecto en Groinversia, pasa por 6 filtros.',
+    subtitle:'Proceso · 7 slides · Trust-building',
+    bg:'Blanco · iconos lineales · minimalista',
+    slides:[
+      {icon:'🔍',label:'Portada',headline:'¿Cómo filtramos los proyectos?',sub:'Antes de que lo veas en Groinversia, ha pasado por todo esto.',cta:''},
+      {icon:'1️⃣',label:'Paso 1',headline:'Solicitud del promotor',sub:'El promotor envía la documentación del proyecto: memoria, tasación, licencias, plan financiero.',cta:''},
+      {icon:'2️⃣',label:'Paso 2',headline:'Análisis de viabilidad',sub:'Equipo interno evalúa rentabilidad, riesgo, mercado local y perfil del promotor.',cta:''},
+      {icon:'3️⃣',label:'Paso 3',headline:'Tasación independiente',sub:'Tasador externo certifica el valor del activo. No es nuestra cifra, es la del mercado.',cta:''},
+      {icon:'4️⃣',label:'Paso 4',headline:'Estructura de garantías',sub:'Definimos el aval, la garantía hipotecaria o la estructura de colateral. Todo por escrito.',cta:''},
+      {icon:'5️⃣',label:'Paso 5',headline:'Revisión legal',sub:'Abogados externos validan la estructura de la operación conforme a normativa CNMV.',cta:''},
+      {icon:'✅',label:'Publicación',headline:'Solo entonces se publica.',sub:'Si el proyecto llega aquí, es porque ha pasado todos los filtros. Transparencia total.',cta:'Enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de proceso de 7 slides para Groinversia sobre due diligence de proyectos.
+Formato: 1080x1350px, fondo blanco, iconos lineales minimalistas, Inter Tight, acento #C8A84B.
+Slides 1: portada "¿Cómo filtramos los proyectos?" con línea dorada.
+Slides 2-6: un paso del proceso por slide, numerados del 1 al 5, cada uno con icono, título del paso y descripción breve.
+Slide 7: conclusión "Solo entonces se publica" con checkmark dorado.
+Estilo: limpio, corporativo pero accesible. Sin fondo de colores fuertes.`
+  },
+  {
+    id:'c05',eyebrow:'CARROUSEL 05 · FIDELIZACIÓN',
+    title:'Torreblanca 70 — Un caso de éxito devuelto',
+    hook:'149 inversores · 2.2M€ · 22% de rentabilidad total en 24 meses.',
+    subtitle:'Social proof · 6 slides · Trust-building',
+    bg:'Navy → gold gradient · premium',
+    slides:[
+      {icon:'🏆',label:'Portada',headline:'TORREBLANCA 70',sub:'Sant Cugat del Vallès. Devuelto. 100% financiado.',cta:''},
+      {icon:'👥',label:'Inversores',headline:'149 inversores confiaron',sub:'Desde 500€. Diversidad de perfiles. Un objetivo común: hacer crecer su capital.',cta:''},
+      {icon:'💰',label:'Capital',headline:'2.200.000€ devueltos',sub:'Capital + intereses. A vencimiento. Como se pactó el primer día.',cta:''},
+      {icon:'📈',label:'Rentabilidad',headline:'22% de rentabilidad total',sub:'En 24 meses. Interés fijo. Sin sorpresas. Sin volatilidad.',cta:''},
+      {icon:'🔒',label:'Proceso',headline:'Así funciona siempre',sub:'Plazos claros. Condiciones pactadas. Devolución al vencimiento. Sin excepciones.',cta:''},
+      {icon:'🚀',label:'CTA',headline:'¿Cuál será tu próximo proyecto?',sub:'Groinversia. Desde 500€.',cta:'Ver proyectos abiertos → enlace en bio'},
+    ],
+    aiPrompt:`Genera un carrusel de caso de éxito de 6 slides para Groinversia sobre el proyecto TORREBLANCA 70.
+Formato: 1080x1350px, fondo navy #0B0F19, tipografía Inter Tight, números en dorado #C8A84B grandes y visibles.
+Slide 1: portada "TORREBLANCA 70" hero, "DEVUELTO" en badge dorado, "Sant Cugat del Vallès".
+Slides 2-5: una métrica clave por slide con número enorme en dorado y explicación en blanco/gris.
+Métricas: 149 inversores, 2.200.000€ devueltos, 22% rentabilidad total, 24 meses plazo.
+Slide 6: CTA "El siguiente proyecto está abierto" + logo Groinversia.`
+  },
+  {
+    id:'c06',eyebrow:'CARROUSEL 06 · CONVERSIÓN',
+    title:'500€ son suficientes para empezar',
+    hook:'La barrera de entrada ya no es el capital. Es la decisión.',
+    subtitle:'Empoderamiento · 5 slides · CTA fuerte',
+    bg:'Blanco + accent gold + tipografía grande',
+    slides:[
+      {icon:'💡',label:'Portada',headline:'500€ son suficientes.',sub:'La barrera de entrada al inmobiliario acaba de desaparecer.',cta:''},
+      {icon:'❌',label:'Antes',headline:'Antes de la tokenización',sub:'Inmobiliario = 50.000€ de entrada. Hipoteca. Notario. Años de espera.',cta:''},
+      {icon:'✅',label:'Ahora',headline:'Ahora con Groinversia',sub:'500€. Digital. Sin intermediarios. Con condiciones pactadas. En un día.',cta:''},
+      {icon:'📊',label:'Diversifica',headline:'Diversifica desde 500€',sub:'500€ en VALENTINA40 + 500€ en el próximo proyecto = dos plazos, dos activos, un capital inicial mínimo.',cta:''},
+      {icon:'🎯',label:'CTA',headline:'Tu primera inversión empieza aquí.',sub:'groinversia.com · Enlace en bio',cta:'Regístrate gratis'},
+    ],
+    aiPrompt:`Genera un carrusel de conversión de 5 slides para Groinversia sobre la accesibilidad desde 500€.
+Formato: 1080x1350px, fondo blanco, tipografía Inter Tight bold en navy, números grandes, acento dorado.
+Slide 1: portada "500€ son suficientes." titular muy grande, subtítulo pequeño.
+Slide 2: contraste negativo — "Antes del crowdlending" con iconos negativos.
+Slide 3: contraste positivo — "Ahora con Groinversia" con iconos dorados.
+Slide 4: diversificación — gráfico simple mostrando 2 inversiones de 500€.
+Slide 5: CTA fuerte con botón simulado "Regístrate gratis" y logo Groinversia.`
+  },
+];
+
+/* ─── DATA: REELS ─── */
+const REELS = [
+  {
+    id:'r01',
+    eyebrow:'REEL 01 · AWARENESS',
+    title:'¿Qué es el crowdfunding inmobiliario?',
+    hook:'Prestas dinero. Cobras intereses. Recuperas tu capital.',
+    stage:'awareness',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer navy + camisa celeste abierta, sin corbata',
+    outfitShort:'Navy + celeste',
+    script:[
+      {seg:'0–3s',spoken:'¿Y si pudieras financiar una operación inmobiliaria real y cobrar intereses por ello, desde 500 euros?',action:'Ceja levantada, lean forward, urgencia',gesture:'Ceja↑\nBoca abre'},
+      {seg:'3–14s',spoken:'Eso es el crowdfunding inmobiliario. No compras una casa. No eres propietaria de nada. Prestas capital a un proyecto concreto, y recibes ese capital de vuelta con intereses al vencimiento.',action:'Mano derecha explica, niega suavemente con dedo',gesture:'Niega\ndedo'},
+      {seg:'14–26s',spoken:'El promotor necesita financiación para desarrollar el proyecto. Nosotros la ponemos entre varios inversores. El promotor nos paga intereses por ese préstamo. Y tú recibes tu parte.',action:'Conecta las partes con las manos',gesture:'Conecta\nmanos'},
+      {seg:'26–40s',spoken:'Sin notario por tu parte. Sin hipoteca. Sin 50.000 euros de entrada. Sabes exactamente cuánto pones, cuándo lo recuperas y cuánto te devuelven.',action:'Cuenta con dedos, énfasis en cada punto',gesture:'3 dedos\nclaro'},
+      {seg:'40–55s',spoken:'No depende de si sube o baja el mercado. Tienes un contrato: capital prestado, tipo de interés fijo, fecha de vencimiento.',action:'Manos abiertas, calma, certeza',gesture:'Manos\ncalma'},
+      {seg:'55–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala a cámara, sonrisa',gesture:'Señala\ncierre'},
+    ],
+    frames:[
+      {emoji:'🤨',label:'HOOK',desc:'Lean forward, ceja levantada, urgente'},
+      {emoji:'☝️',label:'NO-PROPIETARIA',desc:'Niega con dedo, tono claro'},
+      {emoji:'🤝',label:'MECÁNICA',desc:'Conecta dos partes con manos'},
+      {emoji:'🤟',label:'VENTAJAS',desc:'3 dedos, énfasis en simplicidad'},
+      {emoji:'🤲',label:'CERTEZA',desc:'Manos abiertas, calma'},
+      {emoji:'👉',label:'CTA',desc:'Señala cámara, sonrisa cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman in the image leans slightly forward toward camera, raises one eyebrow with urgency, mouth beginning to open. Static camera, tripod, chest height, slightly below eye level, no movement. Same modern white office background with "Groinversia" logo on wall left, black linear pendant lights. Warm natural diffused light. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — NO-PROPIETARIA',text:`[Start image: F2]\nThe woman shakes her index finger slightly — correcting a misconception. Clear direct expression. Static camera, no movement. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECÁNICA',text:`[Start image: F3]\nThe woman gestures with both hands connecting two sides — explaining a relationship. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — VENTAJAS',text:`[Start image: F4]\nThe woman counts three points on fingers, leaning forward with conviction. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — CERTEZA',text:`[Start image: F5]\nThe woman holds both hands open, palms up, calm reassuring gesture. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points right index finger toward camera, warm confident smile. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r02',
+    eyebrow:'REEL 02 · AWARENESS',
+    title:'No eres propietaria. Eres el banco.',
+    hook:'Hay una diferencia enorme entre comprar un piso e invertir en uno.',
+    stage:'awareness',
+    angle:'Exteriores Barcelona / Paseo Marítimo',
+    outfit:'Chaqueta técnica oscura + camiseta navy',
+    outfitShort:'Técnico oscuro',
+    script:[
+      {seg:'0–3s',spoken:'Hay una diferencia enorme entre comprar un piso e invertir en uno. Hoy te cuento cuál es.',action:'Paseo exterior, tono directo, desenfadado',gesture:'Camina\ndirecto'},
+      {seg:'3–16s',spoken:'Cuando compras un piso, eres propietaria. Dependes del mercado, del inquilino, de la comunidad, de los impuestos. Es tuyo para bien y para mal.',action:'Cuenta implicaciones con mano',gesture:'Cuenta\nproblemas'},
+      {seg:'16–30s',spoken:'En Groinversia no compras nada. Le prestas dinero a una promotora para que desarrolle su proyecto. Tú eres el acreedor. El banco, en versión mini.',action:'Sonrisa cómplice, gesto de "pequeño banco"',gesture:'Sonrisa\nbanco'},
+      {seg:'30–44s',spoken:'A cambio, la promotora te paga intereses. Cuando acaba el plazo, recuperas tu dinero más esos intereses. Sin gestionar nada.',action:'Calma, manos limpias',gesture:'Manos\nlimpias'},
+      {seg:'44–57s',spoken:'No subes si el mercado sube. Pero tampoco bajas si baja. Tu retorno está fijado desde el día uno.',action:'Señala con seguridad',gesture:'Señala\nseguro'},
+      {seg:'57–60s',spoken:'Groinversia. Enlace en bio.',action:'Señala, cierre natural',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🚶',label:'INTRO EXTERIOR',desc:'Exterior BCN, tono desenfadado'},
+      {emoji:'🏠',label:'PROPIETARIA',desc:'Cuenta implicaciones, problemática'},
+      {emoji:'😄',label:'EL BANCO',desc:'Sonrisa cómplice, analogía banco'},
+      {emoji:'🙌',label:'SIN GESTIÓN',desc:'Manos limpias, calma'},
+      {emoji:'🎯',label:'RETORNO FIJO',desc:'Señala con seguridad, certeza'},
+      {emoji:'👉',label:'CTA',desc:'Cierre natural, señala'},
+    ],
+    veo3:[
+      {label:'F1 — INTRO EXTERIOR',text:`[Start image: F1]\nThe woman walks or stands in an urban exterior setting (Barcelona promenade or street), direct eye contact with camera, casual professional tone. Outdoor natural light. Fixed camera, no camera movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROPIETARIA',text:`[Start image: F2]\nThe woman counts implications on fingers with a slightly concerned expression. Static camera, outdoor or neutral background. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — EL BANCO',text:`[Start image: F3]\nThe woman smiles with a knowing expression, gestures as if describing something small, complicit tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — SIN GESTIÓN',text:`[Start image: F4]\nThe woman holds both hands open, clean clear gesture, relaxed energy. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RETORNO FIJO',text:`[Start image: F5]\nThe woman points with conviction, confident secure expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera with natural smile, closing energy. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r03',
+    eyebrow:'REEL 03 · CONSIDERACIÓN',
+    title:'Las 3 preguntas que debes hacer antes de invertir',
+    hook:'Si una plataforma no puede responder estas 3 preguntas, no inviertas.',
+    stage:'consideracion',
+    angle:'Sala de Reuniones',
+    outfit:'Camisa blanca + blazer gris antracita',
+    outfitShort:'Gris antracita',
+    script:[
+      {seg:'0–4s',spoken:'Antes de meter dinero en cualquier plataforma de inversión — incluida la nuestra — hazte estas tres preguntas.',action:'Expresión seria, honesta, protectora',gesture:'Serio\nprotector'},
+      {seg:'4–18s',spoken:'Primera: ¿dónde está exactamente mi dinero? No en un fondo genérico. En una operación concreta, con activo identificable, con contrato escrito.',action:'Un dedo, énfasis en "exactamente"',gesture:'1 dedo\nexacto'},
+      {seg:'18–32s',spoken:'Segunda: ¿cuándo recupero mi dinero? Tiene que haber una fecha de vencimiento. No "cuando el mercado lo permita". Una fecha.',action:'Dos dedos, énfasis en fecha',gesture:'2 dedos\nfecha'},
+      {seg:'32–46s',spoken:'Tercera: ¿qué pasa si algo sale mal? ¿Hay garantía hipotecaria? ¿Aval? ¿Quién responde? Si no hay respuesta clara, no es una buena señal.',action:'Tres dedos, tono honesto, no alarmista',gesture:'3 dedos\nhonesto'},
+      {seg:'46–57s',spoken:'En Groinversia respondemos las tres. Con documentación, con transparencia, antes de que inviertas.',action:'Seguridad, manos abiertas',gesture:'Abre\nmanos'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Cierre breve, señala',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'🤔',label:'HOOK',desc:'Seria, honesta, protectora'},
+      {emoji:'1️⃣',label:'PREGUNTA 1',desc:'Un dedo, énfasis en exactamente'},
+      {emoji:'2️⃣',label:'PREGUNTA 2',desc:'Dos dedos, énfasis en fecha'},
+      {emoji:'3️⃣',label:'PREGUNTA 3',desc:'Tres dedos, tono honesto'},
+      {emoji:'✅',label:'RESPUESTA',desc:'Manos abiertas, seguridad'},
+      {emoji:'👉',label:'CTA',desc:'Cierre breve, señala'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman looks directly at camera with a serious protective expression, beginning to give important advice. Meeting room background, professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PREGUNTA 1',text:`[Start image: F2]\nThe woman raises one finger with emphasis, serious focused expression. Same meeting room. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PREGUNTA 2',text:`[Start image: F3]\nThe woman raises two fingers, measured authoritative tone. Same background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PREGUNTA 3',text:`[Start image: F4]\nThe woman raises three fingers, honest direct expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — RESPUESTA',text:`[Start image: F5]\nThe woman opens both hands, confident reassuring energy. Static camera, chest height. Same room. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera briefly with a firm closing smile. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r04',
+    eyebrow:'REEL 04 · CONVERSIÓN',
+    title:'VALENTINA40 — Está abierta la campaña',
+    hook:'5 casas de lujo en Castelldefels. 10% anual. Desde 500€.',
+    stage:'conversion',
+    angle:'Interior Premium / On-site',
+    outfit:'Polo premium crudo + pantalón chino beige',
+    outfitShort:'Polo crudo',
+    script:[
+      {seg:'0–3s',spoken:'Acaba de abrirse nuestra nueva campaña. Y es diferente a todo lo que hemos hecho hasta ahora.',action:'Energía alta, sonrisa, cámara outdoor on-site',gesture:'Energía\napertura'},
+      {seg:'3–16s',spoken:'Se llama VALENTINA40. Cinco casas unifamiliares de lujo en Castelldefels, Barcelona. 192 metros cuadrados, cuatro habitaciones, jardín privado y piscina comunitaria.',action:'Describe con las manos, entusiasta pero medida',gesture:'Describe\nmanos'},
+      {seg:'16–28s',spoken:'El modelo es el de siempre: préstamo con interés fijo. 10% anual. 14 meses de plazo. Devolución a vencimiento, capital más intereses.',action:'Calma, datos concretos',gesture:'Datos\ncalma'},
+      {seg:'28–42s',spoken:'La garantía es el aval solidario de la sociedad holding del grupo. Transparencia total: la ficha completa está publicada en la web.',action:'Sólido, directo, confianza',gesture:'Sólido\nconfianza'},
+      {seg:'42–55s',spoken:'El ticket mínimo es de 500 euros. Así que si llevas tiempo queriendo entrar en inmobiliario sin hipoteca, esta es la operación.',action:'Invita, señala hacia la web',gesture:'Invita\nseñala'},
+      {seg:'55–60s',spoken:'Enlace directo en bio. Te esperamos.',action:'Sonrisa cálida, cierre',gesture:'Cálido\ncierre'},
+    ],
+    frames:[
+      {emoji:'🚀',label:'APERTURA',desc:'Energía alta, exterior on-site'},
+      {emoji:'🏡',label:'EL PROYECTO',desc:'Describe con manos, entusiasta'},
+      {emoji:'📊',label:'DATOS',desc:'Datos concretos, calma'},
+      {emoji:'🔒',label:'GARANTÍA',desc:'Sólido, directo, confianza'},
+      {emoji:'🎯',label:'INVITACIÓN',desc:'Señala web, invita'},
+      {emoji:'😊',label:'CTA',desc:'Sonrisa cálida, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — APERTURA',text:`[Start image: F1]\nThe woman stands outdoors at a construction or premium residential site, high energy welcoming expression, speaking with enthusiasm. Natural outdoor light, Mediterranean atmosphere. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PROYECTO',text:`[Start image: F2]\nThe woman gestures with hands describing a space, enthusiastic but measured tone. Outdoor or premium interior background. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — DATOS',text:`[Start image: F3]\nThe woman presents data calmly with open gesture, factual precise tone. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — GARANTÍA',text:`[Start image: F4]\nThe woman speaks with solid confident energy, straightforward and trustworthy. Static camera, chest height. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — INVITACIÓN',text:`[Start image: F5]\nThe woman gestures toward camera inviting the viewer, warm welcoming expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman smiles warmly and closes naturally, pointing briefly. Static camera. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r05',
+    eyebrow:'REEL 05 · AWARENESS',
+    title:'Así funciona Groinversia en 3 pasos',
+    hook:'En 5 minutos puedes estar financiando tu primera operación.',
+    stage:'awareness',
+    angle:'Laptop + Datos',
+    outfit:'Jersey cuello redondo gris, casual, sin blazer',
+    outfitShort:'Jersey gris',
+    script:[
+      {seg:'0–3s',spoken:'Te explico cómo funciona Groinversia en exactamente tres pasos. Son menos de lo que crees.',action:'Sonrisa accesible, tono fácil',gesture:'Sonrisa\nfácil'},
+      {seg:'3–15s',spoken:'Primero: te registras en groinversia.com. En tres minutos tienes cuenta. Proceso 100% digital, sin papeleos.',action:'1 dedo, señala laptop',gesture:'1 dedo\nlaptop'},
+      {seg:'15–28s',spoken:'Segundo: explores los proyectos abiertos. Cada uno tiene su ficha completa: plazo, rentabilidad objetivo, garantías, historial del promotor. Lees y decides.',action:'2 dedos, explica con calma',gesture:'2 dedos\nficha'},
+      {seg:'28–42s',spoken:'Tercero: inviertes desde 500 euros. Recibes tus tokens — que son tu contrato digital en blockchain — y ya estás dentro.',action:'3 dedos, cierra el proceso',gesture:'3 dedos\ndentro'},
+      {seg:'42–56s',spoken:'A partir de ahí, Groinversia gestiona el proyecto. Tú esperas al vencimiento y recibes tu capital más los intereses. Sin gestionar nada.',action:'Manos limpias, calma total',gesture:'Manos\nlimpias'},
+      {seg:'56–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😊',label:'HOOK',desc:'Sonrisa accesible, laptop visible'},
+      {emoji:'1️⃣',label:'PASO 1 — REGISTRO',desc:'Un dedo, señala pantalla'},
+      {emoji:'2️⃣',label:'PASO 2 — EXPLORAR',desc:'Dos dedos, explica ficha'},
+      {emoji:'3️⃣',label:'PASO 3 — INVERTIR',desc:'Tres dedos, cierra proceso'},
+      {emoji:'🙌',label:'ESPERAR',desc:'Manos limpias, calma total'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre breve'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman smiles accessibly at camera with a laptop visible on the desk behind her. Relaxed professional setting. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — PASO 1',text:`[Start image: F2]\nThe woman raises one finger pointing toward a laptop screen, explaining step one. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — PASO 2',text:`[Start image: F3]\nThe woman raises two fingers, explaining calmly, gesturing toward laptop. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — PASO 3',text:`[Start image: F4]\nThe woman raises three fingers closing the explanation, energetic. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — ESPERAR',text:`[Start image: F5]\nThe woman holds both hands open, calm clean gesture, relaxed expression. Static camera. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera briefly. Static camera, natural close. 9:16, 24fps, 8 seconds.`},
+    ]
+  },
+  {
+    id:'r06',
+    eyebrow:'REEL 06 · CONSIDERACIÓN',
+    title:'Por qué el 10% anual es posible y real',
+    hook:'Cuando te ofrecen un 10% anual lo primero es desconfiar. Es lo correcto.',
+    stage:'consideracion',
+    angle:'Oficina Groinversia',
+    outfit:'Blazer azul acero + camisa blanca abierta',
+    outfitShort:'Acero + blanco',
+    script:[
+      {seg:'0–4s',spoken:'Cuando alguien te ofrece un 10% anual, lo primero que debes hacer es desconfiar. Y yo lo entiendo perfectamente.',action:'Sonrisa cómplice, tono directo',gesture:'Sonrisa\ncómplice'},
+      {seg:'4–18s',spoken:'Pero hay una diferencia entre rendimientos altos sin explicación y rendimientos altos con contexto. Déjame darte el contexto.',action:'Mano explicando, calma',gesture:'Mano\nexplica'},
+      {seg:'18–32s',spoken:'El promotor necesita financiación rápida para cerrar una operación. Los bancos tardan semanas. Nosotros somos más ágiles. Esa agilidad tiene un precio — que son tus intereses.',action:'Explica el mecanismo, lógico',gesture:'Mecanismo\nlógico'},
+      {seg:'32–45s',spoken:'El promotor te paga ese 10% porque le resulta rentable. Prefiere pagarte a ti que perder la operación por falta de liquidez. Es un intercambio justo.',action:'Gesticula equilibrio con manos',gesture:'Equilibrio\njusto'},
+      {seg:'45–57s',spoken:'No es especulación. Es préstamo con garantía hipotecaria. El 10% es el precio del riesgo asumido, cuantificado y respaldado.',action:'Firmeza, tono definitivo',gesture:'Firme\ndefinitivo'},
+      {seg:'57–60s',spoken:'Enlace en bio.',action:'Señala, cierre',gesture:'Señala'},
+    ],
+    frames:[
+      {emoji:'😏',label:'HOOK CÓMPLICE',desc:'Sonrisa cómplice, entiende la desconfianza'},
+      {emoji:'🧠',label:'CONTEXTO',desc:'Mano explica, da contexto'},
+      {emoji:'⚙️',label:'MECANISMO',desc:'Explica por qué el promotor paga'},
+      {emoji:'⚖️',label:'INTERCAMBIO JUSTO',desc:'Equilibrio con manos'},
+      {emoji:'💪',label:'FIRMEZA',desc:'Tono definitivo, seguro'},
+      {emoji:'👉',label:'CTA',desc:'Señala, cierre'},
+    ],
+    veo3:[
+      {label:'F1 — HOOK',text:`[Start image: F1]\nThe woman smiles with a knowing complicit expression, as if about to reveal something. Office with Groinversia logo. Static camera, chest height, no movement. 9:16, 24fps, 8 seconds.`},
+      {label:'F2 — CONTEXTO',text:`[Start image: F2]\nThe woman explains context calmly with right hand gesturing. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F3 — MECANISMO',text:`[Start image: F3]\nThe woman explains a mechanism logically, pointing through the reasoning. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+      {label:'F4 — EQUILIBRIO',text:`[Start image: F4]\nThe woman holds both hands balanced, explaining a fair exchange. Static camera, chest height. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F5 — FIRMEZA',text:`[Start image: F5]\nThe woman speaks with definitive confident authority, slight forward lean. Static camera. Same office. 9:16, 24fps, 8 seconds.`},
+      {label:'F6 — CTA',text:`[Start image: F6]\nThe woman points toward camera with brief closing energy. Static camera. Same office, Groinversia logo. 9:16, 24fps, 8 seconds.`},
+    ]
+  }
+];
+
+/* ─── RENDER GRIDS ─── */
+
+function renderSemanaHTML() {
+  return '<div id="semana-container" style="padding:0"></div>';
+}
+
+function renderCalendarHTML() {
+  return '<div id="full-cal-container"></div>';
+}
+
+function buildWeekView(idx) {
+  var container = document.getElementById('semana-container');
+  if (!container) return;
+  var wk = CALENDAR[idx];
+  var typeColor = {reel:'#4A8FE7', carrusel:'rgba(255,255,255,0.5)', trailer:'#5DB879'};
+  var effortLabel = function(e) { return e.startsWith('[E]') ? 'Alta dedicación' : e.startsWith('[M]') ? 'Dedicación media' : 'Rápido'; };
+  var effortColor = function(e) { return e.startsWith('[E]') ? '#E74A4A' : e.startsWith('[M]') ? '#E7A14A' : '#5DB879'; };
+
+  var html = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">' +
+    '<button onclick="buildWeekView(' + (idx-1) + ')" ' + (idx===0?'disabled':'') + ' style="background:#1A2535;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-family:inherit;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;' + (idx===0?'opacity:0.3;cursor:default':'') + '">← Anterior</button>' +
+    '<div>' +
+      '<div style="font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.2px">' + wk.week + '</div>' +
+      '<div style="display:flex;align-items:center;gap:6px;margin-top:2px">' +
+        '<div style="width:7px;height:7px;border-radius:50%;background:' + wk.color + '"></div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.4)">' + wk.theme + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="margin-left:auto;display:flex;gap:8px;align-items:center">' +
+      '<span style="font-size:10px;color:rgba(255,255,255,0.3)">' + wk.items.length + ' publicaciones</span>' +
+      '<button onclick="buildWeekView(' + (idx+1) + ')" ' + (idx===CALENDAR.length-1?'disabled':'') + ' style="background:#1A2535;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 14px;font-family:inherit;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;' + (idx===CALENDAR.length-1?'opacity:0.3;cursor:default':'') + '">Siguiente →</button>' +
+    '</div>' +
+  '</div>' +
+  '<div style="background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.14);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;gap:12px">' +
+    '<div style="font-size:18px;flex-shrink:0">🎯</div>' +
+    '<div>' +
+      '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.1em">Por qué este contenido ahora</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.65">' + wk.why + '</div>' +
+    '</div>' +
+  '</div>';
+
+  wk.items.forEach(function(item) {
+    var onclick = item.id ? "openModal('" + item.id + "','" + (item.type==='carrusel'?'carrusel':'reel') + "')" : (item.type==='trailer' ? "showView('trailer')" : '');
+    var tc = typeColor[item.type] || 'rgba(255,255,255,0.25)';
+    html += '<div onclick="' + onclick + '" style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px 20px;margin-bottom:10px;' + (onclick?'cursor:pointer;':'') + 'transition:all 0.15s"' +
+      (onclick?' onmouseenter="this.style.borderColor='rgba(255,255,255,0.2)';this.style.background='#212f45'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='#1A2535'"':'') + '>' +
+      '<div style="display:grid;grid-template-columns:80px 1fr 130px;gap:16px;align-items:start">' +
+        '<div>' +
+          '<div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);margin-bottom:6px">' + item.day + '</div>' +
+          '<div style="font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:' + tc + ';background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:4px;padding:3px 8px;display:inline-block">' + item.type.toUpperCase() + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:-0.3px;line-height:1.2">' + item.title + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:10px">' + item.sub + '</div>' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.6);font-style:italic;padding:8px 12px;background:rgba(255,255,255,0.04);border-left:2px solid rgba(255,255,255,0.12);border-radius:0 5px 5px 0;margin-bottom:10px;line-height:1.5">' + item.hook + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.6">💡 ' + item.why + '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:9px;font-weight:700;color:' + effortColor(item.effort) + ';margin-bottom:3px">' + effortLabel(item.effort) + '</div>' +
+          '<div style="font-size:9px;color:rgba(255,255,255,0.3);line-height:1.5;margin-bottom:10px">' + item.effort.replace(/^\[.\] /,'') + '</div>' +
+          (onclick ? '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:6px 14px;border-radius:6px;display:inline-block">Abrir →</div>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  html += '<div style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;margin-top:8px">' +
+    '<div style="font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px">Cuándo publicar</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">📅</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Lunes 9h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Educativo o datos. Máxima absorción inicio de semana.</div></div>' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">⚡</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Miércoles 12h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Producto o campaña. Pico de engagement en Instagram.</div></div>' +
+      '<div style="background:#0B0F19;border-radius:6px;padding:10px 12px"><div style="font-size:15px;margin-bottom:5px">🎬</div><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:3px">Viernes 18h</div><div style="font-size:10px;color:rgba(255,255,255,0.35);line-height:1.5">Reel emocional o aspiracional. El fin de semana empieza el viernes.</div></div>' +
+    '</div>' +
+  '</div>';
+
+  container.innerHTML = html;
+}
+
+function buildFullCalendar() {
+  var container = document.getElementById('full-cal-container');
+  if (!container) return;
+  var typeColor = {reel:'#4A8FE7', carrusel:'rgba(255,255,255,0.5)', trailer:'#5DB879'};
+  var effortColor = function(e) { return e.startsWith('[E]') ? '#E74A4A' : e.startsWith('[M]') ? '#E7A14A' : '#5DB879'; };
+
+  var html = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px">' +
+    CALENDAR.map(function(wk) {
+      return '<div style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-left:3px solid ' + wk.color + ';border-radius:8px;padding:12px 14px">' +
+        '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:3px">' + wk.week + '</div>' +
+        '<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:5px">' + wk.theme + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.3)">' + wk.items.length + ' piezas</div>' +
+      '</div>';
+    }).join('') + '</div>';
+
+  CALENDAR.forEach(function(wk) {
+    html += '<div style="margin-bottom:26px">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">' +
+        '<div style="width:10px;height:10px;border-radius:50%;background:' + wk.color + '"></div>' +
+        '<div style="font-size:13px;font-weight:700;color:#fff">' + wk.week + ' — ' + wk.theme + '</div>' +
+      '</div>' +
+      '<div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:12px;padding-left:20px;line-height:1.55;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px">' + wk.why + '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(' + wk.items.length + ',1fr);gap:10px">';
+
+    wk.items.forEach(function(item) {
+      var onclick = item.id ? "openModal('" + item.id + "','" + (item.type==='carrusel'?'carrusel':'reel') + "')" : (item.type==='trailer' ? "showView('trailer')" : '');
+      var tc = typeColor[item.type] || 'rgba(255,255,255,0.2)';
+      html += '<div onclick="' + onclick + '" style="background:#1A2535;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;' + (onclick?'cursor:pointer;':'') + 'transition:all 0.15s"' +
+        (onclick?' onmouseenter="this.style.borderColor='rgba(255,255,255,0.2)';this.style.background='#212f45'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='#1A2535'"':'') + '>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4)">' + item.day + '</div>' +
+          '<div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:' + tc + ';padding:2px 7px;background:rgba(255,255,255,0.04);border-radius:3px">' + item.type.toUpperCase() + '</div>' +
+        '</div>' +
+        '<div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.3">' + item.title + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.35);margin-bottom:8px">' + item.sub + '</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.55);font-style:italic;line-height:1.5;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:5px;margin-bottom:8px">' + item.hook + '</div>' +
+        '<div style="font-size:9px;color:rgba(255,255,255,0.3);line-height:1.4;margin-bottom:6px">💡 ' + item.why + '</div>' +
+        (onclick ? '<div style="margin-top:8px;font-size:10px;font-weight:600;color:rgba(255,255,255,0.5)">Abrir →</div>' : '') +
+      '</div>';
+    });
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
+}
+
 function buildCarouselGrid(){
   const g=document.getElementById('carousel-grid');
   g.innerHTML=CAROUSELS.map(c=>`
